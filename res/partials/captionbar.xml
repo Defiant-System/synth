@@ -1,0 +1,12 @@
+<CaptionToolBar>
+	<Group>
+		<Options>
+			<Tool symbol="icon-previous" click="prev-song"/>
+			<Tool symbol="icon-play" click="play-song"/>
+			<Tool symbol="icon-next" click="next-song"/>
+		</Options>
+	</Group>
+	<Group>
+		<Tool symbol="icon-gear" click="main-menu"/>
+	</Group>
+</CaptionToolBar>

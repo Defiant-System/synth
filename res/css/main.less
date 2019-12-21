@@ -1,0 +1,268 @@
+
+background: #303030;
+
+content {
+	display: block;
+	width: 100%;
+	height: 100%;
+
+	i, b {
+		&[octave="-2"] { --octave: -2; }
+		&[octave="-1"] { --octave: -1; }
+		&[octave="0"] { --octave: 0; }
+		&[octave="1"] { --octave: 1; }
+		&[octave="2"] { --octave: 2; }
+		&[octave="3"] { --octave: 3; }
+		&[octave="4"] { --octave: 4; }
+		&[octave="5"] { --octave: 5; }
+		&[octave="6"] { --octave: 6; }
+		&[octave="7"] { --octave: 7; }
+		&[octave="8"] { --octave: 8; }
+	}
+
+	.progress {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 19px;
+		z-index: 3;
+		background: linear-gradient(#646464 0%, #4d4d4d 25%, #3a3a3a 49.9%, #2a2a2a 50%, #2a2a2a 75%, #353535 100%);
+		box-shadow: 0 3px 3px rgba(0,0,0,0.35);
+
+		.bar {
+			position: relative;
+			width: 100%;
+			height: inherit;
+			background: linear-gradient(#33ae54 0%, #00a23d 25%, #009a2e 49.9%, #009022 50%, #009124 75%, #00982c 100%);
+			transform: translateX(-100%);
+			transition: transform linear;
+			will-change: transform;
+		}
+		.play-time,
+		.song-length {
+			position: absolute;
+			top: 3px;
+			left: 3px;
+			color: #fff;
+			font-size: 11px;
+			text-align: left;
+			text-shadow: 0 0 2px rgba(0,0,0,.35);
+		}
+		.song-length {
+			left: auto;
+			right: 3px;
+			text-align: right;
+		}
+	}
+
+	.score {
+		position: absolute;
+		top: 19px;
+		left: 0;
+		right: 0;
+		bottom: 158px;
+		z-index: 1;
+		overflow: hidden;
+
+		.wrapper {
+			position: relative;
+			min-height: 100px;
+			transition: transform linear;
+			//transform: translate3d(0,0,0) rotateZ(360deg);
+			will-change: transform;
+		}
+
+		b {
+			background: #66d;
+			position: absolute;
+			bottom: 0px;
+			width: 23px;
+			height: 50px;
+			border-radius: 4px;
+			box-shadow: 0 2px 2px rgba(0,0,0,0.35);
+
+			&:before {
+				content: "";
+				background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.25));
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				border-radius: inherit;
+				box-shadow: 0 0 1px rgba(0,0,0,0.75),
+							inset 0 1px 2px rgba(255,255,255,0.2),
+							inset 0 -1px 1px rgba(0,0,0,0.3);
+			}
+
+			&[track="1"] { background: #7d7; }
+			&[track="2"] { background: #aaf; }
+			&[track="3"] { background: #66d; }
+			&[track="4"] { background: #6dd; }
+			&[track="5"] { background: #f90; }
+			&[track="6"] { background: #6d6; }
+			&[track="7"] { background: #e66; }
+			&[track="8"] { background: #f99; }
+
+			&[note="c"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 1px ); }
+			&[note="d"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 25px ); }
+			&[note="e"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 49px ); }
+			&[note="f"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 73px ); }
+			&[note="g"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 97px ); }
+			&[note="a"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 121px ); }
+			&[note="b"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 145px ); }
+
+			&[note="c#"]:after,
+			&[note="d#"]:after,
+			&[note="f#"]:after,
+			&[note="g#"]:after,
+			&[note="a#"]:after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0,0,0,0.2);
+			}
+
+			&[note="c#"] { width: 17px; left: calc( ( ( var(--octave) - 1 ) * 168px) + 14px ); z-index: 2; }
+			&[note="d#"] { width: 17px; left: calc( ( ( var(--octave) - 1 ) * 168px) + 42px ); z-index: 2; }
+			&[note="f#"] { width: 17px; left: calc( ( ( var(--octave) - 1 ) * 168px) + 86px ); z-index: 2; }
+			&[note="g#"] { width: 17px; left: calc( ( ( var(--octave) - 1 ) * 168px) + 112px ); z-index: 2; }
+			&[note="a#"] { width: 17px; left: calc( ( ( var(--octave) - 1 ) * 168px) + 138px ); z-index: 2; }
+		}
+	}
+
+	.keyboard {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 151px;
+		z-index: 2;
+
+		.wrapper {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0px;
+			width: auto;
+			background: #000;
+			padding-bottom: 1px;
+			font-size: 0;
+			white-space: nowrap;
+		}
+
+		&:before {
+			content: "";
+			background: #620102;
+			position: absolute;
+			top: -7px;
+			left: 0;
+			right: 0;
+			height: 5px;
+			//z-index: 2;
+			border-top: 1px solid #290000;
+			border-bottom: 1px solid #a92123;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+		}
+
+		i {
+			background: #fffdf0;
+			display: inline-block;
+			position: relative;
+			width: 23px;
+			height: 100%;
+			z-index: 1;
+			margin: 0 0 0 1px;
+			border-radius: 1px 1px 3px 3px;
+			box-shadow: inset 0 0 1px #000;
+
+			&[note="c"]:before,
+			&[note="f"]:before {
+				content: "";
+				position: absolute;
+				bottom: 100%;
+				height: 100vh;
+				left: -1px;
+				margin-bottom: 7px;
+				border-left: 1px solid #393939;
+			}
+
+			&[note="c"]:before {
+				border-left: 1px solid #444;
+			}
+
+			&.active {
+				box-shadow: inset 5px 0 5px -5px #000;
+
+				&[note="a"]:before,
+				&[note="g"]:before,
+				&[note="b"]:before,
+				&[note="d"]:before,
+				&[note="e"]:before {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 6px;
+					height: 100px;
+					width: 5px;
+					box-shadow: inset 5px 0 5px -5px #000;
+				}
+				&[note="b"]:before,
+				&[note="e"]:before {
+					left: 10px;
+				}
+				&[note="a"]:before {
+					left: 8px;
+				}
+			}
+		}
+
+		b {
+			display: inline-block;
+			position: absolute;
+			top: -1px;
+			width: 17px;
+			height: 101px;
+			z-index: 2;
+			border-radius: 0 0 1px 1px;
+			background: linear-gradient(#222,#333);
+			border: 1px solid #000;
+
+			&:before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 1px;
+				right: 1px;
+				bottom: 7px;
+				border-left: 1px solid rgba(255,255,255,0.1);
+				border-right: 1px solid rgba(255,255,255,0.1);
+				background: linear-gradient(#141414, #2a2a2a);
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				left: 1px;
+				right: 1px;
+				bottom: 1px;
+				height: 7px;
+				border-radius: 4px 4px 2px 2px;
+				background: linear-gradient(#404040, #2c2c2c);
+			}
+
+			&[note="c#"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 15px ); }
+			&[note="d#"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 41px ); }
+			&[note="f#"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 86px ); }
+			&[note="g#"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 112px ); }
+			&[note="a#"] { left: calc( ( ( var(--octave) - 1 ) * 168px) + 138px ); }
+
+			&.active {
+				&:before { bottom: 1px; }
+				&:after { height: 1px; }
+			}
+		}
+	}
+}

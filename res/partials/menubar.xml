@@ -1,0 +1,20 @@
+<MenuBar>
+	<Menu name="Synth">
+		<Menu name="About Synth" hotkey="meta+a"/>
+		<Menu type="divider"/>
+		<Menu name="Preferences" hotkey="shift+," click="preferences"/>
+		<Menu type="divider"/>
+		<Menu name="Hide Synth"/>
+		<Menu name="Hide Others"/>
+		<Menu name="Show All" disabled="1"/>
+		<Menu type="divider"/>
+		<Menu name="Quit Synth" shell="win -c"/>
+	</Menu>
+	<Menu name="Help">
+		<Menu name="Send Synth Feedback"/>
+		<Menu type="divider"/>
+		<Menu name="Synth Help"/>
+		<Menu type="divider"/>
+		<Menu name="License"/>
+	</Menu>
+</MenuBar>
