@@ -13,7 +13,7 @@ const synth = {
 		this.playTime = window.find(".progress .play-time");
 		this.songLength = window.find(".progress .song-length");
 
-		window.midi.init();
+		//window.midi.init();
 	},
 	async dispatch(event) {
 		let self = synth,
