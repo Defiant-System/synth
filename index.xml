@@ -2,6 +2,7 @@
 	<Head>
 		<meta name="id" value="synth"/>
 		<meta name="title" value="Synth" version="1.0"/>
+		<meta name="author" value="Hakan Bilgin" namespace="ant"/>
 		<meta name="license" value="AGPL-3.0-or-later"/>
 		<meta name="width" value="1009"/>
 		<meta name="height" value="620"/>
@@ -11,12 +12,12 @@
 		<meta name="maximize"/>
 		<meta name="maximize" value="disabled"/>
 		<meta name="resize" value="disabled"/>
-		<meta name="icons" value="res/svg/icons.svg"/>
-		<meta name="script" value="res/js/main.js"/>
-		<meta name="style" value="res/css/main.less"/>
-		<meta name="content" value="res/partials/content.htm"/>
+		<meta name="icons" value="src/svg/icons.svg"/>
+		<meta name="script" value="src/js/main.js"/>
+		<meta name="style" value="src/css/main.less"/>
+		<meta name="content" value="src/partials/content.htm"/>
 
-		@import "res/partials/captionbar.xml"
-		@import "res/partials/menubar.xml"
+		@import "src/partials/captionbar.xml"
+		@import "src/partials/menubar.xml"
 	</Head>
 </Application>
