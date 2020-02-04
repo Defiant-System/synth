@@ -67,7 +67,7 @@ const synth = {
 
 				midi = MidiParser.parse(file.buffer);
 				console.log(midi);
-return
+
 				// set window title
 				window.title = `Synth - ${file.name}`;
 
@@ -101,7 +101,7 @@ return
 										time: event.time,
 										track: event.track,
 										delta: event.delta,
-										duration: (item.deltaTime * 4) - event.delta,
+										duration: (item.deltaTime) - event.delta,
 										el: self.keyboard.find(`[octave="${event.octave}"][note="${event.note}"]`),
 									});
 
@@ -133,6 +133,7 @@ return
 
 				self.timeline = timeline;
 				self.songLength = songLength; // in milliseconds
+				console.log(songLength);
 
 				self.score
 					.css({
@@ -171,6 +172,8 @@ return
 
 		if (this.timeline.length) {
 			setTimeout(() => this.playback(), this.timeline[0].delta);
+		} else {
+			console.log("done!");
 		}
 	}
 };
