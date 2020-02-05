@@ -9,7 +9,8 @@ const synth = {
 	init() {
 		// fast references
 		this.score = window.find(".score .wrapper");
-		this.progress = window.find(".progress .bar");
+		this.progress = window.find(".progress");
+		this.progressBar = window.find(".progress .bar");
 		this.playTime = window.find(".progress .play-time");
 		this.songLength = window.find(".progress .song-length");
 		this.keyboard = window.find(".keyboard");
@@ -40,7 +41,7 @@ const synth = {
 				if (window.music.playing) {
 					window.music.pause();
 
-					self.progress.css({
+					self.progressBar.css({
 						animationPlayState: "paused",
 					});
 					self.score.css({
@@ -50,7 +51,7 @@ const synth = {
 					window.music.play();
 
 					setTimeout(() => {
-						self.progress.css({
+						self.progressBar.css({
 							transform: "translateX(0%)",
 							transitionDuration: (self.songLength) +"ms",
 						});
@@ -133,7 +134,6 @@ const synth = {
 
 				self.timeline = timeline;
 				self.songLength = songLength; // in milliseconds
-				console.log(songLength);
 
 				self.score
 					.css({
@@ -143,12 +143,31 @@ const synth = {
 					.html(score.join(""));
 
 				// play music
-				window.music.play(file.buffer);
+				await window.music.play(file.buffer);
+				
+				// progress bar
+				window.music.on("timeupdate", event => {
+					let min = Math.floor(event.detail / 60),
+						sec = Math.round(event.detail % 60);
+					// leading zero
+					sec = sec < 10 ? "0"+ sec : sec;
+					self.progress.attr({
+						"data-time": `${min}:${sec}`,
+					});
+				});
+
+				let min = Math.floor((songLength / 1000) / 60),
+					sec = Math.round((songLength / 1000) % 60);
+				self.progress.attr({
+					"data-time": `0:00`,
+					"data-length": `${min}:${sec}`,
+				});
+
 
 				setTimeout(() => self.playback(), timeline[0].delta + 700);
 
 				setTimeout(() => {
-					self.progress.css({
+					self.progressBar.css({
 						transform: "translateX(0%)",
 						transitionDuration: (self.songLength) +"ms",
 					});
