@@ -121,6 +121,18 @@ content {
 							inset 0 -1px 1px rgba(0,0,0,0.3);
 			}
 
+			i {
+				position: absolute;
+				left: -5px;
+				right: -5px;
+				bottom: 3px;
+				white-space: nowrap;
+				color: #fff;
+				text-shadow: 0 1px 0 rgba(#000, .35);
+				text-align: center;
+				font-style: normal;
+			}
+
 			&[track="1"] { background: var(--track-1); }
 			&[track="2"] { background: var(--track-2); }
 			&[track="3"] { background: var(--track-3); }
@@ -223,7 +235,7 @@ content {
 				right: 0;
 				height: 13px;
 				border-radius: 50% 50% 0 0;
-				background: radial-gradient(circle at bottom center, rgba(#fff, .65) 0%, rgba(#fff, 0) 73%);
+				//background: radial-gradient(circle at bottom center, rgba(#fff, .65) 0%, rgba(#fff, 0) 73%);
 			}
 
 			&[note="c"]:before,
