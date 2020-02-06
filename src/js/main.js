@@ -16,15 +16,15 @@ const synth = {
 		this.keyboard = window.find(".keyboard");
 
 		// pre-fetch required lib for midi
-		await window.music.init();
+		//await window.music.init();
 
 		this.dispatch({type: "get-temp-file"});
-		//window.midi.init();
 	},
 	async dispatch(event) {
 		let self = synth,
 			file,
 			midi,
+			seq,
 			el;
 		switch (event.type) {
 			// system events
@@ -51,94 +51,60 @@ const synth = {
 				window.title = `Synth - ${file.name}`;
 
 				midi = MidiParser.parse(file.buffer);
-				console.log(midi);
-
-				let timeline = [],
-					score = [],
-					tickDuration = 0,
-					songDuration,
-					tps = (60 / (120 * midi.timeDivision));
+				seq = [];
 
 				midi.track.map((track, i) => {
-					let record = {},
-						tick = 0,
-						lastDelta = 0;
-
-					track.event.map((item, j) => {
-						let note,
-							event,
-							start,
-							end,
-							el;
-						
-						tick += item.deltaTime;
-
-						switch (item.type) {
-							case 8:
-							case 9:
-								note = item.data[0];
-
-						if (i === 0 && j === 12) {
-							console.log(note, NOTES[note % 12], item);
-						}
-
-								if (item.data[1] === 0 && record[note]) {
-									// note end event
-									event = record[note];
-									start = event.tick;
-									end = tick - start;
-									el = self.keyboard.find(`[octave="${event.octave}"][note="${event.note}"]`);
-
-									// save html to score array
-									score.push(`<b note="${event.note}" octave="${event.octave}" track="${event.track + 1}" style="bottom: ${start / 10}px; height: ${end / 10}px;"><i>${event.note}</i></b>`);
-
-									// store event in timeline
-									timeline.push({
-										el,
-										start,
-										delta: event.delta,
-										duration: parseInt(end * tps * 1000, 10),
-										note: event.note,
-									});
-
-									// delete note event from record
-									delete record[note];
-								} else if (item.data[1] > 0) {
-									record[note] = {
-										tick,
-										track: i,
-										delta: item.deltaTime,
-										octave: parseInt(note / 12, 10) - 1,
-										note: NOTES[note % 12],
-									};
-								}
-								break;
-						}
-						lastDelta = item.deltaTime;
+					let tick = 0;
+					track.event.map(event => {
+						tick += event.deltaTime;
+						event.track = i;
+						event.tick = tick;
+						seq.push(event);
 					});
-					// song duration in ticks
-					if (tick > tickDuration) tickDuration = tick;
 				});
+				// remove non-note events
+				seq = seq.filter(item => ~[8, 9].indexOf(item.type));
+				// make sure sequence is sorted
+				seq = seq.sort((a, b) => a.tick - b.tick);
+				// debug
+				//seq.slice(0, 40).map(e => console.log(e.tick));
 
-				// calculate song duration
-				songDuration = tickDuration * tps;
+				let score = [],
+					record = {},
+					timeline = [];
+
+				seq.map(item => {
+					let note = item.data[0],
+						event = record[note],
+						octave,
+						bottom,
+						height,
+						el;
+					if (item.data[1] === 0 && event) {
+						// note off
+						octave = parseInt(note / 12, 10) - 1;
+						note = NOTES[note % 12];
+						bottom = Math.round(event.tick / 10);
+						height = Math.round(item.tick / 10) - bottom;
+
+						// save html to score array
+						score.push(`<b note="${note}" octave="${octave}" track="${event.track}" style="bottom: ${bottom}px; height: ${height}px;"><i>${note}</i></b>`);
+
+						// delete note event from record
+						delete record[note];
+					} else if (item.data[1] > 0) {
+						// note on
+						record[note] = { ...item };
+					}
+				});
 
 				// plot score HTML
 				self.score
 					.css({
-						height: (songDuration * 100) +"px",
-						transform: `translateY(${-(songDuration * 100) + 442}px)`,
+						height: (16000 * 100) +"px",
+						transform: `translateY(${-(16000 * 100) + 442}px)`,
 					})
 					.html(score.join(""));
-
-				// sort timeline
-				timeline = timeline.sort((a, b) => a.start - b.start);
-
-				// debug
-				timeline.slice(0, 20).map(e => {
-					console.log(e.note, " - ", e.delta, e.duration)
-				});
-
 				break;
 		}
 	},
