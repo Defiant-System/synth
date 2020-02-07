@@ -16,7 +16,7 @@ const synth = {
 		this.keyboard = window.find(".keyboard");
 
 		// pre-fetch required lib for midi
-		//await window.music.init();
+		await window.music.init();
 
 		this.dispatch({type: "get-temp-file"});
 	},
@@ -43,6 +43,23 @@ const synth = {
 			case "play-song":
 				if (window.music.playing) {
 					return window.music.pause();
+				} else {
+					// start keyboard timeline playback
+					setTimeout(self.playback, 500);
+
+					setTimeout(() => {
+						self.progressBar.css({
+							transform: "translateX(0%)",
+							transitionDuration: self.songDuration +"s",
+						});
+						self.score.css({
+							transform: "translateY(-217px)",
+							transitionDuration: self.songDuration +"s",
+						});
+					}, 0);
+
+					// play music
+					await window.music.play();
 				}
 				break;
 			case "parse-file":
@@ -50,12 +67,15 @@ const synth = {
 				// set window title
 				window.title = `Synth - ${file.name}`;
 
+				// load & prepare midi buffer
+				await window.music.load(file.buffer);
+
 				midi = MidiParser.parse(file.buffer);
 				seq = [];
 
 				midi.track.map((track, i) => {
 					let tick = 0;
-					track.event.map(event => {
+					track.event.map((event, j) => {
 						tick += event.deltaTime;
 						event.track = i;
 						event.tick = tick;
@@ -67,56 +87,108 @@ const synth = {
 				// make sure sequence is sorted
 				seq = seq.sort((a, b) => a.tick - b.tick);
 				// debug
-				//seq.slice(0, 40).map(e => console.log(e.tick));
+				seq.slice(0, 8).map(e => {
+					if (e.data[1] > 0) {
+						//console.log(e.tick, NOTES[e.data[0] % 12])
+					}
+				});
 
 				let score = [],
 					record = {},
-					timeline = [];
+					timeline = [],
+					tps = (60 / (120 * midi.timeDivision)),
+					lastTick = 0;
 
 				seq.map(item => {
-					let note = item.data[0],
-						event = record[note],
+					let noteNumber = item.data[0],
+						event = record[noteNumber],
 						octave,
 						bottom,
 						height,
+						index,
 						el;
 					if (item.data[1] === 0 && event) {
 						// note off
-						octave = parseInt(note / 12, 10) - 1;
-						note = NOTES[note % 12];
 						bottom = Math.round(event.tick / 10);
 						height = Math.round(item.tick / 10) - bottom;
 
 						// save html to score array
-						score.push(`<b note="${note}" octave="${octave}" track="${event.track}" style="bottom: ${bottom}px; height: ${height}px;"><i>${note}</i></b>`);
+						score.push(`<b note="${event.note}" octave="${event.octave}" track="${event.track}" style="bottom: ${bottom}px; height: ${height}px;"><i>${event.note}</i></b>`);
+
+						// 
+						timeline[event.index-1].duration = (item.tick - event.tick) * tps * 1000;
 
 						// delete note event from record
-						delete record[note];
+						delete record[noteNumber];
 					} else if (item.data[1] > 0) {
+						octave = parseInt(noteNumber / 12, 10) - 1;
+						note = NOTES[noteNumber % 12];
+						el = self.keyboard.find(`[octave="${octave}"][note="${note}"]`);
+
+						index = timeline.push({
+							el,
+							track: item.track,
+							tick: item.tick,
+						//	duration: item.tick - event.tick,
+							delta: (item.tick - lastTick) * tps * 1000,
+						});
+
 						// note on
-						record[note] = { ...item };
+						record[noteNumber] = {
+							...item,
+							octave,
+							note,
+							index,
+						};
+						lastTick = item.tick;
 					}
 				});
+
+				// calculate song duration
+				let songDuration = seq[seq.length-1].tick * tps;
+				//console.log(songDuration);
 
 				// plot score HTML
 				self.score
 					.css({
-						height: (16000 * 100) +"px",
-						transform: `translateY(${-(16000 * 100) + 442}px)`,
+						height: (songDuration * 100) +"px",
+						transform: `translateY(${-(songDuration * 100) + 402}px)`,
 					})
 					.html(score.join(""));
+
+				// debug
+				//timeline.slice(0, 10).map(e => console.log(e.delta, e.duration, e.el[0]));
+				timeline.slice(0, 10).map((e, i) => {
+					//e.el.addClass("active track-"+ e.track);
+					//console.log(e.delta, e.duration, e.el[0]);
+				});
+
+				self.timeline = timeline;
+				self.songDuration = songDuration;
+				
+				// progress bar
+				window.music.on("timeupdate", event => {
+					let min = Math.floor(event.detail / 60),
+						sec = Math.round(event.detail % 60),
+						dMin = Math.floor(songDuration / 60),
+						dSec = Math.round(songDuration % 60);
+					//console.log("duration", window.music.duration);
+					self.progress.attr({
+						"data-time": `${min}:${sec < 10 ? "0"+ sec : sec}`,
+						"data-length": `${dMin}:${dSec < 10 ? "0"+ dSec : dSec}`,
+					});
+				});
 				break;
 		}
 	},
 	playback() {
 		let event = this.timeline.shift(),
-			className = "active track-"+ event.track,
-			duration = Math.max(event.duration, 80);
-		
+			className = "active track-"+ event.track;
+
 		event.el
-			.prop({ style: `--duration: ${duration}ms;` })
+			.prop({ style: `--duration: ${event.duration}ms;` })
 			//.prop({ style: `--duration: 100ms` })
-			.cssSequence(className, "transitionend", el => el.removeClass(className).prop({ style: "" }));
+			.cssSequence(className, "transitionend", el => el.prop({ style: "", className: "" }));
 
 		if (this.timeline.length) {
 			setTimeout(() => this.playback(), this.timeline[0].delta);
