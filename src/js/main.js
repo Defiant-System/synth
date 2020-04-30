@@ -16,7 +16,7 @@ const synth = {
 		this.keyboard = window.find(".keyboard");
 
 		// pre-fetch required lib for midi
-		await window.music.init();
+		await window.midi.init();
 
 		this.dispatch({type: "get-temp-file"});
 	},
@@ -41,8 +41,8 @@ const synth = {
 				self.dispatch({type: "parse-file", file});
 				break;
 			case "play-song":
-				if (window.music.playing) {
-					return window.music.pause();
+				if (window.midi.playing) {
+					return window.midi.pause();
 				} else {
 					// start keyboard timeline playback
 					setTimeout(self.playback, 500);
@@ -59,7 +59,7 @@ const synth = {
 					}, 0);
 
 					// play music
-					await window.music.play();
+					await window.midi.play();
 				}
 				break;
 			case "parse-file":
@@ -68,7 +68,7 @@ const synth = {
 				window.title = `Synth - ${file.name}`;
 
 				// load & prepare midi buffer
-				await window.music.load(file.buffer);
+				await window.midi.load(file.buffer);
 
 				midi = MidiParser.parse(file.buffer);
 				seq = [];
@@ -167,12 +167,12 @@ const synth = {
 				self.songDuration = songDuration;
 				
 				// progress bar
-				window.music.on("timeupdate", event => {
+				window.midi.on("timeupdate", event => {
 					let min = Math.floor(event.detail / 60),
 						sec = Math.round(event.detail % 60),
 						dMin = Math.floor(songDuration / 60),
 						dSec = Math.round(songDuration % 60);
-					//console.log("duration", window.music.duration);
+					//console.log("duration", window.midi.duration);
 					self.progress.attr({
 						"data-time": `${min}:${sec < 10 ? "0"+ sec : sec}`,
 						"data-length": `${dMin}:${dSec < 10 ? "0"+ dSec : dSec}`,
