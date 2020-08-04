@@ -1,6 +1,6 @@
 <MenuBar>
 	<Menu name="Synth">
-		<Menu name="About Synth" hotkey="meta+a"/>
+		<Menu name="About Synth" shell="win -a"/>
 		<Menu type="divider"/>
 		<Menu name="Preferences" hotkey="shift+," click="preferences"/>
 		<Menu type="divider"/>
