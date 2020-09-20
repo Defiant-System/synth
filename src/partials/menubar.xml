@@ -2,12 +2,6 @@
 	<Menu name="Synth">
 		<Menu name="About Synth" shell="win -a"/>
 		<Menu type="divider"/>
-		<Menu name="Preferences" hotkey="shift+," click="preferences"/>
-		<Menu type="divider"/>
-		<Menu name="Hide Synth"/>
-		<Menu name="Hide Others"/>
-		<Menu name="Show All" disabled="1"/>
-		<Menu type="divider"/>
 		<Menu name="Quit Synth" shell="win -c"/>
 	</Menu>
 	<Menu name="Help">
