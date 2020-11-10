@@ -65,7 +65,7 @@ const synth = {
 			case "parse-file":
 				file = event.file;
 				// set window title
-				window.title = `Synth - ${file.name}`;
+				window.title = `Synth - ${file.base}`;
 
 				// load & prepare midi buffer
 				await window.midi.load(file.buffer);
