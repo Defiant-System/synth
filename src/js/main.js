@@ -24,6 +24,7 @@ const synth = {
 		let self = synth,
 			file,
 			midi,
+			note,
 			seq,
 			el;
 		switch (event.type) {
@@ -182,7 +183,8 @@ const synth = {
 		}
 	},
 	playback() {
-		let event = this.timeline.shift(),
+		let Self = synth,
+			event = Self.timeline.shift(),
 			className = "active track-"+ event.track;
 
 		event.el
@@ -190,8 +192,8 @@ const synth = {
 			//.prop({ style: `--duration: 100ms` })
 			.cssSequence(className, "transitionend", el => el.prop({ style: "", className: "" }));
 
-		if (this.timeline.length) {
-			setTimeout(() => this.playback(), this.timeline[0].delta);
+		if (Self.timeline.length) {
+			setTimeout(() => Self.playback(), Self.timeline[0].delta);
 		} else {
 			console.log("done!");
 		}
