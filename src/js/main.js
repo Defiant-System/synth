@@ -188,9 +188,8 @@ const synth = {
 			className = "active track-"+ event.track;
 
 		event.el
-			.prop({ style: `--duration: ${event.duration}ms;` })
-			//.prop({ style: `--duration: 100ms` })
-			.cssSequence(className, "transitionend", el => el.prop({ style: "", className: "" }));
+			.css({ "--duration": `${event.duration}ms;` })
+			.cssSequence(className, "transitionend", el => el.prop({ "--duration": "", className: "" }));
 
 		if (Self.timeline.length) {
 			setTimeout(() => Self.playback(), Self.timeline[0].delta);
