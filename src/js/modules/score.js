@@ -17,11 +17,12 @@ const Score = {
 			this.guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
 		});
 	},
-	setNotes(notes) {
-		this.notes = notes;
-		this.render();
+	setNotes(song) {
+		this.notes = song.notes;
+		this.render(-250);
 	},
-	render() {
+	render(top) {
+		// guide lines
 		this.guideLines.map(line => {
 			this.ctx.strokeStyle = line.color;
 			this.ctx.beginPath();
@@ -30,9 +31,9 @@ const Score = {
 			this.ctx.stroke();
 		});
 
-		this.notes.map(note => {
-			// console.log( note.serialize() );
+		// console.log( this.notes.slice(0, 10) );
 
+		this.notes.map(note => {
 			let params = note.serialize(),
 				y = params[1],
 				h = y + params[3];

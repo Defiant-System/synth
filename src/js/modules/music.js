@@ -7,13 +7,17 @@ const Music = {
 		let midi = MidiParser.parse(file.buffer);
 		let sequence = [];
 
+		// load & prepare midi buffer
+		// window.midi.load(file.buffer)
+		// 	.then(song => console.log(song));
+
 		// console.log(midi);
 
 		midi.track.map((track, i) => {
 			let tick = 0;
 
 			track.event.map((event, j) => {
-				tick += event.delta;
+				tick += event.deltaTime;
 				event.track = i;
 				event.tick = tick;
 				sequence.push(event);
@@ -26,28 +30,22 @@ const Music = {
 		// make sure sequence is sorted
 		sequence = sequence.sort((a, b) => a.tick - b.tick);
 
-		let score = [],
+		let notes = [],
 			record = {},
 			timeline = [],
 			tps = (60 / (120 * midi.timeDivision)),
 			lastTick = 0;
 
 		sequence.map(item => {
-			let noteNumber = item.data[0],
-				event = record[noteNumber],
-				octave,
-				bottom,
-				height,
-				index,
-				note;
+			let noteNumber = item.data[0];
+			let event = record[noteNumber];
 
 			if (item.data[1] === 0 && event) {
 				// note off
-				bottom = Math.round(event.tick / 10);
-				height = Math.round(item.tick / 10) - bottom;
+				let top = Math.round(event.tick / 10);
+				let height = Math.round(item.tick / 10) - top;
 
-				// console.log(event);
-				//score.push(new Note(event.octave, event.note, event.track, bottom, height));
+				notes.push(new Note(event.octave, event.note, event.track, top, height));
 
 				// calculate duration
 				timeline[event.index-1].duration = (item.tick - event.tick) * tps * 1000;
@@ -56,15 +54,13 @@ const Music = {
 				delete record[noteNumber];
 
 			} else if (item.data[1] > 0) {
-				octave = parseInt(noteNumber / 12, 10) - 1;
-				note = Notes[noteNumber % 12];
-				
-
-				index = timeline.push({
-					track: item.track,
-					tick: item.tick,
-					delta: (item.tick - lastTick) * tps * 1000,
-				});
+				let octave = parseInt(noteNumber / 12, 10) - 2;
+				let note = Notes[noteNumber % 12];
+				let index = timeline.push({
+						track: item.track,
+						tick: item.tick,
+						delta: (item.tick - lastTick) * tps * 1000,
+					});
 
 				// note on
 				record[noteNumber] = {
@@ -78,16 +74,8 @@ const Music = {
 			}
 		});
 
-		let songDuration = sequence[sequence.length-1].tick * tps;
+		let duration = sequence[sequence.length-1].tick * tps;
 
-
-		// return [
-		// 	new Note(2, "c", 1, 100, 40),
-		// 	new Note(2, "d#", 2, 100, 40),
-		// 	new Note(2, "g", 3, 100, 40),
-		// 	new Note(3, "g", 2, 140, 10),
-		// ];
-
-		return score;
+		return { notes, duration };
 	}
 };
