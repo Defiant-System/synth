@@ -1,12 +1,13 @@
 <CaptionToolBar>
-	<Group>
+	<Group width="37%">
 		<Options>
 			<Tool symbol="icon-previous" click="prev-song"/>
 			<Tool symbol="icon-play" click="play-song"/>
 			<Tool symbol="icon-next" click="next-song"/>
 		</Options>
 	</Group>
-	<Group>
+	<Group />
+	<Group width="13%">
 		<Tool symbol="icon-gear" click="main-menu"/>
 	</Group>
 </CaptionToolBar>
