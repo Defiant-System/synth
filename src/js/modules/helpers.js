@@ -1,6 +1,7 @@
 
 const octaveWidth = 182;
 const octaveMinor = 77.5;
+const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
 
 
 const Palette = {
@@ -32,10 +33,10 @@ const Matrix = {
 
 
 class Note {
-	constructor(octave, note, channel, tick, duration) {
+	constructor(octave, note, track, tick, duration) {
 		this.octave = octave;
 		this.note = note;
-		this.channel = channel;
+		this.track = track;
 		this.tick = tick;
 		this.duration = duration;
 

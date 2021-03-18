@@ -16,13 +16,9 @@ const Score = {
 			this.guideLines.push({ color: "#404040", x: -.5         + (octave * octaveWidth) });
 			this.guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
 		});
-
-		this.notes = [
-			new Note(2, "c", 1, 100, 40),
-			new Note(2, "d#", 2, 100, 40),
-			new Note(2, "g", 3, 100, 40),
-		];
-
+	},
+	setNotes(notes) {
+		this.notes = notes;
 		this.render();
 	},
 	render() {
@@ -48,7 +44,7 @@ const Score = {
 			this.ctx.shadowBlur = 2;
 			this.ctx.shadowColor = "rgba(0,0,0,.25)";
 			this.ctx.strokeStyle = "rgba(0,0,0,.35)";
-			this.ctx.fillStyle = Palette["color"+ note.channel];
+			this.ctx.fillStyle = Palette["color"+ note.track];
 			this.ctx.beginPath();
 			this.ctx.roundRect(...params);
 			this.ctx.fill();

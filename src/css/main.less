@@ -1,4 +1,6 @@
 
+background: #303030;
+
 content {
 	position: absolute;
 	top: 0;
@@ -8,7 +10,6 @@ content {
 	display: flex;
 	// flex-direction: column;
 	flex-flow: column wrap;
-	background: #303030;
 	
 	canvas {
 		position: absolute;
@@ -33,6 +34,10 @@ content {
 	.keyboard {
 		position: relative;
 		height: 151px;
+
+		canvas {
+			border-radius: 0 0 6px 6px;
+		}
 
 		&:before {
 			content: "";
