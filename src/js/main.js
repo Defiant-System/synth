@@ -1,4 +1,5 @@
 
+@import "./modules/misc.js";
 @import "./modules/progress.js";
 @import "./modules/score.js";
 @import "./modules/keyboard.js";

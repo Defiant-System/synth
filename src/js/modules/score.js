@@ -1,19 +1,4 @@
 
-class Note {
-	constructor(octave, note, track, tick, duration) {
-		this.octave = octave;
-		this.note = note;
-		this.track = track;
-		this.tick = tick;
-		this.duration = duration;
-	}
-
-	serialize() {
-
-	}
-};
-
-
 const Score = {
 	init() {
 		this.cvs = window.find(".score canvas");
@@ -28,12 +13,14 @@ const Score = {
 		// guide lines
 		this.guideLines = [];
 		[...Array(6)].map((i, octave) => {
-			this.guideLines.push({ x: -.5 + (octave * 182),  color: "#404040" });
-			this.guideLines.push({ x: 77.5 + (octave * 182), color: "#383838" });
+			this.guideLines.push({ color: "#404040", x: -.5         + (octave * octaveWidth) });
+			this.guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
 		});
 
 		this.notes = [
 			new Note(2, "c", 1, 100, 40),
+			new Note(2, "d#", 2, 100, 40),
+			new Note(2, "g", 3, 100, 40),
 		];
 
 		this.render();
@@ -48,25 +35,32 @@ const Score = {
 		});
 
 		this.notes.map(note => {
-			this.ctx.strokeStyle = "rgba(0,0,0,.35)";
-			this.ctx.fillStyle = "purple";
+			// console.log( note.serialize() );
+
+			let params = note.serialize(),
+				y = params[1],
+				h = y + params[3];
+
+			// border radius
+			params.push(4);
 
 			this.ctx.shadowOffsetY = 2;
 			this.ctx.shadowBlur = 2;
 			this.ctx.shadowColor = "rgba(0,0,0,.25)";
-
+			this.ctx.strokeStyle = "rgba(0,0,0,.35)";
+			this.ctx.fillStyle = Palette["color"+ note.channel];
 			this.ctx.beginPath();
-			this.ctx.roundRect(100, 100, 26, 100, 4);
+			this.ctx.roundRect(...params);
 			this.ctx.fill();
 			this.ctx.stroke();
 
-			let gradient = this.ctx.createLinearGradient(0, 100, 0, 200);
+			let gradient = this.ctx.createLinearGradient(0, y, 0, h);
 			gradient.addColorStop(0.0, "rgba(0,0,0,0)");
 			gradient.addColorStop(1.0, "rgba(0,0,0,.35)");
 
 			this.ctx.beginPath();
 			this.ctx.fillStyle = gradient;
-			this.ctx.roundRect(100, 100, 26, 100, 4);
+			this.ctx.roundRect(...params);
 			this.ctx.fill();
 		});
 	}
