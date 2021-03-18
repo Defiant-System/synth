@@ -31,5 +31,19 @@ content {
 	.keyboard {
 		position: relative;
 		height: 151px;
+
+		&:before {
+			content: "";
+			position: absolute;
+			top: -4px;
+			left: 0;
+			right: 0;
+			height: 3px;
+			z-index: 2;
+			background: #a40f11;
+			border-top: 1px solid #290000;
+			border-bottom: 1px solid #78080a;
+			box-shadow: 0 2px 5px rgba(0,0,0,.5);
+		}
 	}
 }
