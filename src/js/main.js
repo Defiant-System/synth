@@ -1,4 +1,6 @@
 
+@import "./modules/midi-player.js";
+
 @import "./modules/midi-parser.js";
 @import "./modules/misc.js";
 @import "./modules/conductor.js";
@@ -13,15 +15,15 @@ const synth = {
 		Progress.init();
 		Score.init();
 		Keyboard.init();
+		await MidiPlayer.init();
 		await Conductor.init();
 
-
-		// pre-fetch required lib for midi
-		await window.midi.init()
-		
 		// load midi file
 		let file = await defiant.shell(`fs -ur "~/midi/cabeza.mid"`);
-		Conductor.prepare(file.result);
+
+		MidiPlayer.load(file.result.buffer);
+
+		// Conductor.prepare(file.result);
 	},
 	async dispatch(event) {
 		let Self = synth,
@@ -36,7 +38,7 @@ const synth = {
 			case "next-song":
 				break;
 			case "toggle-song":
-				isOn = window.midi.playing;
+				isOn = MidiPlayer.playing;
 
 				if (isOn) {
 					Conductor.pause();

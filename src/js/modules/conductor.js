@@ -5,7 +5,8 @@ const Conductor = {
 	},
 	play() {
 		// play midi
-		window.midi.play();
+		MidiPlayer.play();
+		return;
 
 		// listen to events
 		// window.midi.once("ended", event => console.log("Song has finished playing!"));
@@ -14,13 +15,15 @@ const Conductor = {
 		Conductor.update();
 	},
 	pause() {
+		console.log("pause");
 		// pause midi
-		window.midi.pause();
+		MidiPlayer.pause();
+		return;
 		// prevent further updates
 		cancelAnimationFrame(Conductor.update);
 	},
 	update() {
-		let time = window.midi.time;
+		let time = MidiPlayer.time;
 		
 		// progress bar
 		Progress.render(time / Conductor.song.duration);
@@ -34,8 +37,10 @@ const Conductor = {
 	prepare(file) {
 		// set window title
 		window.title = `Synth - ${file.base}`;
+		
 		// load & prepare midi buffer
-		window.midi.load(file.buffer);
+		// window.midi.load(file.buffer);
+
 		// song note visualisation
 		this.song = this.parse(file.buffer);
 		// Score.setNotes(this.song);
