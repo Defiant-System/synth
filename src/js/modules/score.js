@@ -18,8 +18,12 @@ const Score = {
 		});
 	},
 	setNotes(song) {
-		this.notes = song.notes; //.slice(0, 17);
-		this.render(this.dim.height - 30);
+		this.notes = song.notes;
+		this.songHeight = song.duration * PPS;
+		// this.notes.map(note => note.flip(this.songHeight));
+
+		// this.render(this.dim.height - 30);
+		this.render(0);
 	},
 	render(top) {
 		// guide lines

@@ -1,6 +1,6 @@
 
 @import "./modules/midi-parser.js";
-@import "./modules/helpers.js";
+@import "./modules/misc.js";
 @import "./modules/conductor.js";
 @import "./modules/progress.js";
 @import "./modules/score.js";
@@ -20,7 +20,7 @@ const synth = {
 		await window.midi.init()
 		
 		// load midi file
-		let file = await defiant.shell(`fs -ur "~/midi/abba.mid"`);
+		let file = await defiant.shell(`fs -ur "~/midi/cabeza.mid"`);
 		Conductor.prepare(file.result);
 	},
 	async dispatch(event) {

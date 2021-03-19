@@ -1,4 +1,5 @@
 
+const PPS = 60;
 const octaveWidth = 182;
 const octaveMinor = 77.5;
 const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
@@ -42,10 +43,15 @@ class Note {
 
 		this.clip = [
 			Matrix[note][4] + (octave * octaveWidth),
-			time,
+			time * PPS,
 			Matrix[note][6],
-			duration
+			duration * PPS
 		];
+	}
+
+	flip(songHeight) {
+		this.clip[1] = songHeight - this.clip[1];
+		// this.clip[3] = songHeight - this.clip[3];
 	}
 
 	add(y) {

@@ -21,6 +21,7 @@ const Conductor = {
 	},
 	update() {
 		let time = window.midi.time;
+		
 		// progress bar
 		Progress.render(time / Conductor.song.duration);
 		// keyboard
@@ -33,18 +34,21 @@ const Conductor = {
 	prepare(file) {
 		// set window title
 		window.title = `Synth - ${file.base}`;
-
 		// load & prepare midi buffer
 		window.midi.load(file.buffer);
-
 		// song note visualisation
 		this.song = this.parse(file.buffer);
 		// Score.setNotes(this.song);
 	},
 	getPressedKeysAt(time) {
-		let keys = ["2:c", "2:e", "2:g"];
+		// let keys = ["2:c", "2:e", "2:g"];
+		let keys = [];
 
-		// this.song.notes
+		this.song.notes.map(note => {
+			if (note.time < time && note.time + note.duration > time) {
+				keys.push(`${note.octave}:${note.note}`);
+			}
+		});
 
 		return keys;
 	},
@@ -53,6 +57,7 @@ const Conductor = {
 			sequence = [],
 			notes = [],
 			record = {},
+			// ticks per second
 			tps = 60 / (120 * midi.timeDivision),
 			lastTick = 0;
 
