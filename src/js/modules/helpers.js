@@ -33,16 +33,16 @@ const Matrix = {
 
 
 class Note {
-	constructor(octave, note, track, tick, duration) {
+	constructor(octave, note, track, time, duration) {
 		this.octave = octave;
 		this.note = note;
 		this.track = track;
-		this.tick = tick;
+		this.time = time;
 		this.duration = duration;
 
 		this.clip = [
 			Matrix[note][4] + (octave * octaveWidth),
-			tick,
+			time,
 			Matrix[note][6],
 			duration
 		];

@@ -39,7 +39,7 @@ const Conductor = {
 
 		// song note visualisation
 		this.song = this.parse(file.buffer);
-		Score.setNotes(this.song);
+		// Score.setNotes(this.song);
 	},
 	getPressedKeysAt(time) {
 		let keys = ["2:c", "2:e", "2:g"];
@@ -49,11 +49,10 @@ const Conductor = {
 		return keys;
 	},
 	parse(buffer) {
-		let midi = MidiParser.parse(buffer);
-		let sequence = [],
+		let midi = MidiParser.parse(buffer),
+			sequence = [],
 			notes = [],
 			record = {},
-			timeline = [],
 			tps = 60 / (120 * midi.timeDivision),
 			lastTick = 0;
 
@@ -71,27 +70,26 @@ const Conductor = {
 
 		// make sure sequence is sorted timewise
 		sequence = sequence.sort((a, b) => a.tick - b.tick);
+		// sequence = sequence.slice(0, 50);
 
 		// iterate sequence
 		sequence.map(event => {
-			let [ noteNr, noteOn ] = event.data;
-			let key = record[noteNr];
+			let [ nr, velocity ] = event.data;
+			let down = record[nr];
 
-			if (key && noteOn === 0) { // key up
-				// note events
-				let t1 = Math.round(event.tick / 10),
-					t2 = Math.round(key.tick / 10),
-					h = t1 - t2;
+			if (down && velocity === 0) { // key up
+				let time = down.tick * tps,
+					duration = (event.tick - down.tick) * tps;
 				// add entry to notes
-				notes.push(new Note(key.octave, key.note, key.track, -t2-h, h));
+				notes.push(new Note(down.octave, down.note, down.track, time, duration));
 				// delete reference to key
-				delete record[noteNr];
+				record[nr] = false;
 
-			} else if (noteOn > 0) { // key down
-				let octave = Math.round(noteNr / 12) - 2,
-					note = Notes[noteNr % 12];
+			} else if (velocity > 0) { // key down
+				let octave = Math.round(nr / 12) - 2,
+					note = Notes[nr % 12];
 				// note on
-				record[noteNr] = { ...event, octave, note };
+				record[nr] = { ...event, octave, note };
 				// keep track of last tick
 				lastTick = event.tick;
 			}
