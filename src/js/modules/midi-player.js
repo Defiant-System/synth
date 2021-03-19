@@ -1,7 +1,7 @@
 
 const MidiPlayer = {
 	async init() {
-		let mfa = await $.fetch_("~/js/midi-fur-alles.js");
+		let mfa = await $.fetch_("~/js/midi-fur-alles.new.js");
 
 		this.player_ = new mfa({
 			baseUrl: "~/js/",

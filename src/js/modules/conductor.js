@@ -15,7 +15,6 @@ const Conductor = {
 		Conductor.update();
 	},
 	pause() {
-		console.log("pause");
 		// pause midi
 		MidiPlayer.pause();
 		return;
