@@ -48,6 +48,12 @@ class Note {
 		];
 	}
 
+	add(y) {
+		let clip = [...this.clip];
+		clip[1] += y;
+		return clip;
+	}
+
 	serialize() {
 		return this.clip;
 	}

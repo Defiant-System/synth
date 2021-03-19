@@ -1,9 +1,9 @@
 <CaptionToolBar>
 	<Group width="37%">
 		<Options>
-			<Tool symbol="icon-previous" click="prev-song"/>
-			<Tool symbol="icon-play" click="play-song"/>
-			<Tool symbol="icon-next" click="next-song"/>
+			<Tool symbol="icon-previous" click="prev-song" state="disabled"/>
+			<Tool symbol="icon-play" click="toggle-song"/>
+			<Tool symbol="icon-next" click="next-song" state="disabled"/>
 		</Options>
 	</Group>
 	<Group />

@@ -18,8 +18,8 @@ const Score = {
 		});
 	},
 	setNotes(song) {
-		this.notes = song.notes;
-		this.render(-250);
+		this.notes = song.notes; //.slice(0, 17);
+		this.render(this.dim.height - 30);
 	},
 	render(top) {
 		// guide lines
@@ -31,10 +31,9 @@ const Score = {
 			this.ctx.stroke();
 		});
 
-		// console.log( this.notes.slice(0, 10) );
-
+		// paint notes
 		this.notes.map(note => {
-			let params = note.serialize(),
+			let params = note.add(top),
 				y = params[1],
 				h = y + params[3];
 

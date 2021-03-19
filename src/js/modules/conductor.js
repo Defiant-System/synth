@@ -1,18 +1,33 @@
 
-const Music = {
+const Conductor = {
 	init() {
-		
+
 	},
-	parse(file) {
-		let midi = MidiParser.parse(file.buffer);
-		let sequence = [];
+	play() {
+		// requestAnimationFrame(Conductor.play);
+	},
+	prepare(file) {
+		// set window title
+		window.title = `Synth - ${file.base}`;
 
 		// load & prepare midi buffer
-		// window.midi.load(file.buffer)
-		// 	.then(song => console.log(song));
+		window.midi.load(file.buffer);
 
-		// console.log(midi);
+		// song note visualisation
+		let song = this.parse(file.buffer);
+		Score.setNotes(song);
+	},
+	parse(buffer) {
+		let midi = MidiParser.parse(buffer);
+		let sequence = [];
+		let _round = Math.round,
+			notes = [],
+			record = {},
+			timeline = [],
+			tps = 60 / (120 * midi.timeDivision),
+			lastTick = 0;
 
+		// parse tracks
 		midi.track.map((track, i) => {
 			let tick = 0;
 
@@ -30,22 +45,17 @@ const Music = {
 		// make sure sequence is sorted
 		sequence = sequence.sort((a, b) => a.tick - b.tick);
 
-		let notes = [],
-			record = {},
-			timeline = [],
-			tps = (60 / (120 * midi.timeDivision)),
-			lastTick = 0;
-
+		// iterate sequence
 		sequence.map(item => {
 			let noteNumber = item.data[0];
 			let event = record[noteNumber];
 
 			if (item.data[1] === 0 && event) {
-				// note off
-				let top = Math.round(event.tick / 10);
-				let height = Math.round(item.tick / 10) - top;
-
-				notes.push(new Note(event.octave, event.note, event.track, top, height));
+				// note events
+				let t1 = _round(item.tick / 10),
+					t2 = _round(event.tick / 10),
+					h = t1 - t2;
+				notes.push(new Note(event.octave, event.note, event.track, -t2-h, h));
 
 				// calculate duration
 				timeline[event.index-1].duration = (item.tick - event.tick) * tps * 1000;
@@ -54,9 +64,9 @@ const Music = {
 				delete record[noteNumber];
 
 			} else if (item.data[1] > 0) {
-				let octave = parseInt(noteNumber / 12, 10) - 2;
-				let note = Notes[noteNumber % 12];
-				let index = timeline.push({
+				let octave = _round(noteNumber / 12) - 2,
+					note = Notes[noteNumber % 12],
+					index = timeline.push({
 						track: item.track,
 						tick: item.tick,
 						delta: (item.tick - lastTick) * tps * 1000,
