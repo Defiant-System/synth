@@ -19,15 +19,19 @@ const Progress = {
 		this.gradient.addColorStop(1.0,   "#353535");
 
 		// reset progress bar
-		this.render(140);
+		this.render(0);
 	},
-	render(width) {
+	render(percentage) {
 		this.ctx.fillStyle = this.gradient;
 		this.ctx.fillRect(0, 0, this.dim.width, this.dim.height);
 
+		let width = percentage * this.dim.width;
+
+		this.ctx.save();
 		this.ctx.globalCompositeOperation = "lighten";
 		this.ctx.globalAlpha = .25;
 		this.ctx.fillStyle = "#00ff00";
 		this.ctx.fillRect(0, 0, width, this.dim.height);
+		this.ctx.restore();
 	}
 };

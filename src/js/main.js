@@ -19,16 +19,6 @@ const synth = {
 		// pre-fetch required lib for midi
 		await window.midi.init()
 		
-		// progress bar
-		window.midi.on("timeupdate", event => {
-			console.log(event);
-			// let min = Math.floor(event.detail / 60),
-			// 	sec = Math.round(event.detail % 60),
-			// 	dMin = Math.floor(songDuration / 60),
-			// 	dSec = Math.round(songDuration % 60);
-			// console.log("duration", window.midi.duration);
-		});
-
 		// load midi file
 		let file = await defiant.shell(`fs -ur "~/midi/abba.mid"`);
 		Conductor.prepare(file.result);
@@ -49,9 +39,9 @@ const synth = {
 				isOn = window.midi.playing;
 
 				if (isOn) {
-					window.midi.pause();
+					Conductor.pause();
 				} else {
-					window.midi.play();
+					Conductor.play();
 				}
 
 				return !isOn;

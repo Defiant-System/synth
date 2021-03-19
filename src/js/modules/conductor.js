@@ -4,7 +4,27 @@ const Conductor = {
 
 	},
 	play() {
-		// requestAnimationFrame(Conductor.play);
+		// play midi
+		window.midi.play();
+
+		window.midi.on("ended", event => console.log("Song has finished playing!"));
+
+		// check updates
+		Conductor.update();
+	},
+	pause() {
+		// pause midi
+		window.midi.pause();
+		// prevent further updates
+		cancelAnimationFrame(Conductor.update);
+	},
+	update() {
+		// progress bar
+		Progress.render(window.midi.time / Conductor.song.duration);
+
+
+		if (!window.midi.playing) return;
+		requestAnimationFrame(Conductor.update);
 	},
 	prepare(file) {
 		// set window title
@@ -14,8 +34,8 @@ const Conductor = {
 		window.midi.load(file.buffer);
 
 		// song note visualisation
-		let song = this.parse(file.buffer);
-		Score.setNotes(song);
+		this.song = this.parse(file.buffer);
+		Score.setNotes(this.song);
 	},
 	parse(buffer) {
 		let midi = MidiParser.parse(buffer);
