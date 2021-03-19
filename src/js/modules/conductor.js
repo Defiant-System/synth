@@ -33,8 +33,10 @@ const Conductor = {
 	prepare(file) {
 		// set window title
 		window.title = `Synth - ${file.base}`;
+
 		// load & prepare midi buffer
 		window.midi.load(file.buffer);
+
 		// song note visualisation
 		this.song = this.parse(file.buffer);
 		Score.setNotes(this.song);
@@ -48,75 +50,53 @@ const Conductor = {
 	},
 	parse(buffer) {
 		let midi = MidiParser.parse(buffer);
-		let sequence = [];
-		let _round = Math.round,
+		let sequence = [],
 			notes = [],
 			record = {},
 			timeline = [],
 			tps = 60 / (120 * midi.timeDivision),
 			lastTick = 0;
 
-		// parse tracks
+		// put all notes into one sequence array
 		midi.track.map((track, i) => {
 			let tick = 0;
-
 			track.event.map((event, j) => {
 				tick += event.deltaTime;
-				event.track = i;
-				event.tick = tick;
-				sequence.push(event);
+				sequence.push({ ...event, tick, track: i });
 			});
 		});
 
 		// remove non-note events
-		sequence = sequence.filter(item => ~[8, 9].indexOf(item.type));
+		sequence = sequence.filter(event => [8, 9].includes(event.type));
 
-		// make sure sequence is sorted
+		// make sure sequence is sorted timewise
 		sequence = sequence.sort((a, b) => a.tick - b.tick);
 
 		// iterate sequence
-		sequence.map(item => {
-			let noteNumber = item.data[0];
-			let event = record[noteNumber];
+		sequence.map(event => {
+			let [ noteNr, noteOn ] = event.data;
+			let key = record[noteNr];
 
-			if (item.data[1] === 0 && event) {
+			if (key && noteOn === 0) { // key up
 				// note events
-				let t1 = _round(item.tick / 10),
-					t2 = _round(event.tick / 10),
+				let t1 = Math.round(event.tick / 10),
+					t2 = Math.round(key.tick / 10),
 					h = t1 - t2;
-				notes.push(new Note(event.octave, event.note, event.track, -t2-h, h));
+				// add entry to notes
+				notes.push(new Note(key.octave, key.note, key.track, -t2-h, h));
+				// delete reference to key
+				delete record[noteNr];
 
-				// calculate duration
-				timeline[event.index-1].duration = (item.tick - event.tick) * tps * 1000;
-
-				// note off
-				delete record[noteNumber];
-
-			} else if (item.data[1] > 0) {
-				let octave = _round(noteNumber / 12) - 2,
-					note = Notes[noteNumber % 12],
-					index = timeline.push({
-						track: item.track,
-						tick: item.tick,
-						delta: (item.tick - lastTick) * tps * 1000,
-					});
-
+			} else if (noteOn > 0) { // key down
+				let octave = Math.round(noteNr / 12) - 2,
+					note = Notes[noteNr % 12];
 				// note on
-				record[noteNumber] = {
-					...item,
-					octave,
-					note,
-					index,
-				};
-
-				lastTick = item.tick;
+				record[noteNr] = { ...event, octave, note };
+				// keep track of last tick
+				lastTick = event.tick;
 			}
 		});
 
-		console.log(timeline);
-
-		let duration = sequence[sequence.length-1].tick * tps;
-
-		return { notes, duration };
+		return { notes, duration: sequence[sequence.length-1].tick * tps };
 	}
 };
