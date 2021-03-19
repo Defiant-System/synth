@@ -23,6 +23,13 @@ const Keyboard = {
 
 		// this.keys[16].press("down");
 	},
+	press(downKeys) {
+		this.keys.map(key => {
+			let state = downKeys.includes(`${key.octave}:${key.note}`) ? "down" : "up";
+			key.press(state)
+		});
+		this.render();
+	},
 	render() {
 		let sprite = this.sprite;
 

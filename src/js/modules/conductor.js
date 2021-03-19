@@ -7,7 +7,8 @@ const Conductor = {
 		// play midi
 		window.midi.play();
 
-		window.midi.on("ended", event => console.log("Song has finished playing!"));
+		// listen to events
+		// window.midi.once("ended", event => console.log("Song has finished playing!"));
 
 		// check updates
 		Conductor.update();
@@ -19,9 +20,12 @@ const Conductor = {
 		cancelAnimationFrame(Conductor.update);
 	},
 	update() {
+		let time = window.midi.time;
 		// progress bar
-		Progress.render(window.midi.time / Conductor.song.duration);
-
+		Progress.render(time / Conductor.song.duration);
+		// keyboard
+		let downKeys = Conductor.getPressedKeysAt(time);
+		Keyboard.press(downKeys);
 
 		if (!window.midi.playing) return;
 		requestAnimationFrame(Conductor.update);
@@ -29,13 +33,18 @@ const Conductor = {
 	prepare(file) {
 		// set window title
 		window.title = `Synth - ${file.base}`;
-
 		// load & prepare midi buffer
 		window.midi.load(file.buffer);
-
 		// song note visualisation
 		this.song = this.parse(file.buffer);
 		Score.setNotes(this.song);
+	},
+	getPressedKeysAt(time) {
+		let keys = ["2:c", "2:e", "2:g"];
+
+		// this.song.notes
+
+		return keys;
 	},
 	parse(buffer) {
 		let midi = MidiParser.parse(buffer);
@@ -103,6 +112,8 @@ const Conductor = {
 				lastTick = item.tick;
 			}
 		});
+
+		console.log(timeline);
 
 		let duration = sequence[sequence.length-1].tick * tps;
 
