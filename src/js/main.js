@@ -36,6 +36,9 @@ const synth = {
 			case "midi-seek":
 				MidiPlayer.seek(event.arg / 100);
 				break;
+			case "midi-volume":
+				MidiPlayer.volume(event.arg / 100);
+				break;
 			case "prev-song":
 			case "next-song":
 				break;

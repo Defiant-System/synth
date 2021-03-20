@@ -40,6 +40,7 @@
 			this._interval = null;
 			this._loop = false;
 			this._audioContext = new AudioContext();
+			this._syncCallback = false;
 			this.playing = false;
 
 			// Start the "onaudioprocess" events flowing
@@ -218,9 +219,14 @@
 		_onAudioProcess(event) {
 			if (!this.playing) {
 				// suspend AudioContext stream if not playing
-				this._audioContext.suspend();
+				return this._audioContext.suspend();
 			}
-			
+			if (this._syncCallback) {
+				this._syncCallback();
+				// should be called only once
+				this._syncCallback = false;
+			}
+
 			let sampleCount = (this._songPtr && this.playing) ? this._readMidiData() : 0;
 			if (sampleCount > 0 && this._currentUrlOrBuf) {
 				this._currentUrlOrBuf = null;
@@ -264,12 +270,13 @@
 			return sampleCount;
 		}
 
-		play(loop) {
+		play(opt={}) {
+			if (opt.syncCallback) this._syncCallback = opt.syncCallback;
 			if (this._destroyed) throw new Error("play() called after destroy()");
+			this._loop = !!opt.loop; // force value into a boolean
+			this.playing = true;
 			// resume AudioContext
 			this._audioContext.resume();
-			this._loop = !!loop;
-			this.playing = true;
 
 			if (this._ready && !this._currentUrlOrBuf) {
 				this._options.dispatch("playing");
@@ -291,6 +298,10 @@
 
 			let timeMs = Math.floor(time * 1000);
 			this._lib._mid_song_seek(this._songPtr, timeMs);
+		}
+
+		volume(value) {
+			console.log(value);
 		}
 
 		get currentTime() {

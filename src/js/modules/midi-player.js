@@ -19,7 +19,8 @@ const MidiPlayer = {
 		this.player_.seek(0);
 		this.player_.load(buffer);
 	},
-	async play(path, loop) {
+	async play(path=false) {
+		let opt = {};
 		if (!this.player_) {
 			await this.getLib_();
 		}
@@ -27,11 +28,10 @@ const MidiPlayer = {
 			this.player_.pause();
 			this.player_.seek(0);
 			this.player_.load(path);
-		} else {
-			// force first argument into boolean
-			loop = !!path;
+		} else if (path.constructor === Object) {
+			opt = { ...path };
 		}
-		this.player_.play(loop);
+		this.player_.play(opt);
 	},
 	pause() {
 		this.player_.pause();
@@ -39,6 +39,9 @@ const MidiPlayer = {
 	seek(percentage) {
 		let value = this.player_.duration * percentage;
 		this.player_.seek(value);
+	},
+	volume(value) {
+		this.player_.volume(value);
 	},
 	dispatch(type) {
 		//console.log("Midi: ", type);

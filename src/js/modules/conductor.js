@@ -5,7 +5,12 @@ const Conductor = {
 	},
 	play() {
 		// play midi
-		MidiPlayer.play(true);
+		MidiPlayer.play({
+			loop: false,
+			syncCallback() {
+				console.log("playing...");
+			}
+		});
 		return;
 
 		// listen to events
