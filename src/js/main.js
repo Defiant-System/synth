@@ -18,14 +18,12 @@ const synth = {
 		await MidiPlayer.init();
 		await Conductor.init();
 
-		// load midi file
-		let file = await defiant.shell(`fs -ur "~/midi/cabeza.mid"`);
-		MidiPlayer.load(file.result.buffer);
-
-		// Conductor.prepare(file.result);
+		// auto select song
+		this.dispatch({ type: "select-song", arg: "~/midi/cabeza.mid" });
 	},
 	async dispatch(event) {
 		let Self = synth,
+			file,
 			isOn,
 			el;
 		switch (event.type) {
@@ -42,8 +40,10 @@ const synth = {
 			case "toggle-reverb":
 				MidiPlayer.reverb(event.arg);
 				break;
-			case "prev-song":
-			case "next-song":
+			case "select-song":
+				// load midi file
+				file = await defiant.shell(`fs -ur "${event.arg}"`);
+				Conductor.prepare(file.result);
 				break;
 			case "toggle-song":
 				isOn = MidiPlayer.playing;

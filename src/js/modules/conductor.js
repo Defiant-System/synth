@@ -1,5 +1,6 @@
 
 const Conductor = {
+	time: false,
 	init() {
 
 	},
@@ -9,55 +10,56 @@ const Conductor = {
 			loop: false,
 			syncCallback() {
 				console.log("playing...");
+
+				Conductor.time = Date.now();
+
+				// start sync'ed
+				Conductor.update();
 			}
 		});
-		return;
-
-		// listen to events
-		// window.midi.once("ended", event => console.log("Song has finished playing!"));
-
-		// check updates
-		Conductor.update();
 	},
 	pause() {
 		// pause midi
 		MidiPlayer.pause();
-		return;
+		
 		// prevent further updates
 		cancelAnimationFrame(Conductor.update);
 	},
 	update() {
-		let time = MidiPlayer.currentTime;
+		let time = (Date.now() - Conductor.time) / 1000,
+			duration = MidiPlayer.duration;
 		
 		// progress bar
-		Progress.render(time / Conductor.song.duration);
+		Progress.render(time / duration);
 		// keyboard
 		let downKeys = Conductor.getPressedKeysAt(time);
 		Keyboard.press(downKeys);
 
-		if (!window.midi.playing) return;
+		if (!MidiPlayer.playing) return;
 		requestAnimationFrame(Conductor.update);
 	},
 	prepare(file) {
 		// set window title
 		window.title = `Synth - ${file.base}`;
 		
+		// stop any playing song
+		MidiPlayer.pause();
+
 		// load & prepare midi buffer
-		// window.midi.load(file.buffer);
+		MidiPlayer.load(file.buffer);
 
 		// song note visualisation
 		this.song = this.parse(file.buffer);
 		// Score.setNotes(this.song);
 	},
 	getPressedKeysAt(time) {
-		// let keys = ["2:c", "2:e", "2:g"];
 		let keys = [];
 
-		this.song.notes.map(note => {
-			if (note.time < time && note.time + note.duration > time) {
-				keys.push(`${note.octave}:${note.note}`);
-			}
-		});
+		// this.song.notes.map(note => {
+		// 	if (note.time < time && note.time + note.duration > time) {
+		// 		keys.push(`${note.octave}:${note.note}`);
+		// 	}
+		// });
 
 		return keys;
 	},

@@ -12,7 +12,14 @@
 		<Menu name="License"/>
 	</Menu>
 	<Menu for="score-board">
-		<Menu name="About Synth" shell="win -a"/>
+		<Menu name="Songs">
+			<Menu name="Abba" click="select-song" arg="~/midi/abba.mid" check-group="midi-song"/>
+			<Menu name="Brahms" click="select-song" arg="~/midi/brahms.mid" check-group="midi-song"/>
+			<Menu name="Cabeza" click="select-song" arg="~/midi/cabeza.mid" check-group="midi-song" is-checked="1"/>
+			<Menu name="Havana" click="select-song" arg="~/midi/havana.mid" check-group="midi-song"/>
+			<Menu name="Swans" click="select-song" arg="~/midi/swansmid" check-group="midi-song"/>
+			<Menu name="Trolls" click="select-song" arg="~/midi/trolls.mid" check-group="midi-song"/>
+		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Reverb">
 			<Menu name="Off" click="toggle-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
