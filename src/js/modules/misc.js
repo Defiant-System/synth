@@ -40,6 +40,7 @@ class Note {
 		this.track = track;
 		this.time = time;
 		this.duration = duration;
+		this.color = Palette["color"+ track];
 
 		this.clip = [
 			Matrix[note][4] + (octave * octaveWidth),

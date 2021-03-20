@@ -25,7 +25,7 @@ const Keyboard = {
 	},
 	press(downKeys) {
 		this.keys.map(key => {
-			let state = downKeys.includes(`${key.octave}:${key.note}`) ? "down" : "up";
+			let state = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}`)) ? "down" : "up";
 			key.press(state)
 		});
 		this.render();

@@ -18,8 +18,10 @@ const synth = {
 		await MidiPlayer.init();
 		await Conductor.init();
 
+		// auto select reverb
+		this.dispatch({ type: "select-reverb", arg: "~/js/ir-large-hall.ogg" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/cabeza.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/abba.mid" });
 	},
 	async dispatch(event) {
 		let Self = synth,
@@ -37,7 +39,7 @@ const synth = {
 			case "midi-volume":
 				MidiPlayer.volume(event.arg / 100);
 				break;
-			case "toggle-reverb":
+			case "select-reverb":
 				MidiPlayer.reverb(event.arg);
 				break;
 			case "select-song":

@@ -11,7 +11,8 @@ const Conductor = {
 			syncCallback() {
 				console.log("playing...");
 
-				Conductor.time = Date.now();
+				// tilting timer a little bit
+				Conductor.time = Date.now() + 300;
 
 				// start sync'ed
 				Conductor.update();
@@ -55,11 +56,11 @@ const Conductor = {
 	getPressedKeysAt(time) {
 		let keys = [];
 
-		// this.song.notes.map(note => {
-		// 	if (note.time < time && note.time + note.duration > time) {
-		// 		keys.push(`${note.octave}:${note.note}`);
-		// 	}
-		// });
+		this.song.notes.map(note => {
+			if (note.time < time && note.time + note.duration > time) {
+				keys.push(`${note.octave}:${note.note}:${note.color}`);
+			}
+		});
 
 		return keys;
 	},

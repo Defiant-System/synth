@@ -22,9 +22,9 @@
 		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Reverb">
-			<Menu name="Off" click="toggle-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
+			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
 			<Menu type="divider"/>
-			<Menu name="Large Hall" click="toggle-reverb" arg="~/js/ir-large-hall.ogg" check-group="midi-reverb"/>
+			<Menu name="Large Hall" click="select-reverb" arg="~/js/ir-large-hall.ogg" check-group="midi-reverb"/>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu type="caption" name="Volume:"/>
