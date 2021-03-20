@@ -37,11 +37,12 @@ const Keyboard = {
 		this.render();
 	},
 	render() {
-		let sprite = this.sprite;
+		let ctx = this.ctx,
+			sprite = this.sprite;
 
 		this.keys.map(key => {
-			let params = [sprite].concat(key.serialize());
-			this.ctx.drawImage(...params);
+			let params = [sprite, ...key.serialize()];
+			ctx.drawImage(...params);
 		});
 	}
 };

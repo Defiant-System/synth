@@ -50,6 +50,13 @@ class Note {
 		];
 	}
 
+	inView(max, min) {
+		let top = -this.clip[1],
+			bottom = top - this.clip[3],
+			isInView = top < max && top > min || bottom < max && bottom > min;
+		return isInView;
+	}
+
 	flip(songHeight) {
 		this.clip[1] = songHeight - this.clip[1] - this.clip[3];
 	}

@@ -27,9 +27,18 @@ const Score = {
 	},
 	render(top) {
 		let height = this.dim.height;
+		let notesInView = [];
 
 		// considers height of view
 		top += height;
+
+		let max = top,
+			min = top - height;
+		this.notes.map(note => {
+			if (note.inView(max, min)) {
+				notesInView.push(note);
+			}
+		});
 
 		// clear canvas
 		this.cvs.prop({ height });
@@ -44,7 +53,7 @@ const Score = {
 		});
 
 		// paint notes
-		this.notes.map(note => {
+		notesInView.map(note => {
 			let params = note.add(top),
 				y = params[1],
 				h = y + params[3];

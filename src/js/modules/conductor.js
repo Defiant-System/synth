@@ -24,24 +24,25 @@ const Conductor = {
 		MidiPlayer.pause();
 		
 		// prevent further updates
-		cancelAnimationFrame(Conductor.update);
+		cancelAnimationFrame(Conductor._rafID);
+		Conductor._rafID = undefined;
 	},
 	update() {
-		let time = (Date.now() - Conductor.time) / 1000,
+		let time = (Date.now() - this.time) / 1000,
 			duration = MidiPlayer.duration;
 		
 		// progress bar
 		Progress.render(time / duration);
 
 		// keyboard
-		let downKeys = Conductor.getPressedKeysAt(time);
+		let downKeys = this.getPressedKeysAt(time);
 		Keyboard.press(downKeys);
 
 		// Score scroll
 		Score.render((time - duration) * 60);
 
 		if (!MidiPlayer.playing) return;
-		requestAnimationFrame(Conductor.update);
+		this._rafID = requestAnimationFrame(this.update.bind(this));
 	},
 	prepare(file) {
 		// set window title

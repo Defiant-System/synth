@@ -72,6 +72,8 @@
 			this._bufferPtr = this._lib._malloc(BUFFER_SIZE * BYTES_PER_SAMPLE);
 			this._ready = true;
 
+			if (this._onready) this._onready();
+
 			// emit event
 			this._options.dispatch("ready");
 		}
@@ -84,7 +86,7 @@
 			if (this._songPtr) this._destroySong();
 
 			if (!this._ready) {
-				return observer.once("ready", () => this.load(urlOrBuf));
+				this._onready = () => this.load(urlOrBuf);
 			}
 			// emit event
 			this._options.dispatch("buffering");
