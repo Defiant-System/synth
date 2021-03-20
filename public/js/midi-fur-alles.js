@@ -32,15 +32,16 @@
 
 			this._ready = false;
 			this._destroyed = false;
-			this._pendingFetches = {}; // instrument -> fetch
 			this._songPtr = 0;
 			this._bufferPtr = 0;
-			this._array = new Int16Array(BUFFER_SIZE * 2);
-			this._currentUrlOrBuf = null; // currently loading url or buf
 			this._interval = null;
 			this._loop = false;
-			this._audioContext = new AudioContext();
 			this._syncCallback = false;
+			this._reverb = {};
+			this._array = new Int16Array(BUFFER_SIZE * 2);
+			this._pendingFetches = {}; // instrument -> fetch
+			this._currentUrlOrBuf = null; // currently loading url or buf
+			this._audioContext = new AudioContext();
 			this.playing = false;
 
 			// Start the "onaudioprocess" events flowing
@@ -211,13 +212,13 @@
 			}
 		}
 
-		async _fetch(url) {
-			let opts = { mode: "cors", credentials: "same-origin" };
+		async _fetch(url, opt={}) {
+			let opts = { ...opt, mode: "cors", credentials: "same-origin" };
 			let response = await window.fetch(url, opts);
 			if (response.status !== 200) throw new Error(`Could not load ${url}`);
+			if (opt.responseType === "arrayBuffer") return response;
 			let arrayBuffer = await response.arrayBuffer();
 			let buf = new Uint8Array(arrayBuffer);
-
 			return buf;
 		}
 
@@ -273,6 +274,18 @@
 			this._array.set( this._lib.HEAP16.subarray(this._bufferPtr / 2, (this._bufferPtr + byteCount) / 2) );
 
 			return sampleCount;
+		}
+
+		async reverb(buffer) {
+			if (buffer) {
+				this.reverbConvolver = this._audioContext.createConvolver();
+				this.reverbConvolver.buffer = buffer;
+				this.reverbConvolver.connect(this.gainNode);
+				this._node.connect(this.reverbConvolver);
+			} else {
+				this.reverbConvolver.disconnect(0);
+				this._node.connect(this.gainNode);
+			}
 		}
 
 		play(opt={}) {

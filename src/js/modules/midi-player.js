@@ -43,6 +43,17 @@ const MidiPlayer = {
 	volume(value) {
 		this.player_.volume(value);
 	},
+	_buffers: {},
+	async reverb(name) {
+		let buffer = this._buffers[name];
+		if (name && !buffer) {
+			let request = await window.fetch(name, { responseType: "arrayBuffer" });
+			buffer = await this.player_._audioContext.decodeAudioData(request.arrayBuffer);
+			// save buffer
+			this._buffers[name] = buffer;
+		}
+		this.player_.reverb(buffer);
+	},
 	dispatch(type) {
 		//console.log("Midi: ", type);
 		switch (type) {

@@ -14,6 +14,12 @@
 	<Menu for="score-board">
 		<Menu name="About Synth" shell="win -a"/>
 		<Menu type="divider"/>
+		<Menu name="Reverb">
+			<Menu name="Off" click="toggle-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
+			<Menu type="divider"/>
+			<Menu name="Large Hall" click="toggle-reverb" arg="~/js/ir-large-hall.ogg" check-group="midi-reverb"/>
+		</Menu>
+		<Menu type="divider"/>
 		<Menu type="caption" name="Volume:"/>
 		<Menu type="slider" min="0" max="100" value="100" change="midi-volume"/>
 		<Menu type="divider"/>

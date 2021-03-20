@@ -39,6 +39,9 @@ const synth = {
 			case "midi-volume":
 				MidiPlayer.volume(event.arg / 100);
 				break;
+			case "toggle-reverb":
+				MidiPlayer.reverb(event.arg);
+				break;
 			case "prev-song":
 			case "next-song":
 				break;
