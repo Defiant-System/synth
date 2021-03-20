@@ -39,7 +39,7 @@ const Conductor = {
 		Keyboard.press(downKeys);
 
 		// Score scroll
-		Score.render((time - duration) * 60);
+		Score.render((time - duration) * PPS);
 
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));

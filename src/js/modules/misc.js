@@ -1,5 +1,5 @@
 
-const PPS = 60;
+const PPS = 120;
 const octaveWidth = 182;
 const octaveMinor = 77.5;
 const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
