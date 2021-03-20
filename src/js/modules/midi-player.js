@@ -23,10 +23,13 @@ const MidiPlayer = {
 		if (!this.player_) {
 			await this.getLib_();
 		}
-		if (path) {
+		if (path && path.constructor === String) {
 			this.player_.pause();
 			this.player_.seek(0);
 			this.player_.load(path);
+		} else {
+			// force first argument into boolean
+			loop = !!path;
 		}
 		this.player_.play(loop);
 	},

@@ -29,6 +29,7 @@
 			this._array = new Int16Array(BUFFER_SIZE * 2);
 			this._currentUrlOrBuf = null; // currently loading url or buf
 			this._interval = null;
+			this._loop = false;
 			this._audioContext = new AudioContext();
 			this.playing = false;
 
@@ -229,6 +230,8 @@
 				this.pause();
 				this._lib._mid_song_start(this._songPtr);
 				this._options.dispatch("ended");
+				// loop song if value is "true"
+				if (this._loop) this.play(this._loop);
 			}
 		}
 
@@ -252,6 +255,7 @@
 			if (this._destroyed) throw new Error("play() called after destroy()");
 			// resume AudioContext
 			this._audioContext.resume();
+			this._loop = !!loop;
 			this.playing = true;
 
 			if (this._ready && !this._currentUrlOrBuf) {

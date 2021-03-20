@@ -5,7 +5,7 @@ const Conductor = {
 	},
 	play() {
 		// play midi
-		MidiPlayer.play();
+		MidiPlayer.play(true);
 		return;
 
 		// listen to events
