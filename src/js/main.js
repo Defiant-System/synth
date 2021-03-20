@@ -33,6 +33,9 @@ const synth = {
 			case "open.file":
 				break;
 			// custom events
+			case "midi-seek":
+				MidiPlayer.seek(event.arg / 100);
+				break;
 			case "prev-song":
 			case "next-song":
 				break;

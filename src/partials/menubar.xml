@@ -11,4 +11,10 @@
 		<Menu type="divider"/>
 		<Menu name="License"/>
 	</Menu>
+	<Menu for="score-board">
+		<Menu name="About Synth" shell="win -a"/>
+		<Menu type="divider"/>
+		<Menu type="caption" name="Seek:"/>
+		<Menu type="slider" min="0" max="100" value="0" change="midi-seek"/>
+	</Menu>
 </MenuBar>

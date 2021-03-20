@@ -33,6 +33,10 @@ const MidiPlayer = {
 	pause() {
 		this.player_.pause();
 	},
+	seek(percentage) {
+		let value = this.player_.duration * percentage;
+		this.player_.seek(value);
+	},
 	dispatch(type) {
 		//console.log("Midi: ", type);
 		switch (type) {
@@ -48,7 +52,7 @@ const MidiPlayer = {
 		return this.player_.currentTime;
 	},
 	get duration() {
-		return this.player_.currentTime;
+		return this.player_.duration;
 	},
 	get playing()  {
 		return this.player_.playing;
