@@ -23,20 +23,23 @@ const Score = {
 		this.notes.map(note => note.flip(this.songHeight));
 
 		// this.render(this.dim.height - 30);
-		this.render(-this.songHeight - 5);
+		this.render(-this.songHeight - 20);
 	},
 	render(top) {
-		top += this.dim.height;
+		let height = this.dim.height;
+
+		// considers height of view
+		top += height;
 
 		// clear canvas
-		this.ctx.clear();
+		this.cvs.prop({ height });
 
 		// guide lines
 		this.guideLines.map(line => {
 			this.ctx.strokeStyle = line.color;
 			this.ctx.beginPath();
 			this.ctx.moveTo(line.x, 0);
-			this.ctx.lineTo(line.x, this.dim.height);
+			this.ctx.lineTo(line.x, height);
 			this.ctx.stroke();
 		});
 

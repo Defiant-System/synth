@@ -52,7 +52,6 @@ class Note {
 
 	flip(songHeight) {
 		this.clip[1] = songHeight - this.clip[1] - this.clip[3];
-		// this.clip[3] = this.clip[1] - this.clip[3];
 	}
 
 	add(y) {
