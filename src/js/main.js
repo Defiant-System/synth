@@ -20,7 +20,6 @@ const synth = {
 
 		// load midi file
 		let file = await defiant.shell(`fs -ur "~/midi/cabeza.mid"`);
-
 		MidiPlayer.load(file.result.buffer);
 
 		// Conductor.prepare(file.result);

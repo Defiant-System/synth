@@ -1,51 +1,5 @@
 (function(window, module) {
 
-	const observer = (() => {
-		// private event stack
-		const stack = {};
-		
-		// simple event emitter
-		return {
-			once(type, fn) {
-				if (!stack[type]) {
-					stack[type] = [];
-				}
-				stack[type].unshift(() => {
-					fn();
-					observer.off(type, fn);
-				});
-			},
-			on(type, fn) {
-				if (!stack[type]) {
-					stack[type] = [];
-				}
-				stack[type].unshift(fn);
-			},
-			off(type, fn) {
-				if (!stack[type]) return;
-				let i = stack[type].indexOf(fn);
-				stack[type].splice(i,1);
-			},
-			emit(type, detail) {
-				if (!stack[type]) return;
-				let event = {
-						type         : type,
-						detail       : detail,
-						isCanceled   : false,
-						cancelBubble : () => {
-							this.isCanceled = true;
-						}
-					},
-					len = stack[type].length;
-				while(len--) {
-					if (event.isCanceled) return;
-					stack[type][len](event);
-				}
-				return event.detail;
-			}
-		};
-	})();
-
 	const CFG = "\ndrumset 0\n\n 25\tDrum_000/025_Snare_Roll.pat \n 26\tDrum_000/026_Snap.pat \n 27\tDrum_000/027_High_Q.pat \n 31\tDrum_000/031_Sticks.pat \n 32\tDrum_000/032_Square_Click.pat \n 33\tDrum_000/033_Metronome_Click.pat \n 34\tDrum_000/034_Metronome_Bell.pat \n 35\tDrum_000/035_Kick_1.pat amp=100\n 36\tDrum_000/036_Kick_2.pat amp=100\n 37\tDrum_000/037_Stick_Rim.pat \n 38\tDrum_000/038_Snare_1.pat \n 39\tDrum_000/039_Clap_Hand.pat amp=100\n 40\tDrum_000/040_Snare_2.pat \n 41\tDrum_000/041_Tom_Low_2.pat amp=100\n 42\tDrum_000/042_Hi-Hat_Closed.pat \n 43\tDrum_000/043_Tom_Low_1.pat amp=100\n 44\tDrum_000/044_Hi-Hat_Pedal.pat \n 45\tDrum_000/045_Tom_Mid_2.pat amp=100\n 46\tDrum_000/046_Hi-Hat_Open.pat \n 47\tDrum_000/047_Tom_Mid_1.pat amp=100\n 48\tDrum_000/048_Tom_High_2.pat amp=100\n 49\tDrum_000/049_Cymbal_Crash_1.pat \n 50\tDrum_000/050_Tom_High_1.pat amp=100\n 51\tDrum_000/051_Cymbal_Ride_1.pat \n 52\tDrum_000/052_Cymbal_Chinese.pat \n 53\tDrum_000/053_Cymbal_Ride_Bell.pat amp=100\n 54\tDrum_000/054_Tombourine.pat \n 55\tDrum_000/055_Cymbal_Splash.pat \n 56\tDrum_000/056_Cow_Bell.pat \n 57\tDrum_000/057_Cymbal_Crash_2.pat \n 58\tDrum_000/058_Vibra-Slap.pat \n 59\tDrum_000/059_Cymbal_Ride_2.pat \n 60\tDrum_000/060_Bongo_High.pat \n 61\tDrum_000/061_Bongo_Low.pat \n 62\tDrum_000/062_Conga_High_1_Mute.pat \n 63\tDrum_000/063_Conga_High_2_Open.pat \n 64\tDrum_000/064_Conga_Low.pat \n 65\tDrum_000/065_Timbale_High.pat \n 66\tDrum_000/066_Timbale_Low.pat \n 67\tDrum_000/067_Agogo_High.pat \n 68\tDrum_000/068_Agogo_Low.pat \n 69\tDrum_000/069_Cabasa.pat amp=100\n 70\tDrum_000/070_Maracas.pat \n 71\tDrum_000/071_Whistle_1_High_Short.pat \n 72\tDrum_000/072_Whistle_2_Low_Long.pat \n 73\tDrum_000/073_Guiro_1_Short.pat \n 74\tDrum_000/074_Guiro_2_Long.pat \n 75\tDrum_000/075_Claves.pat amp=100\n 76\tDrum_000/076_Wood_Block_1_High.pat \n 77\tDrum_000/077_Wood_Block_2_Low.pat \n 78\tDrum_000/078_Cuica_1_Mute.pat amp=100\n 79\tDrum_000/079_Cuica_2_Open.pat amp=100\n 80\tDrum_000/080_Triangle_1_Mute.pat \n 81\tDrum_000/081_Triangle_2_Open.pat \n 82\tDrum_000/082_Shaker.pat \n 84\tDrum_000/084_Belltree.pat \n\nbank 0\n\n 0\tTone_000/000_Acoustic_Grand_Piano.pat amp=120 pan=center\n 1\tTone_000/001_Acoustic_Brite_Piano.pat \n 2\tTone_000/002_Electric_Grand_Piano.pat \n 4\tTone_000/004_Electric_Piano_1_Rhodes.pat \n 5\tTone_000/005_Electric_Piano_2_Chorused_Yamaha_DX.pat \n 6\tTone_000/006_Harpsichord.pat \n 7\tTone_000/007_Clavinet.pat \n 8\tTone_000/008_Celesta.pat \n 9\tTone_000/009_Glockenspiel.pat \n 13\tTone_000/013_Xylophone.pat \n 14\tTone_000/014_Tubular_Bells.pat \n 15\tTone_000/015_Dulcimer.pat \n 16\tTone_000/016_Hammond_Organ.pat \n 19\tTone_000/019_Church_Organ.pat \n 21\tTone_000/021_Accordion.pat \n 23\tTone_000/023_Tango_Accordion.pat \n 24\tTone_000/024_Nylon_Guitar.pat \n 25\tTone_000/025_Steel_Guitar.pat \n 26\tTone_000/026_Jazz_Guitar.pat \n 27\tTone_000/027_Clean_Electric_Guitar.pat \n 28\tTone_000/028_Muted_Electric_Guitar.pat \n 29\tTone_000/029_Overdriven_Guitar.pat \n 30\tTone_000/030_Distortion_Guitar.pat \n 32\tTone_000/032_Acoustic_Bass.pat \n 33\tTone_000/033_Finger_Bass.pat \n 34\tTone_000/034_Pick_Bass.pat \n 35\tTone_000/035_Fretless_Bass.pat \n 36\tTone_000/036_Slap_Bass_1.pat \n 37\tTone_000/037_Slap_Bass_2.pat \n 38\tTone_000/038_Synth_Bass_1.pat \n 40\tTone_000/040_Violin.pat \n 42\tTone_000/042_Cello.pat \n 44\tTone_000/044_Tremolo_Strings.pat \n 45\tTone_000/045_Pizzicato_Strings.pat \n 46\tTone_000/046_Harp.pat \n 47\tTone_000/047_Timpani.pat \n 48\tTone_000/048_String_Ensemble_1_Marcato.pat \n 53\tTone_000/053_Voice_Oohs.pat \n 56\tTone_000/056_Trumpet.pat \n 57\tTone_000/057_Trombone.pat \n 58\tTone_000/058_Tuba.pat \n 59\tTone_000/059_Muted_Trumpet.pat \n 60\tTone_000/060_French_Horn.pat \n 61\tTone_000/061_Brass_Section.pat \n 64\tTone_000/064_Soprano_Sax.pat \n 65\tTone_000/065_Alto_Sax.pat \n 66\tTone_000/066_Tenor_Sax.pat \n 67\tTone_000/067_Baritone_Sax.pat \n 68\tTone_000/068_Oboe.pat \n 69\tTone_000/069_English_Horn.pat \n 70\tTone_000/070_Bassoon.pat \n 71\tTone_000/071_Clarinet.pat \n 72\tTone_000/072_Piccolo.pat \n 73\tTone_000/073_Flute.pat \n 74\tTone_000/074_Recorder.pat \n 75\tTone_000/075_Pan_Flute.pat \n 76\tTone_000/076_Bottle_Blow.pat \n 79\tTone_000/079_Ocarina.pat \n 80\tTone_000/080_Square_Wave.pat \n 84\tTone_000/084_Charang.pat \n 88\tTone_000/088_New_Age.pat \n 94\tTone_000/094_Halo_Pad.pat \n 95\tTone_000/095_Sweep_Pad.pat \n 98\tTone_000/098_Crystal.pat \n 101\tTone_000/101_Goblins--Unicorn.pat \n 102\tTone_000/102_Echo_Voice.pat \n 104\tTone_000/104_Sitar.pat \n 114\tTone_000/114_Steel_Drums.pat \n 115\tTone_000/115_Wood_Block.pat \n 120\tTone_000/120_Guitar_Fret_Noise.pat \n 122\tTone_000/122_Seashore.pat \n 125\tTone_000/125_Helicopter.pat \n\n";
 	const SAMPLE_RATE = 44100;
 	const AUDIO_FORMAT = 0x8010; // format of the rendered audio 's16'
@@ -56,11 +10,10 @@
 
 	class MidiFurAlles {
 		constructor(options) {
-			this.destroyed = false;
-
 			this._options = {
 				baseUrl: "/",
 				instruments: "/",
+				dispatch: e => {},
 				...options
 			};
 
@@ -69,22 +22,15 @@
 			this._options.instruments = new URL(this._options.instruments, window.location.origin).href;
 
 			this._ready = false;
+			this._destroyed = false;
 			this._pendingFetches = {}; // instrument -> fetch
 			this._songPtr = 0;
 			this._bufferPtr = 0;
 			this._array = new Int16Array(BUFFER_SIZE * 2);
 			this._currentUrlOrBuf = null; // currently loading url or buf
 			this._interval = null;
-			this.playing = false;
-
-			// attach observer listeners
-			this.on = observer.on;
-			this.off = observer.off;
-			this.once = observer.once;
-
-			this._startInterval = this._startInterval.bind(this);
-			this._stopInterval = this._stopInterval.bind(this);
 			this._audioContext = new AudioContext();
+			this.playing = false;
 
 			// Start the "onaudioprocess" events flowing
 			this._node = this._audioContext.createScriptProcessor(BUFFER_SIZE, 0, NUM_CHANNELS);
@@ -108,25 +54,23 @@
 
 			this._bufferPtr = this._lib._malloc(BUFFER_SIZE * BYTES_PER_SAMPLE);
 			this._ready = true;
+
 			// emit event
-			observer.emit("_ready");
+			this._options.dispatch("ready");
 		}
 
 		async load(urlOrBuf) {
-			if (this.destroyed) throw new Error("load() called after destroy()");
+			if (this._destroyed) throw new Error("load() called after destroy()");
 			// resume AudioContext
 			this._audioContext.resume();
 			// If a song already exists, destroy it before starting a new one
 			if (this._songPtr) this._destroySong();
-			// emit event
-			observer.emit("unstarted");
-			this._stopInterval();
 
 			if (!this._ready) {
-				return observer.once("_ready", () => this.load(urlOrBuf));
+				return observer.once("ready", () => this.load(urlOrBuf));
 			}
 			// emit event
-			observer.emit("buffering");
+			this._options.dispatch("buffering");
 
 			// Save the url or buf to load. Allows detection of when a new interleaved
 			// load() starts so we can abort this load.
@@ -252,10 +196,7 @@
 		}
 
 		async _fetch(url) {
-			let opts = {
-				mode: "cors",
-				credentials: "same-origin"
-			};
+			let opts = { mode: "cors", credentials: "same-origin" };
 			let response = await window.fetch(url, opts);
 			if (response.status !== 200) throw new Error(`Could not load ${url}`);
 			let arrayBuffer = await response.arrayBuffer();
@@ -264,24 +205,11 @@
 			return buf;
 		}
 
-		play() {
-			if (this.destroyed) throw new Error("play() called after destroy()");
-			// resume AudioContext
-			this._audioContext.resume();
-			this.playing = true;
-
-			if (this._ready && !this._currentUrlOrBuf) {
-				observer.emit("playing");
-				this._startInterval();
-			}
-		}
-
 		_onAudioProcess(event) {
 			let sampleCount = (this._songPtr && this.playing) ? this._readMidiData() : 0;
 			if (sampleCount > 0 && this._currentUrlOrBuf) {
 				this._currentUrlOrBuf = null;
-				observer.emit("playing");
-				this._startInterval();
+				this._options.dispatch("playing");
 			}
 
 			let output0 = event.outputBuffer.getChannelData(0);
@@ -300,84 +228,72 @@
 				this.seek(0);
 				this.pause();
 				this._lib._mid_song_start(this._songPtr);
-				observer.emit("ended");
+				this._options.dispatch("ended");
 			}
 		}
 
 		_readMidiData() {
 			let byteCount = this._lib._mid_song_read_wave(
-				this._songPtr,
-				this._bufferPtr,
-				BUFFER_SIZE * BYTES_PER_SAMPLE
-			);
+					this._songPtr,
+					this._bufferPtr,
+					BUFFER_SIZE * BYTES_PER_SAMPLE
+				);
 			let sampleCount = byteCount / BYTES_PER_SAMPLE;
 
 			// Was anything output? If not, don't bother copying anything
 			if (sampleCount === 0) return 0;
 
-			this._array.set(
-				this._lib.HEAP16.subarray(this._bufferPtr / 2, (this._bufferPtr + byteCount) / 2)
-			);
+			this._array.set( this._lib.HEAP16.subarray(this._bufferPtr / 2, (this._bufferPtr + byteCount) / 2) );
 
 			return sampleCount;
 		}
 
+		play(loop) {
+			if (this._destroyed) throw new Error("play() called after destroy()");
+			// resume AudioContext
+			this._audioContext.resume();
+			this.playing = true;
+
+			if (this._ready && !this._currentUrlOrBuf) {
+				this._options.dispatch("playing");
+			}
+		}
+
 		pause() {
-			if (this.destroyed) throw new Error("pause() called after destroy()");
+			if (this._destroyed) throw new Error("pause() called after destroy()");
+			// suspend AudioContext
+			this._audioContext.suspend();
 
 			this.playing = false;
-			this._stopInterval();
-			observer.emit("paused");
+			this._options.dispatch("paused");
 		}
 
 		seek(time) {
-			if (this.destroyed) throw new Error("seek() called after destroy()");
+			if (this._destroyed) throw new Error("seek() called after destroy()");
 			if (!this._songPtr) return; // ignore seek if there is no song loaded yet
 
 			let timeMs = Math.floor(time * 1000);
 			this._lib._mid_song_seek(this._songPtr, timeMs);
-			this._onTimeupdate();
 		}
 
 		get currentTime() {
-			if (this.destroyed || !this._songPtr) return 0;
+			if (this._destroyed || !this._songPtr) return 0;
 			return this._lib._mid_song_get_time(this._songPtr) / 1000;
 		}
 
 		get duration() {
-			if (this.destroyed || !this._songPtr) return 1;
+			if (this._destroyed || !this._songPtr) return 1;
 			return this._lib._mid_song_get_total_time(this._songPtr) / 1000;
 		}
 
-		/**
-		 * This event fires when the time indicated by the `currentTime` property
-		 * has been updated.
-		 */
-		_onTimeupdate() {
-			console.log(this.currentTime);
-			observer.emit("timeupdate", this.currentTime);
-		}
-
-		_startInterval() {
-			this._onTimeupdate();
-			this._interval = setInterval(() => this._onTimeupdate(), 1000);
-		}
-
-		_stopInterval() {
-			this._onTimeupdate();
-			clearInterval(this._interval);
-			this._interval = null;
-		}
-
 		destroy() {
-			if (this.destroyed) throw new Error("destroy() called after destroy()");
+			if (this._destroyed) throw new Error("destroy() called after destroy()");
 			this._destroy();
 		}
 
 		_destroy(err) {
-			if (this.destroyed) return;
-			this.destroyed = true;
-			this._stopInterval();
+			if (this._destroyed) return;
+			this._destroyed = true;
 			this._array = null;
 
 			if (this._songPtr) {
@@ -394,7 +310,7 @@
 			if (this._audioContext) {
 				this._audioContext.close();
 			}
-			if (err) observer.emit("error", err);
+			if (err) this._options.dispatch("error", err);
 		}
 
 		_destroySong() {
