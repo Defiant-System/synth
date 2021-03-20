@@ -20,12 +20,17 @@ const Score = {
 	setNotes(song) {
 		this.notes = song.notes;
 		this.songHeight = song.duration * PPS;
-		// this.notes.map(note => note.flip(this.songHeight));
+		this.notes.map(note => note.flip(this.songHeight));
 
 		// this.render(this.dim.height - 30);
-		this.render(0);
+		this.render(-this.songHeight - 5);
 	},
 	render(top) {
+		top += this.dim.height;
+
+		// clear canvas
+		this.ctx.clear();
+
 		// guide lines
 		this.guideLines.map(line => {
 			this.ctx.strokeStyle = line.color;

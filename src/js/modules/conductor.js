@@ -32,9 +32,13 @@ const Conductor = {
 		
 		// progress bar
 		Progress.render(time / duration);
+
 		// keyboard
 		let downKeys = Conductor.getPressedKeysAt(time);
 		Keyboard.press(downKeys);
+
+		// Score scroll
+		Score.render((time - duration) * 60);
 
 		if (!MidiPlayer.playing) return;
 		requestAnimationFrame(Conductor.update);
@@ -51,7 +55,7 @@ const Conductor = {
 
 		// song note visualisation
 		this.song = this.parse(file.buffer);
-		// Score.setNotes(this.song);
+		Score.setNotes(this.song);
 	},
 	getPressedKeysAt(time) {
 		let keys = [];
