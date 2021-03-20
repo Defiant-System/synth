@@ -35,10 +35,8 @@ const Keyboard = {
 
 		keys.map(key => {
 			let state = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)) ? "down" : "up";
-			key.press(state)
-		});
+			key.press(state);
 
-		keys.map(key => {
 			ctx.drawImage(sprite, ...key.serialize());
 		});
 	}
