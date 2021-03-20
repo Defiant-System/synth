@@ -12,9 +12,9 @@
 const synth = {
 	async init() {
 		// init objects
+		Keyboard.init();
 		Progress.init();
 		Score.init();
-		Keyboard.init();
 		await MidiPlayer.init();
 		await Conductor.init();
 

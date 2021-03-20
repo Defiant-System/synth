@@ -12,7 +12,7 @@ const Conductor = {
 				console.log("playing...");
 
 				// tilting timer a little bit
-				Conductor.time = Date.now() + 300;
+				Conductor.time = Date.now() + 250;
 
 				// start sync'ed
 				Conductor.update();
@@ -36,7 +36,7 @@ const Conductor = {
 
 		// keyboard
 		let downKeys = this.getPressedKeysAt(time);
-		Keyboard.press(downKeys);
+		Keyboard.render(downKeys);
 
 		// Score scroll
 		Score.render((time - duration) * PPS);

@@ -15,7 +15,7 @@ const Keyboard = {
 
 		// image sprite
 		this.sprite = new Image;
-		this.sprite.onload = () => this.render();
+		this.sprite.onload = () => this.render(["init-render"]);
 		this.sprite.src = "~/img/piano-keys.png";
 
 		this.keys = [];
@@ -25,24 +25,21 @@ const Keyboard = {
 			});
 		});
 	},
-	press(downKeys) {
+	render(downKeys) {
 		if (this._downKeys.join() === downKeys.join()) return;
 		this._downKeys = downKeys;
+		
+		let ctx = this.ctx,
+			keys = this.keys,
+			sprite = this.sprite;
 
-		this.keys.map(key => {
+		keys.map(key => {
 			let state = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)) ? "down" : "up";
 			key.press(state)
 		});
 
-		this.render();
-	},
-	render() {
-		let ctx = this.ctx,
-			sprite = this.sprite;
-
-		this.keys.map(key => {
-			let params = [sprite, ...key.serialize()];
-			ctx.drawImage(...params);
+		keys.map(key => {
+			ctx.drawImage(sprite, ...key.serialize());
 		});
 	}
 };
