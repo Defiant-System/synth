@@ -11,11 +11,21 @@ const Score = {
 		this.cvs.prop(this.dim);
 
 		// guide lines
-		this.guideLines = [];
+		let guideLines = [];
 		[...Array(6)].map((i, octave) => {
-			this.guideLines.push({ color: "#404040", x: -.5         + (octave * octaveWidth) });
-			this.guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
+			guideLines.push({ color: "#404040", x: -.5         + (octave * octaveWidth) });
+			guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
 		});
+		// guide lines
+		guideLines.map(line => {
+			this.ctx.strokeStyle = line.color;
+			this.ctx.beginPath();
+			this.ctx.moveTo(line.x, 0);
+			this.ctx.lineTo(line.x, this.dim.height);
+			this.ctx.stroke();
+		});
+		// save guide lines background - for faster render
+		this.guideLines = this.ctx.getImageData(0, 0, this.dim.width, this.dim.height);
 	},
 	setNotes(song) {
 		this.notes = song.notes;
@@ -43,14 +53,8 @@ const Score = {
 		// clear canvas
 		this.cvs.prop({ height });
 
-		// guide lines
-		this.guideLines.map(line => {
-			this.ctx.strokeStyle = line.color;
-			this.ctx.beginPath();
-			this.ctx.moveTo(line.x, 0);
-			this.ctx.lineTo(line.x, height);
-			this.ctx.stroke();
-		});
+		// guidelines background
+		this.ctx.putImageData(this.guideLines, 0, 0);
 
 		// paint notes
 		notesInView.map(note => {
