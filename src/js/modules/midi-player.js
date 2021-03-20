@@ -6,7 +6,7 @@ const MidiPlayer = {
 		}
 	},
 	async getLib_() {
-		let mfa = await $.fetch_("~/js/midi-fur-alles.new.js");
+		let mfa = await $.fetch_("~/js/midi-fur-alles.js");
 
 		this.player_ = new mfa({
 			baseUrl: "~/js/",
@@ -51,7 +51,7 @@ const MidiPlayer = {
 			case "error": break;
 		}
 	},
-	get time()     {
+	get currentTime() {
 		return this.player_.currentTime;
 	},
 	get duration() {

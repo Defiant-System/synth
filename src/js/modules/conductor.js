@@ -22,7 +22,7 @@ const Conductor = {
 		cancelAnimationFrame(Conductor.update);
 	},
 	update() {
-		let time = MidiPlayer.time;
+		let time = MidiPlayer.currentTime;
 		
 		// progress bar
 		Progress.render(time / Conductor.song.duration);
