@@ -47,7 +47,12 @@
 			this._node = this._audioContext.createScriptProcessor(BUFFER_SIZE, 0, NUM_CHANNELS);
 			this._onAudioProcess = this._onAudioProcess.bind(this);
 			this._node.addEventListener("audioprocess", this._onAudioProcess);
-			this._node.connect(this._audioContext.destination);
+
+			// for volume control
+			this.gainNode = this._audioContext.createGain();
+			this.gainNode.gain.value = 1; // 100%
+			this.gainNode.connect(this._audioContext.destination);
+			this._node.connect(this.gainNode);
 
 			this._lib = MFA({
 				locateFile: file => new URL(file, this._options.baseUrl).href,
@@ -272,6 +277,7 @@
 
 		play(opt={}) {
 			if (opt.syncCallback) this._syncCallback = opt.syncCallback;
+			if (opt.volume) this.gainNode.gain.value = opt.volume;
 			if (this._destroyed) throw new Error("play() called after destroy()");
 			this._loop = !!opt.loop; // force value into a boolean
 			this.playing = true;
@@ -301,7 +307,7 @@
 		}
 
 		volume(value) {
-			console.log(value);
+			this.gainNode.gain.value = value;
 		}
 
 		get currentTime() {
