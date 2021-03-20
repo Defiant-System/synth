@@ -121,7 +121,7 @@
 
 		_getMissingInstruments(songPtr, missingCount) {
 			let missingInstruments = [];
-			for (let i = 0; i < missingCount; i++) {
+			for (let i=0; i<missingCount; i++) {
 				let instrumentPtr = this._lib._mid_get_load_request(songPtr, i);
 				let instrument = this._lib.UTF8ToString(instrumentPtr);
 				missingInstruments.push(instrument);
@@ -187,7 +187,7 @@
 			let pathParts = folderPath.split("/");
 			let dirPath = "/";
 			
-			for (let i = 0, il = pathParts.length; i < il; i++) {
+			for (let i=0, il=pathParts.length; i<il; i++) {
 				let curPart = pathParts[i];
 				try {
 					this._lib.FS.mkdir(`${dirPath}${curPart}`);
@@ -212,15 +212,14 @@
 				this._currentUrlOrBuf = null;
 				this._options.dispatch("playing");
 			}
-
 			let output0 = event.outputBuffer.getChannelData(0);
 			let output1 = event.outputBuffer.getChannelData(1);
 
-			for (let i = 0; i < sampleCount; i++) {
+			for (let i=0; i<sampleCount; i++) {
 				output0[i] = this._array[i * 2] / 0x7FFF;
 				output1[i] = this._array[i * 2 + 1] / 0x7FFF;
 			}
-			for (let i = sampleCount; i < BUFFER_SIZE; i++) {
+			for (let i=sampleCount; i<BUFFER_SIZE; i++) {
 				output0[i] = 0;
 				output1[i] = 0;
 			}
