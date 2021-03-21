@@ -19,9 +19,9 @@ const Keyboard = {
 		this.sprite.src = "~/img/piano-keys.png";
 
 		this.keys = [];
-		[...Array(6)].map((i, octave) => {
-			Object.keys(Matrix).map(note => {
-				this.keys.push(new Key( octave, note, Matrix[note] ));
+		[...Array(7)].map((i, octave) => {
+			Object.keys(SpriteMatrix).map(note => {
+				this.keys.push(new Key( octave, note, SpriteMatrix[note] ));
 			});
 		});
 	},
