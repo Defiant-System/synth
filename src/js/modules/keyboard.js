@@ -27,7 +27,7 @@ const Keyboard = {
 
 			// ctx.globalAlpha = .5;
 			ctx.globalCompositeOperation = "source-atop";
-			ctx.fillStyle = "rgba(255,0,0,.35)";
+			ctx.fillStyle = Palette.color0 +"77";
 			ctx.fillRect(half, 0, half, cvs.height);
 
 			// save reference to canvas

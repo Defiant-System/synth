@@ -7,14 +7,14 @@ const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
 
 
 const Palette = {
-	color0: "#66d",
-	color1: "#7d7",
-	color2: "#aaf",
-	color3: "#f99",
-	color4: "#6dd",
-	color5: "#f90",
-	color6: "#6d6",
-	color7: "#e66",
+	color0: "#6666dd",
+	color1: "#77dd77",
+	color2: "#aaaaff",
+	color3: "#ff9999",
+	color4: "#66dddd",
+	color5: "#ff9900",
+	color6: "#66dd60",
+	color7: "#ee6666",
 };
 
 const SpriteMatrix = {
