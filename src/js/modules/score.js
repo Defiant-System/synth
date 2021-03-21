@@ -69,7 +69,7 @@ const Score = {
 			this.ctx.shadowBlur = 2;
 			this.ctx.shadowColor = "rgba(0,0,0,.25)";
 			this.ctx.strokeStyle = "rgba(0,0,0,.35)";
-			this.ctx.fillStyle = Palette["color"+ note.track];
+			this.ctx.fillStyle = Palette["color-"+ note.track];
 			this.ctx.beginPath();
 			this.ctx.roundRect(...params);
 			this.ctx.fill();

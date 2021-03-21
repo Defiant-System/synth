@@ -18,17 +18,25 @@ const Keyboard = {
 		sprite.onload = () => {
 			let cvs = document.createElement("canvas"),
 				ctx = cvs.getContext("2d"),
-				half = sprite.width / 2;
+				colors = Object.keys(Palette);
+
 			// resize canvas
-			cvs.width = sprite.width;
+			cvs.width = SpriteHalf + (colors.length * SpriteHalf);
 			cvs.height = sprite.height;
 			// draw sprite on canvas
 			ctx.drawImage(sprite, 0, 0);
 
-			// ctx.globalAlpha = .5;
-			ctx.globalCompositeOperation = "source-atop";
-			ctx.fillStyle = Palette.color0 +"77";
-			ctx.fillRect(half, 0, half, cvs.height);
+			colors.map((key, i) => {
+				ctx.drawImage(sprite, SpriteHalf, 0, SpriteHalf, sprite.height,
+									(SpriteHalf * (i + 1)), 0, SpriteHalf, sprite.height);
+			});
+
+			// colorize down keys
+			colors.map((key, i) => {
+				ctx.globalCompositeOperation = "source-atop";
+				ctx.fillStyle = Palette[key] +"aa";
+				ctx.fillRect(SpriteHalf * (i + 1), 0, SpriteHalf, cvs.height);
+			});
 
 			// save reference to canvas
 			this.sprite = cvs;
@@ -53,8 +61,10 @@ const Keyboard = {
 			sprite = this.sprite;
 
 		keys.map(key => {
-			let state = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)) ? "down" : "up";
-			key.press(state);
+			let cKey = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)),
+				track = cKey ? cKey.split(":")[2] : undefined,
+				state = cKey ? "down" : "up";
+			key.press(state, track);
 
 			ctx.drawImage(sprite, ...key.serialize());
 		});

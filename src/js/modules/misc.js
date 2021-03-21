@@ -3,18 +3,19 @@ const PPS = 100;
 const Octaves = 7;
 const OctaveWidth = 161;
 const OctaveMinor = 68.5;
+const SpriteHalf = 176;
 const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
 
 
 const Palette = {
-	color0: "#6666dd",
-	color1: "#77dd77",
-	color2: "#aaaaff",
-	color3: "#ff9999",
-	color4: "#66dddd",
-	color5: "#ff9900",
-	color6: "#66dd60",
-	color7: "#ee6666",
+	"color-0": "#aa88ff",
+	"color-1": "#77dd77",
+	"color-2": "#3366ff",
+	"color-3": "#ff9999",
+	"color-4": "#66dddd",
+	"color-5": "#ff9900",
+	"color-6": "#66dd60",
+	"color-7": "#ee3333",
 };
 
 const SpriteMatrix = {
@@ -40,7 +41,7 @@ class Note {
 		this.track = track;
 		this.time = time;
 		this.duration = duration;
-		this.color = Palette["color"+ track];
+		this.color = Palette["color-"+ track];
 
 		this.clip = [
 			SpriteMatrix[note][4] + (octave * OctaveWidth),
@@ -83,15 +84,18 @@ class Key {
 		this.clip[4] += octave * OctaveWidth;
 	}
 
-	press(state) {
+	press(state, track) {
 		this.state = state;
+		this.track = track;
 	}
 
 	serialize() {
 		let clip = [...this.clip];
 
 		// move clip area
-		if (this.state === "down") clip[0] += 176;
+		if (this.state === "down") {
+			clip[0] += SpriteHalf + (this.track * SpriteHalf);
+		}
 		
 		return clip;
 	}

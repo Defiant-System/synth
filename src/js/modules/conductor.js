@@ -46,7 +46,8 @@ const Conductor = {
 	},
 	prepare(file) {
 		// set window title
-		window.title = `Synth - ${file.base}`;
+		// window.title = `Synth - ${file.base}`;
+		window.title = `Synth <i class="icon-heart"></i> ABBA - Winner Takes It All`;
 		
 		// stop any playing song
 		MidiPlayer.pause();
@@ -63,7 +64,7 @@ const Conductor = {
 
 		this.song.notes.map(note => {
 			if (note.time < time && note.time + note.duration > time) {
-				keys.push(`${note.octave}:${note.note}:${note.color}`);
+				keys.push(`${note.octave}:${note.note}:${note.track}`);
 			}
 		});
 

@@ -8,8 +8,18 @@ content {
 	right: 0;
 	bottom: 0;
 	display: flex;
-	// flex-direction: column;
 	flex-flow: column wrap;
+
+	i[class^="icon-"] {
+		width: 13px;
+		height: 13px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		display: inline-block;
+
+		&.icon-heart { background-image: url(~/icons/icon-heart.png); }
+	}
 	
 	canvas {
 		position: absolute;
