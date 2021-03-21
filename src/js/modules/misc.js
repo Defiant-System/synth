@@ -1,7 +1,8 @@
 
 const PPS = 100;
-const octaveWidth = 161;
-const octaveMinor = 77.5;
+const Octaves = 7;
+const OctaveWidth = 161;
+const OctaveMinor = 68.5;
 const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
 
 
@@ -42,7 +43,7 @@ class Note {
 		this.color = Palette["color"+ track];
 
 		this.clip = [
-			SpriteMatrix[note][4] + (octave * octaveWidth),
+			SpriteMatrix[note][4] + (octave * OctaveWidth),
 			time * PPS,
 			SpriteMatrix[note][6],
 			duration * PPS
@@ -79,7 +80,7 @@ class Key {
 		this.note = note;
 		this.clip = [...clip];
 		// offset key per octave
-		this.clip[4] += octave * octaveWidth;
+		this.clip[4] += octave * OctaveWidth;
 	}
 
 	press(state) {

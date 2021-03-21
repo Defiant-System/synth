@@ -12,9 +12,9 @@ const Score = {
 
 		// guide lines
 		let guideLines = [];
-		[...Array(6)].map((i, octave) => {
-			guideLines.push({ color: "#404040", x: -.5         + (octave * octaveWidth) });
-			guideLines.push({ color: "#383838", x: octaveMinor + (octave * octaveWidth) });
+		[...Array(Octaves)].map((i, octave) => {
+			guideLines.push({ color: "#404040", x: -.5         + (octave * OctaveWidth) });
+			guideLines.push({ color: "#383838", x: OctaveMinor + (octave * OctaveWidth) });
 		});
 		// guide lines
 		guideLines.map(line => {

@@ -14,12 +14,31 @@ const Keyboard = {
 		this._downKeys = [];
 
 		// image sprite
-		this.sprite = new Image;
-		this.sprite.onload = () => this.render(["init-render"]);
-		this.sprite.src = "~/img/piano-keys.png";
+		let sprite = new Image;
+		sprite.onload = () => {
+			let cvs = document.createElement("canvas"),
+				ctx = cvs.getContext("2d"),
+				half = sprite.width / 2;
+			// resize canvas
+			cvs.width = sprite.width;
+			cvs.height = sprite.height;
+			// draw sprite on canvas
+			ctx.drawImage(sprite, 0, 0);
+
+			// ctx.globalAlpha = .5;
+			ctx.globalCompositeOperation = "source-atop";
+			ctx.fillStyle = "rgba(255,0,0,.35)";
+			ctx.fillRect(half, 0, half, cvs.height);
+
+			// save reference to canvas
+			this.sprite = cvs;
+			// render piano keyboard
+			this.render(["init-render"]);
+		};
+		sprite.src = "~/img/piano-keys.png";
 
 		this.keys = [];
-		[...Array(7)].map((i, octave) => {
+		[...Array(Octaves)].map((i, octave) => {
 			Object.keys(SpriteMatrix).map(note => {
 				this.keys.push(new Key( octave, note, SpriteMatrix[note] ));
 			});
