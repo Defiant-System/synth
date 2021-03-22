@@ -8,9 +8,9 @@ const Notes = "c c# d d# e f f# g g# a a# b".split(" ");
 
 
 const Palette = {
-	"color-0": "#aa88ff",
-	"color-1": "#77dd77",
-	"color-2": "#3366ff",
+	"color-0": "#77bb77",
+	"color-1": "#aa88ff",
+	"color-2": "#4477cc",
 	"color-3": "#ff9999",
 	"color-4": "#66dddd",
 	"color-5": "#ff9900",

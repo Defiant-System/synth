@@ -2,7 +2,6 @@
 @import "./modules/midi-player.js";
 
 @import "./modules/replayer.js";
-
 @import "./modules/midi-parser.js";
 @import "./modules/misc.js";
 @import "./modules/conductor.js";
@@ -23,7 +22,7 @@ const synth = {
 		// auto select reverb
 		// this.dispatch({ type: "select-reverb", arg: "~/js/ir-large-hall.ogg" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/albeniz.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/havana.mid" });
 	},
 	async dispatch(event) {
 		let Self = synth,

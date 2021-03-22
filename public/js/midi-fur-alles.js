@@ -81,8 +81,10 @@
 
 		async load(urlOrBuf) {
 			if (this._destroyed) throw new Error("load() called after destroy()");
+			
 			// resume AudioContext
-			this._audioContext.resume();
+			//this._audioContext.resume();
+			
 			// If a song already exists, destroy it before starting a new one
 			if (this._songPtr) this._destroySong();
 

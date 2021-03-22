@@ -21,7 +21,7 @@
 			<Menu name="Trolls" click="select-song" arg="~/midi/trolls.mid" check-group="midi-song"/>
 		</Menu>
 		<Menu type="divider"/>
-		<Menu name="Reverb">
+		<Menu name="Effect">
 			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
 			<Menu type="divider"/>
 			<Menu name="Large Hall" click="select-reverb" arg="~/js/ir-large-hall.ogg" check-group="midi-reverb"/>
