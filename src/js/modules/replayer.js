@@ -5,25 +5,93 @@
  */
 
 const Replayer = {
+	typeCodes: {
+		0x00: "sequenceNumber",
+		0x01: "text",
+		0x02: "copyrightNotice",
+		0x03: "trackName",
+		0x04: "instrumentName",
+		0x05: "lyrics",
+		0x06: "marker",
+		0x07: "cuePoint",
+
+		0x08: "noteOff",
+		0x09: "noteOn",
+		0x0a: "noteAftertouch",
+		0x0b: "controller",
+		0x0c: "programChange",
+		0x0d: "channelAftertouch",
+		0x0e: "pitchBendEvent",
+
+		0x20: "midiChannelPrefix",
+		0x2f: "endOfTrack",
+		0x51: "setTempo",
+		0x54: "smpteOffset",
+		0x58: "timeSignature",
+		0x59: "keySignature",
+		0x7f: "sequencerSpecific",
+		0xf0: "sysEx",
+		0xf7: "dividedSysEx",
+		0xff: "meta",
+	},
 	getLength(temporal) {
-		let totalTime = 0.5;
+		let totalTime = 0.0005;
 		for (let n=0, nl=temporal.length; n<nl; n++) {
 			totalTime += temporal[n][1];
 		}
 		return totalTime;
 	},
 	getTimeline(temporal) {
-		let data = [];
-		var offset = 0;
-		var messages = 0;
+		let typeCodes = this.typeCodes;
+		let sequence = [];
+		let record = { "0":{}, "1":{}, "2":{}, "3":{}, "4":{}, "5":{}, "6":{}, "7":{} };
+		let time = 0.0005;
 
-		for (let n=0, nl=temporal.length; n<nl; n++) {
-			var obj = data[n];
-			// var event = obj[0].event;
+		let nOn = 0,
+			nOff = 0;
 
-		}
+		temporal.map(obj => {
+			let event = obj[0].event;
+			let track = obj[0].track;
+			
+			// keep track of time
+			time += obj[1];
 
-		return data;
+			switch (typeCodes[event.type]) {
+				case "setTempo":
+					console.log("Tempo change!");
+					break;
+				case "noteOn":
+				case "noteOff":
+					let [nr, velocity] = event.data;
+					let noteOnEvent = record[track][nr];
+
+					if (noteOnEvent && velocity === 0) {
+						nOff++;
+
+						// note off: push to sequence
+						let octave = Math.round(nr / 12) - 2,
+							note = Notes[nr % 12],
+							duration = time - noteOnEvent.time;
+
+						// add entry to notes
+						sequence.push(new Note(octave, note, track, noteOnEvent.time, duration));
+						
+						// delete reference to event
+						record[nr] = false;
+
+					} else {
+						nOn++;
+						// note on: save to record
+						record[track][nr] = { ...event, time };
+					}
+					break;
+			}
+		});
+
+		console.log(nOn, nOff);
+
+		return sequence;
 	},
 	parse(midiFile, timeWarp, bpm) {
 		let trackStates = [];
@@ -34,6 +102,7 @@ const Replayer = {
 		let samplesToNextEvent = 0;
 		let midiEvent;
 		let temporal = [];
+		let typeCodes = this.typeCodes;
 		
 		for (let i=0; i<midiFile.tracks; i++) {
 			let ticksToNextEvent = midiFile.track[i].event.length ? midiFile.track[i].event[0].deltaTime : null;
@@ -87,28 +156,9 @@ const Replayer = {
 
 		function processEvents() {
 			function processNext() {
-				let event = midiEvent.event;
-
-				switch (event.type) {
-					case 0xff:
-						// console.log("meta", event);
-						break;
-					case 0xf0:
-						// console.log("sysEx", event);
-						break;
-					case 0xf7:
-						// console.log("dividedSysEx", event);
-						break;
-					case 0x08:
-						// console.log("noteOff", event);
-						break;
-					default:
-						console.log(event)
-				}
-
-			    if (!bpmOverride && event.type == "meta" && event.subtype == "setTempo" ) {
+			    if (!bpmOverride && typeCodes[midiEvent.event.type] == "setTempo" ) {
 					// tempo change events can occur anywhere in the middle and affect events that follow
-					beatsPerMinute = 60000000 / event.microsecondsPerBeat;
+					beatsPerMinute = 60000000 / midiEvent.event.data;
 				}
 				///
 				let beatsToGenerate = 0;

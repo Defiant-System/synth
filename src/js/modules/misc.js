@@ -39,15 +39,15 @@ class Note {
 		this.octave = octave;
 		this.note = note;
 		this.track = track;
-		this.time = time;
-		this.duration = duration;
+		this.time = time / 1000; // trasnlate from ms to seconds
+		this.duration = duration / 1000;
 		this.color = Palette["color-"+ track];
 
 		this.clip = [
 			SpriteMatrix[note][4] + (octave * OctaveWidth),
-			time * PPS,
+			this.time * PPS,
 			SpriteMatrix[note][6],
-			duration * PPS
+			this.duration * PPS
 		];
 	}
 

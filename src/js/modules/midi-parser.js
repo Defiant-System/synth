@@ -22,7 +22,7 @@ const MidiParser = {
      * @param  {[type]} _callback [description]
      * @return {[type]}           [description]
      */
-    parse: function(input, _callback){
+    parse: function(input, _callback) {
         if(input instanceof Uint8Array) return MidiParser.Uint8(input);
         else if(typeof input === 'string') return MidiParser.Base64(input);
         else if(input instanceof HTMLElement && input.type === 'file') return MidiParser.addListener(input , _callback);
@@ -34,7 +34,7 @@ const MidiParser = {
      * that will provide the binary data automating the conversion, and returning
      * the structured data to the provided callback function.
      */
-    addListener: function(_fileElement, _callback){
+    addListener: function(_fileElement, _callback) {
         if(!File || !FileReader) throw new Error('The File|FileReader APIs are not supported in this browser. Use instead MidiParser.Base64() or MidiParser.Uint8()');
 
         // validate provided element
@@ -42,18 +42,18 @@ const MidiParser = {
             !(_fileElement instanceof HTMLElement) ||
             _fileElement.tagName !== 'INPUT' ||
             _fileElement.type.toLowerCase() !== 'file' 
-        ){
+        ) {
             console.warn('MidiParser.addListener() : Provided element is not a valid FILE INPUT element');
             return false;
         }
-        _callback = _callback || function(){};
+        _callback = _callback || function() {};
 
-        _fileElement.addEventListener('change', function(InputEvt){             // set the 'file selected' event handler
+        _fileElement.addEventListener('change', function(InputEvt) {             // set the 'file selected' event handler
             if (!InputEvt.target.files.length) return false;                    // return false if no elements where selected
             console.log('MidiParser.addListener() : File detected in INPUT ELEMENT processing data..');
             let reader = new FileReader();                                      // prepare the file Reader
             reader.readAsArrayBuffer(InputEvt.target.files[0]);                 // read the binary data
-            reader.onload =  function(e){
+            reader.onload =  function(e) {
                 _callback( MidiParser.Uint8(new Uint8Array(e.target.result)));  // encode data with Uint8Array and call the parser
             };
         });
@@ -63,7 +63,7 @@ const MidiParser = {
      * Base64() : convert baset4 string into uint8 array buffer, before performing the
      * parsing subroutine.
      */
-    Base64 : function(b64String){
+    Base64 : function(b64String) {
         b64String = String(b64String);
 
         let raw = atob(b64String);
@@ -79,20 +79,20 @@ const MidiParser = {
      * and parsing it to a structured Object. When job is finised returns the object
      * or 'false' if any error was generated.
      */
-    Uint8: function(FileAsUint8Array){
+    Uint8: function(FileAsUint8Array) {
         let file = {
             data: null,
             pointer: 0,
-            movePointer: function(_bytes){                                      // move the pointer negative and positive direction
+            movePointer: function(_bytes) {                                      // move the pointer negative and positive direction
                 this.pointer += _bytes;
                 return this.pointer;
             },
-            readInt: function(_bytes){                                          // get integer from next _bytes group (big-endian)
+            readInt: function(_bytes) {                                          // get integer from next _bytes group (big-endian)
                 _bytes = Math.min(_bytes, this.data.byteLength-this.pointer);
                 if (_bytes < 1) return -1;                                                                      // EOF
                 let value = 0;
-                if(_bytes > 1){
-                    for(let i=1; i<= (_bytes-1); i++){
+                if(_bytes > 1) {
+                    for(let i=1; i<= (_bytes-1); i++) {
                         value += this.data.getUint8(this.pointer) * Math.pow(256, (_bytes - i));
                         this.pointer++;
                     }
@@ -101,24 +101,24 @@ const MidiParser = {
                 this.pointer++;
                 return value;
             },
-            readStr: function(_bytes){                                          // read as ASCII chars, the followoing _bytes
+            readStr: function(_bytes) {                                          // read as ASCII chars, the followoing _bytes
                 let text = '';
                 for(let char=1; char <= _bytes; char++) text +=  String.fromCharCode(this.readInt(1));
                 return text;
             },
-            readIntVLV: function(){                                             // read a variable length value
+            readIntVLV: function() {                                             // read a variable length value
                 let value = 0;
-                if ( this.pointer >= this.data.byteLength ){
+                if ( this.pointer >= this.data.byteLength ) {
                     return -1;                                                  // EOF
-                }else if(this.data.getUint8(this.pointer) < 128){               // ...value in a single byte
+                }else if(this.data.getUint8(this.pointer) < 128) {               // ...value in a single byte
                     value = this.readInt(1);
                 }else{                                                          // ...value in multiple bytes
                     let FirstBytes = [];
-                    while(this.data.getUint8(this.pointer) >= 128){
+                    while(this.data.getUint8(this.pointer) >= 128) {
                         FirstBytes.push(this.readInt(1) - 128);
                     }
                     let lastByte  = this.readInt(1);
-                    for(let dt = 1; dt <= FirstBytes.length; dt++){
+                    for(let dt = 1; dt <= FirstBytes.length; dt++) {
                         value += FirstBytes[FirstBytes.length - dt] * Math.pow(128, dt);
                     }
                     value += lastByte;
@@ -129,7 +129,7 @@ const MidiParser = {
 
         file.data = new DataView(FileAsUint8Array.buffer, FileAsUint8Array.byteOffset, FileAsUint8Array.byteLength);                                            // 8 bits bytes file data array
         //  ** read FILE HEADER
-        if(file.readInt(4) !== 0x4D546864){
+        if(file.readInt(4) !== 0x4D546864) {
             console.warn('Header validation failed (not MIDI standard or file corrupt.)');
             return false;                                                       // Header validation failed (not MIDI standard or file corrupt.)
         }
@@ -140,14 +140,14 @@ const MidiParser = {
         MIDI.track              = [];                                           // create array key for track data storing
         let timeDivisionByte1   = file.readInt(1);                              // get Time Division first byte
         let timeDivisionByte2   = file.readInt(1);                              // get Time Division second byte
-        if(timeDivisionByte1 >= 128){                                           // discover Time Division mode (fps or tpf)
+        if(timeDivisionByte1 >= 128) {                                           // discover Time Division mode (fps or tpf)
             MIDI.timeDivision    = [];
             MIDI.timeDivision[0] = timeDivisionByte1 - 128;                     // frames per second MODE  (1st byte)
             MIDI.timeDivision[1] = timeDivisionByte2;                           // ticks in each frame     (2nd byte)
-        }else MIDI.timeDivision  = (timeDivisionByte1 * 256) + timeDivisionByte2;// else... ticks per beat MODE  (2 bytes value)
+        } else MIDI.timeDivision  = (timeDivisionByte1 * 256) + timeDivisionByte2;// else... ticks per beat MODE  (2 bytes value)
 
         //  ** read TRACK CHUNK
-        for(let t=1; t <= MIDI.tracks; t++){
+        for(let t=1; t <= MIDI.tracks; t++) {
             MIDI.track[t-1]     = {event: []};                                  // create new Track entry in Array
             let headerValidation = file.readInt(4);
             if ( headerValidation === -1 ) break;                               // EOF
@@ -158,7 +158,7 @@ const MidiParser = {
             // ** read EVENT CHUNK
             let statusByte;
             let laststatusByte;
-            while(!endOfTrack){
+            while(!endOfTrack) {
                 e++;                                                            // increase by 1 event counter
                 MIDI.track[t-1].event[e-1] = {};                                // create new event object, in events array
                 MIDI.track[t-1].event[e-1].deltaTime  = file.readIntVLV();      // get DELTA TIME OF MIDI event (Variable Length Value)
@@ -174,11 +174,11 @@ const MidiParser = {
                 //
                 // ** IS META EVENT
                 //
-                if(statusByte === 0xFF){                                        // Meta Event type
+                if(statusByte === 0xFF) {                                       // Meta Event type
                     MIDI.track[t-1].event[e-1].type = 0xFF;                     // assign metaEvent code to array
                     MIDI.track[t-1].event[e-1].metaType =  file.readInt(1);     // assign metaEvent subtype
                     let metaEventLength = file.readIntVLV();                    // get the metaEvent length
-                    switch(MIDI.track[t-1].event[e-1].metaType){
+                    switch(MIDI.track[t-1].event[e-1].metaType) {
                         case 0x2F:                                              // end of track, has no data byte
                         case -1:                                                // EOF
                             endOfTrack = true;                                  // change FLAG to force track reading loop breaking
@@ -215,12 +215,12 @@ const MidiParser = {
                         default :
                             // if user provided a custom interpreter, call it
                             // and assign to event the returned data
-                            if( this.customInterpreter !== null){
+                            if( this.customInterpreter !== null) {
                                 MIDI.track[t-1].event[e-1].data = this.customInterpreter( MIDI.track[t-1].event[e-1].metaType, file, metaEventLength);
                             }
                             // if no customInterpretr is provided, or returned
                             // false (=apply default), perform default action
-                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false){
+                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false) {
                                 file.readInt(metaEventLength);
                                 MIDI.track[t-1].event[e-1].data = file.readInt(metaEventLength);
                                 if (this.debug) console.info('Unimplemented 0xFF meta event! data block readed as Integer');
@@ -236,18 +236,16 @@ const MidiParser = {
                     if(!statusByte[1]) statusByte.unshift('0');                 // force 2 digits
                     MIDI.track[t-1].event[e-1].type = parseInt(statusByte[0], 16);// first byte is EVENT TYPE ID
                     MIDI.track[t-1].event[e-1].channel = parseInt(statusByte[1], 16);// second byte is channel
-                    switch(MIDI.track[t-1].event[e-1].type){
+                    switch(MIDI.track[t-1].event[e-1].type) {
                         case 0xF:{                                              // System Exclusive Events
-
                             // if user provided a custom interpreter, call it
                             // and assign to event the returned data
-                            if( this.customInterpreter !== null){
+                            if( this.customInterpreter !== null) {
                                 MIDI.track[t-1].event[e-1].data = this.customInterpreter( MIDI.track[t-1].event[e-1].type, file , false);
                             }
-
                             // if no customInterpretr is provided, or returned
                             // false (=apply default), perform default action
-                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false){
+                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false) {
                                 let event_length = file.readIntVLV();
                                 MIDI.track[t-1].event[e-1].data = file.readInt(event_length);
                                 if (this.debug) console.info('Unimplemented 0xF exclusive events! data block readed as Integer');
@@ -273,13 +271,13 @@ const MidiParser = {
                         default:
                             // if user provided a custom interpreter, call it
                             // and assign to event the returned data
-                            if( this.customInterpreter !== null){
+                            if( this.customInterpreter !== null) {
                                 MIDI.track[t-1].event[e-1].data = this.customInterpreter( MIDI.track[t-1].event[e-1].metaType, file , false);
                             }
 
                             // if no customInterpretr is provided, or returned
                             // false (=apply default), perform default action
-                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false){
+                            if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false) {
                                 console.log('Unknown EVENT detected... reading cancelled!');
                                 return false;
                             }
@@ -297,6 +295,6 @@ const MidiParser = {
      * to be manually increased
      * If you want default action to be performed, return false
      */
-    customInterpreter : null // function( e_type , arrayByffer, metaEventLength){ return e_data_int }
+    customInterpreter : null // function( e_type , arrayByffer, metaEventLength) { return e_data_int }
 };
 

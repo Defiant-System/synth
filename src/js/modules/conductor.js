@@ -16,7 +16,7 @@ const Conductor = {
 
 		// song note visualisation
 		this.song = this.parse(file.buffer);
-		// Score.setNotes(this.song);
+		Score.setTimeline(this.song);
 	},
 	play() {
 		// play midi
@@ -70,15 +70,19 @@ const Conductor = {
 		return keys;
 	},
 	parse(buffer) {
-		let midiFile = MidiParser.parse(buffer),
-			data = Replayer.parse(midiFile, 1, 120);
+		let midiFile = MidiParser.parse(buffer);
+		let song = Replayer.parse(midiFile, 1, 120);
+		// console.log(song);
 
-		console.log(data);
+		// let test = this.parse2(buffer);
+		// console.log(test);
+
+		return song;
 	},
 	parse2(buffer) {
 		let midi = MidiParser.parse(buffer),
 			sequence = [],
-			notes = [],
+			timeline = [],
 			record = {},
 			// ticks per second
 			tps = 60 / (120 * midi.timeDivision),
@@ -123,7 +127,7 @@ const Conductor = {
 				let time = down.tick * tps,
 					duration = (event.tick - down.tick) * tps;
 				// add entry to notes
-				notes.push(new Note(down.octave, down.note, down.track, time, duration));
+				timeline.push(new Note(down.octave, down.note, down.track, time, duration));
 				// delete reference to key
 				record[nr] = false;
 
@@ -137,8 +141,6 @@ const Conductor = {
 			}
 		});
 
-		console.log( midi );
-
-		return { notes, duration: sequence[sequence.length-1].tick * tps };
+		return { timeline, end: sequence[sequence.length-1].tick * tps };
 	}
 };

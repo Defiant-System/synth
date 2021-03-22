@@ -27,12 +27,11 @@ const Score = {
 		// save guide lines background - for faster render
 		this.guideLines = this.ctx.getImageData(0, 0, this.dim.width, this.dim.height);
 	},
-	setNotes(song) {
-		this.notes = song.notes;
-		this.songHeight = song.duration * PPS;
-		this.notes.map(note => note.flip(this.songHeight));
+	setTimeline(song) {
+		this.song = song;
+		this.songHeight = (song.end / 1000) * PPS; // translate from ms to seconds
+		this.song.timeline.map(note => note.flip(this.songHeight));
 
-		// this.render(this.dim.height - 30);
 		this.render(-this.songHeight - 20);
 	},
 	render(top) {
@@ -44,7 +43,7 @@ const Score = {
 
 		let max = top,
 			min = top - height;
-		this.notes.map(note => {
+		this.song.timeline.map(note => {
 			if (note.inView(max, min)) {
 				notesInView.push(note);
 			}
