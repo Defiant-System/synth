@@ -4,6 +4,20 @@ const Conductor = {
 	init() {
 
 	},
+	prepare(file) {
+		// set window title
+		window.title = `Synth <i class="icon-heart"></i> ${file.base}`;
+		
+		// stop any playing song
+		MidiPlayer.pause();
+
+		// load & prepare midi buffer
+		MidiPlayer.load(file.buffer);
+
+		// song note visualisation
+		this.song = this.parse(file.buffer);
+		// Score.setNotes(this.song);
+	},
 	play() {
 		// play midi
 		MidiPlayer.play({
@@ -44,21 +58,6 @@ const Conductor = {
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
 	},
-	prepare(file) {
-		// set window title
-		// window.title = `Synth - ${file.base}`;
-		window.title = `Synth <i class="icon-heart"></i> ABBA - Winner Takes It All`;
-		
-		// stop any playing song
-		MidiPlayer.pause();
-
-		// load & prepare midi buffer
-		MidiPlayer.load(file.buffer);
-
-		// song note visualisation
-		this.song = this.parse(file.buffer);
-		Score.setNotes(this.song);
-	},
 	getPressedKeysAt(time) {
 		let keys = [];
 
@@ -71,13 +70,20 @@ const Conductor = {
 		return keys;
 	},
 	parse(buffer) {
+		let midiFile = MidiParser.parse(buffer),
+			data = Replayer.parse(midiFile, 1, 120);
+
+		console.log(data);
+	},
+	parse2(buffer) {
 		let midi = MidiParser.parse(buffer),
 			sequence = [],
 			notes = [],
 			record = {},
 			// ticks per second
 			tps = 60 / (120 * midi.timeDivision),
-			lastTick = 0;
+			lastTick = 0,
+			song = {};
 
 		// put all notes into one sequence array
 		midi.track.map((track, i) => {
@@ -86,6 +92,19 @@ const Conductor = {
 				tick += event.deltaTime;
 				sequence.push({ ...event, tick, track: i });
 			});
+		});
+
+		// collect info
+		sequence.map(event => {
+			if (![8, 9].includes(event.type)) {
+				switch (event.metaType) {
+					case 0x2f: // endOfTrack
+						song.totalTicks = Math.max(song.totalTicks || 0, event.tick);
+						break;
+					case 0x51: // setTempo
+						break;
+				}
+			}
 		});
 
 		// remove non-note events
@@ -117,6 +136,8 @@ const Conductor = {
 				lastTick = event.tick;
 			}
 		});
+
+		console.log( midi );
 
 		return { notes, duration: sequence[sequence.length-1].tick * tps };
 	}
