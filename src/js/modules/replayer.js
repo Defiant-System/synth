@@ -47,9 +47,6 @@ const Replayer = {
 		let record = { "0":{}, "1":{}, "2":{}, "3":{}, "4":{}, "5":{}, "6":{}, "7":{} };
 		let time = 0.0005;
 
-		let nOn = 0,
-			nOff = 0;
-
 		temporal.map(obj => {
 			let event = obj[0].event;
 			let track = obj[0].track;
@@ -63,14 +60,14 @@ const Replayer = {
 					break;
 				case "noteOn":
 				case "noteOff":
+					// TODO: handle channel MUTE
+
 					let [nr, velocity] = event.data;
 					let noteOnEvent = record[track][nr];
 
 					if (noteOnEvent && velocity === 0) {
-						nOff++;
-
 						// note off: push to sequence
-						let octave = Math.round(nr / 12) - 2,
+						let octave = Math.floor(nr / 12) - 2,
 							note = Notes[nr % 12],
 							duration = time - noteOnEvent.time;
 
@@ -81,15 +78,12 @@ const Replayer = {
 						record[nr] = false;
 
 					} else {
-						nOn++;
 						// note on: save to record
 						record[track][nr] = { ...event, time };
 					}
 					break;
 			}
 		});
-
-		console.log(nOn, nOff);
 
 		return sequence;
 	},
@@ -183,7 +177,12 @@ const Replayer = {
 
 		let end = this.getLength(temporal);
 		let timeline = this.getTimeline(temporal);
+		let syncTime = 0;
 
-		return { timeline, end };
+		timeline.slice(0, 50).map(note => {
+			if (!syncTime && note.time > 0) syncTime = note.time;
+		});
+
+		return { timeline, syncTime, end };
 	}
 };
