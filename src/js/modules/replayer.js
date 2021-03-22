@@ -69,10 +69,10 @@ const Replayer = {
 						// note off: push to sequence
 						let octave = Math.floor(nr / 12) - 2,
 							note = Notes[nr % 12],
-							duration = time - noteOnEvent.time;
+							noteDuration = time - noteOnEvent.time;
 
 						// add entry to notes
-						sequence.push(new Note(octave, note, track, noteOnEvent.time, duration));
+						sequence.push(new Note(octave, note, track, noteOnEvent.time, noteDuration));
 						
 						// delete reference to event
 						record[nr] = false;
@@ -175,14 +175,9 @@ const Replayer = {
 
 		processEvents();
 
-		let end = this.getLength(temporal);
 		let timeline = this.getTimeline(temporal);
-		let syncTime = 0;
+		let duration = this.getLength(temporal) / 1000;
 
-		timeline.slice(0, 50).map(note => {
-			if (!syncTime && note.time > 0) syncTime = note.time;
-		});
-
-		return { timeline, syncTime, end };
+		return { timeline, duration };
 	}
 };

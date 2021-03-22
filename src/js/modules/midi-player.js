@@ -19,18 +19,7 @@ const MidiPlayer = {
 		this.player_.seek(0);
 		this.player_.load(buffer);
 	},
-	async play(path=false) {
-		let opt = {};
-		if (!this.player_) {
-			await this.getLib_();
-		}
-		if (path && path.constructor === String) {
-			this.player_.pause();
-			this.player_.seek(0);
-			this.player_.load(path);
-		} else if (path.constructor === Object) {
-			opt = { ...path };
-		}
+	async play(opt={}) {
 		this.player_.play(opt);
 	},
 	pause() {
@@ -72,6 +61,6 @@ const MidiPlayer = {
 		return this.player_.duration;
 	},
 	get playing()  {
-		return this.player_.playing;
+		return this.player_._playing;
 	}
 };

@@ -1,6 +1,6 @@
 
 const Conductor = {
-	time: false,
+	time: 0,
 	init() {
 
 	},
@@ -15,18 +15,17 @@ const Conductor = {
 		MidiPlayer.load(file.buffer);
 
 		// song note visualisation
-		this.song = this.parse(file.buffer);
+		let midi = MidiParser.parse(file.buffer);
+		this.song = Replayer.parse(midi, 1, 120);
 		Score.setTimeline(this.song);
 	},
 	play() {
 		// play midi
 		MidiPlayer.play({
 			loop: false,
-			syncCallback() {
-				console.log("playing...");
-
+			syncCallback(time) {
 				// tilting timer a little bit
-				Conductor.time = Date.now() + 250;
+				if (!Conductor.time) Conductor.time = Date.now() + 350;
 
 				// start sync'ed
 				Conductor.update();
@@ -43,7 +42,7 @@ const Conductor = {
 	},
 	update() {
 		let time = (Date.now() - this.time) / 1000,
-			duration = MidiPlayer.duration;
+			duration = this.song.duration;
 		
 		// progress bar
 		Progress.render(time / duration);
@@ -68,12 +67,5 @@ const Conductor = {
 		});
 
 		return keys;
-	},
-	parse(buffer) {
-		let midiFile = MidiParser.parse(buffer);
-		let song = Replayer.parse(midiFile, 1, 120);
-		// console.log(song);
-
-		return song;
 	}
 };

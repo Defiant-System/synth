@@ -29,10 +29,10 @@ const Score = {
 	},
 	setTimeline(song) {
 		this.song = song;
-		this.songHeight = (song.end / 1000) * PPS; // translate from ms to seconds
+		this.songHeight = song.duration * PPS; // translate from ms to seconds
 		this.song.timeline.map(note => note.flip(this.songHeight));
 
-		this.render(-this.songHeight - 20);
+		this.render(-this.songHeight - 5);
 	},
 	render(top) {
 		let height = this.dim.height;
