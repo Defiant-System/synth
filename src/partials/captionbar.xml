@@ -4,6 +4,6 @@
 	</Group>
 	<Group />
 	<Group width="13%">
-		<Tool symbol="icon-gear" click="main-menu"/>
+		<Tool symbol="icon-gear" menu="score-board"/>
 	</Group>
 </CaptionToolBar>

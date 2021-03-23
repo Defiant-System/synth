@@ -35,8 +35,10 @@ const Score = {
 		this.render(-this.songHeight - song.topShift);
 	},
 	render(top) {
+		let ctx  = this.ctx;
 		let height = this.dim.height;
 		let notesInView = [];
+		let paletteColors = Palette;
 
 		// considers height of view
 		top += height;
@@ -49,39 +51,39 @@ const Score = {
 			}
 		});
 
-		// clear canvas
-		this.cvs.prop({ height });
-
 		// guidelines background
-		this.ctx.putImageData(this.guideLines, 0, 0);
+		ctx.putImageData(this.guideLines, 0, 0);
 
 		// paint notes
 		notesInView.map(note => {
 			let params = note.add(top),
 				y = params[1],
-				h = y + params[3];
+				h = y + params[3],
+				gradient = ctx.createLinearGradient(0, y, 0, h);
 
 			// border radius
 			params.push(4);
 
-			this.ctx.shadowOffsetY = 2;
-			this.ctx.shadowBlur = 2;
-			this.ctx.shadowColor = "rgba(0,0,0,.25)";
-			this.ctx.strokeStyle = "rgba(0,0,0,.35)";
-			this.ctx.fillStyle = Palette["color-"+ note.track];
-			this.ctx.beginPath();
-			this.ctx.roundRect(...params);
-			this.ctx.fill();
-			this.ctx.stroke();
+			ctx.save();
+			ctx.shadowOffsetY = 2;
+			ctx.shadowBlur = 2;
+			ctx.shadowColor = "rgba(0,0,0,.25)";
+			ctx.strokeStyle = "rgba(0,0,0,.35)";
+			ctx.fillStyle = paletteColors["color-"+ note.track];
+			ctx.beginPath();
+			ctx.roundRect(...params);
+			ctx.fill();
+			ctx.stroke();
+			ctx.restore();
 
-			let gradient = this.ctx.createLinearGradient(0, y, 0, h);
+			// gradient
 			gradient.addColorStop(0.0, "rgba(0,0,0,0)");
 			gradient.addColorStop(1.0, "rgba(0,0,0,.35)");
 
-			this.ctx.beginPath();
-			this.ctx.fillStyle = gradient;
-			this.ctx.roundRect(...params);
-			this.ctx.fill();
+			ctx.beginPath();
+			ctx.fillStyle = gradient;
+			ctx.roundRect(...params);
+			ctx.fill();
 		});
 	}
 };

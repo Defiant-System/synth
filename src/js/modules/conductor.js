@@ -37,8 +37,8 @@ const Conductor = {
 				break;
 			case "chopin.mid":
 				midi.bpm = 116;
-				midi.timeShift = -1300;
-				midi.topShift = -130;
+				midi.timeShift = -1250;
+				midi.topShift = -125;
 				break;
 			case "havana.mid":
 				midi.bpm = 105;
