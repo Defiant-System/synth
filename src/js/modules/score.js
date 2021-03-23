@@ -10,6 +10,9 @@ const Score = {
 		// set canvas dimensions
 		this.cvs.prop(this.dim);
 
+		// defaults
+		this._lightUp = [];
+
 		// guide lines
 		let guideLines = [];
 		[...Array(Octaves)].map((i, octave) => {
@@ -27,9 +30,10 @@ const Score = {
 		// save guide lines background - for faster render
 		this.guideLines = this.ctx.getImageData(0, 0, this.dim.width, this.dim.height);
 	},
-	render(top, notesInView=[]) {
+	render(top, notesInView=[], lightUp=[]) {
 		let ctx  = this.ctx;
 		let paletteColors = Palette;
+		let bulbTop = this.dim.height - 4;
 
 		// guidelines background
 		ctx.putImageData(this.guideLines, 0, 0);
@@ -65,5 +69,32 @@ const Score = {
 			ctx.roundRect(...params);
 			ctx.fill();
 		});
+
+		
+		if (!lightUp.length) lightUp = this._lightUp;
+		this._lightUp = lightUp;
+
+		ctx.save();
+		// ctx.globalAlpha = .75;
+		ctx.globalCompositeOperation = "lighter";
+
+		lightUp.map(bulb => {
+			let radius = bulb.width >> 1;
+			let left = bulb.left + radius;
+			let height = radius + 25;
+			let gradient = ctx.createRadialGradient(left, bulbTop, 0, left, bulbTop, height);
+
+			gradient.addColorStop(0.0, "rgba(255,255,255,1)");
+			gradient.addColorStop(0.2, "rgba(255,255,255,.5)");
+			gradient.addColorStop(0.5, "rgba(255,255,255,.02)");
+			gradient.addColorStop(1.0, "rgba(255,255,255,0)");
+			ctx.fillStyle = gradient;
+
+			ctx.beginPath();
+			ctx.arc(left, bulbTop, height, Math.PI, 0);
+			ctx.fill();
+		});
+
+		ctx.restore();
 	}
 };

@@ -58,7 +58,8 @@ const Keyboard = {
 		
 		let ctx = this.ctx,
 			keys = this.keys,
-			sprite = this.sprite;
+			sprite = this.sprite,
+			lightUp = [];
 
 		keys.map(key => {
 			let cKey = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)),
@@ -66,7 +67,11 @@ const Keyboard = {
 				state = cKey ? "down" : "up";
 			key.press(state, track);
 
-			ctx.drawImage(sprite, ...key.serialize());
+			let dim = key.serialize();
+			if (cKey) lightUp.push({ left: dim[4], width: dim[6] });
+			ctx.drawImage(sprite, ...dim);
 		});
+
+		return lightUp;
 	}
 };

@@ -88,10 +88,10 @@ const Conductor = {
 		Progress.render(time / songDuration);
 
 		// keyboard
-		Keyboard.render(downKeys);
+		let lightUp = Keyboard.render(downKeys);
 
 		// Score scroll
-		Score.render(top + scoreHeight, notesInView);
+		Score.render(top + scoreHeight, notesInView, lightUp);
 
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
