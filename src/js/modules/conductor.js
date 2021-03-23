@@ -48,9 +48,12 @@ const Conductor = {
 		}
 
 		this.song = Replayer.parse(midi);
+		this.song.height = this.song.duration * PPS;
+		this.song.timeline.map(note => note.flipVerticaly(this.song.height));
 
-		// console.log(this.song);
-		Score.setTimeline(this.song);
+		Score.song = this.song;
+
+		this.update(false, -this.song.height - this.song.topShift);
 	},
 	play() {
 		// play midi
@@ -73,22 +76,38 @@ const Conductor = {
 		cancelAnimationFrame(Conductor._rafID);
 		Conductor._rafID = undefined;
 	},
-	update() {
+	update(ignore, startTop) {
 		let time = (Date.now() - this.time) / 1000,
-			duration = this.song.duration;
-		
+			downKeys = this.getPressedKeysAt(time),
+			songDuration = this.song.duration,
+			scoreHeight = Score.dim.height,
+			top = startTop || (time - songDuration) * PPS,
+			notesInView = this.getNotesInViewAt(top, scoreHeight);
+
 		// progress bar
-		Progress.render(time / duration);
+		Progress.render(time / songDuration);
 
 		// keyboard
-		let downKeys = this.getPressedKeysAt(time);
 		Keyboard.render(downKeys);
 
 		// Score scroll
-		Score.render((time - duration) * PPS);
+		Score.render(top + scoreHeight, notesInView);
 
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
+	},
+	getNotesInViewAt(top, height) {
+		let notes = [],
+			max = top + height,
+			min = top - height;
+		
+		this.song.timeline.map(note => {
+			if (note.inView(max, min)) {
+				notes.push(note);
+			}
+		});
+
+		return notes;
 	},
 	getPressedKeysAt(time) {
 		let keys = [];

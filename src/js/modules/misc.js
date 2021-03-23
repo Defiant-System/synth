@@ -58,11 +58,11 @@ class Note {
 		return isInView;
 	}
 
-	flip(songHeight) {
+	flipVerticaly(songHeight) {
 		this.clip[1] = songHeight - this.clip[1] - this.clip[3];
 	}
 
-	add(y) {
+	addTop(y) {
 		let clip = [...this.clip];
 		clip[1] += y;
 		return clip;

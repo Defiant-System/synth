@@ -27,36 +27,16 @@ const Score = {
 		// save guide lines background - for faster render
 		this.guideLines = this.ctx.getImageData(0, 0, this.dim.width, this.dim.height);
 	},
-	setTimeline(song) {
-		this.song = song;
-		this.songHeight = song.duration * PPS; // translate from ms to seconds
-		this.song.timeline.map(note => note.flip(this.songHeight));
-
-		this.render(-this.songHeight - song.topShift);
-	},
-	render(top) {
+	render(top, notesInView=[]) {
 		let ctx  = this.ctx;
-		let height = this.dim.height;
-		let notesInView = [];
 		let paletteColors = Palette;
-
-		// considers height of view
-		top += height;
-
-		let max = top,
-			min = top - height;
-		this.song.timeline.map(note => {
-			if (note.inView(max, min)) {
-				notesInView.push(note);
-			}
-		});
 
 		// guidelines background
 		ctx.putImageData(this.guideLines, 0, 0);
 
 		// paint notes
 		notesInView.map(note => {
-			let params = note.add(top),
+			let params = note.addTop(top),
 				y = params[1],
 				h = y + params[3],
 				gradient = ctx.createLinearGradient(0, y, 0, h);
