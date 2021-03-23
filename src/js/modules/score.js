@@ -33,7 +33,6 @@ const Score = {
 	render(top, notesInView=[], lightUp=[]) {
 		let ctx  = this.ctx;
 		let paletteColors = Palette;
-		let bulbTop = this.dim.height - 4;
 
 		// guidelines background
 		ctx.putImageData(this.guideLines, 0, 0);
@@ -77,21 +76,25 @@ const Score = {
 		ctx.save();
 		// ctx.globalAlpha = .75;
 		ctx.globalCompositeOperation = "lighter";
+		ctx.filter = "blur(7px)";
+
+		let bulbTop = this.dim.height - 4;
+		let gradient = ctx.createLinearGradient(0, bulbTop, 0, bulbTop - 80);
+		gradient.addColorStop(0.0, "rgba(210,255,210,1)");
+		gradient.addColorStop(1.0, "rgba(210,255,210,0)");
+
+		ctx.fillStyle = gradient;
 
 		lightUp.map(bulb => {
 			let radius = bulb.width >> 1;
 			let left = bulb.left + radius;
 			let height = radius + 25;
-			let gradient = ctx.createRadialGradient(left, bulbTop, 0, left, bulbTop, height);
-
-			gradient.addColorStop(0.0, "rgba(255,255,255,1)");
-			gradient.addColorStop(0.2, "rgba(255,255,255,.5)");
-			gradient.addColorStop(0.5, "rgba(255,255,255,.02)");
-			gradient.addColorStop(1.0, "rgba(255,255,255,0)");
-			ctx.fillStyle = gradient;
-
+			let pi = Math.PI;
+			
 			ctx.beginPath();
-			ctx.arc(left, bulbTop, height, Math.PI, 0);
+			ctx.moveTo(left, bulbTop + 15);
+			ctx.arc(left, bulbTop, 80, pi * 1.4, -pi * .4, false);
+			ctx.lineTo(left, bulbTop + 15);
 			ctx.fill();
 		});
 
