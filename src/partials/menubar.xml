@@ -25,13 +25,11 @@
 			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
 			<Menu type="divider"/>
 			<Menu name="Large Hall" click="select-reverb" arg="~/ir/large-hall.ogg" check-group="midi-reverb"/>
+			<Menu name="Cathedral" click="select-reverb" arg="~/ir/cathedral.wav" check-group="midi-reverb"/>
+			<Menu name="Chruch" click="select-reverb" arg="~/ir/church.wav" check-group="midi-reverb"/>
 			<Menu name="Artifical Forest" click="select-reverb" arg="~/ir/artificial-forest.mp3" check-group="midi-reverb"/>
-			<Menu name="Going Home" click="select-reverb" arg="~/ir/going-home.wav" check-group="midi-reverb"/>
 			<Menu name="Greek Echo Hall" click="select-reverb" arg="~/ir/greek-echo-hall.wav" check-group="midi-reverb"/>
-			<Menu name="Large Bottle" click="select-reverb" arg="~/ir/large-bottle-hall.wav" check-group="midi-reverb"/>
-			<Menu name="Large Long Echo Hall" click="select-reverb" arg="~/ir/large-long-echo-hall.wav" check-group="midi-reverb"/>
-			<Menu name="Large Wide Echo Hall" click="select-reverb" arg="~/ir/large-wide-echo-hall.wav" check-group="midi-reverb"/>
-			<Menu name="St Nicholaes Chruch" click="select-reverb" arg="~/ir/st-nicolaes-church.wav" check-group="midi-reverb"/>
+			<Menu name="Large Echo Hall" click="select-reverb" arg="~/ir/large-echo-hall.wav" check-group="midi-reverb"/>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu type="caption" name="Volume:"/>

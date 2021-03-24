@@ -73,6 +73,8 @@ const Score = {
 		if (!lightUp.length) lightUp = this._lightUp;
 		this._lightUp = lightUp;
 
+		return;
+
 		ctx.save();
 		// ctx.globalAlpha = .75;
 		ctx.globalCompositeOperation = "lighter";

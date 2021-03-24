@@ -44,7 +44,7 @@ const MidiPlayer = {
 		this.player_.reverb(buffer);
 	},
 	dispatch(type) {
-		console.log("MidiPlayer: ", type);
+		// console.log("MidiPlayer: ", type);
 		switch (type) {
 			case "ready": break;
 			case "buffering": break;

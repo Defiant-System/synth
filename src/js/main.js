@@ -22,7 +22,7 @@ const synth = {
 		// auto select reverb
 		// this.dispatch({ type: "select-reverb", arg: "~/js/ir-large-hall.ogg" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/albeniz.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/abba.mid" });
 	},
 	async dispatch(event) {
 		let Self = synth,
