@@ -20,7 +20,7 @@ const synth = {
 		await Conductor.init();
 
 		// auto select reverb
-		this.dispatch({ type: "select-reverb", arg: "~/js/ir-large-hall.ogg" });
+		// this.dispatch({ type: "select-reverb", arg: "~/js/ir-large-hall.ogg" });
 		// auto select song
 		this.dispatch({ type: "select-song", arg: "~/midi/albeniz.mid" });
 	},

@@ -89,7 +89,7 @@
 			if (this._songPtr) this._destroySong();
 
 			if (!this._ready) {
-				this._onready = () => this.load(urlOrBuf);
+				return this._onready = () => this.load(urlOrBuf);
 			}
 			// emit event
 			this._options.dispatch("buffering");
@@ -283,6 +283,10 @@
 
 		async reverb(buffer) {
 			if (buffer) {
+				if (this.reverbConvolver) {
+					this.reverbConvolver.disconnect(0);
+					this._node.connect(this.gainNode);
+				}
 				this.reverbConvolver = this._audioContext.createConvolver();
 				this.reverbConvolver.buffer = buffer;
 				this.reverbConvolver.connect(this.gainNode);
