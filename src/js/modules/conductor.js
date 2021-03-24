@@ -7,7 +7,8 @@ const Conductor = {
 	},
 	prepare(file) {
 		// set window title
-		let name = file.base.split(".")[0].toUpperCase();
+		let name = file.base.split(".")[0];
+		name = name.slice(0,1).toUpperCase() + name.slice(1);
 		window.title = `Synth <i class="icon-heart"></i> ${name}`;
 
 		// stop any playing song

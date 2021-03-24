@@ -95,8 +95,16 @@ class Key {
 		// move clip area
 		if (this.state === "down") {
 			clip[0] += SpriteHalf + (this.track * SpriteHalf);
+
+			clip[0] += 1;
+			clip[2] -= 2;
+			clip[3] -= 1;
+
+			clip[4] += 1;
+			clip[6] -= 2;
+			clip[7] -= 1;
 		}
-		
+
 		return clip;
 	}
 };

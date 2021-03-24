@@ -69,11 +69,9 @@ const Score = {
 			ctx.fill();
 		});
 
-		
+		return;
 		if (!lightUp.length) lightUp = this._lightUp;
 		this._lightUp = lightUp;
-
-		return;
 
 		ctx.save();
 		// ctx.globalAlpha = .75;
@@ -82,8 +80,8 @@ const Score = {
 
 		let bulbTop = this.dim.height - 4;
 		let gradient = ctx.createLinearGradient(0, bulbTop, 0, bulbTop - 80);
-		gradient.addColorStop(0.0, "rgba(210,255,210,1)");
-		gradient.addColorStop(1.0, "rgba(210,255,210,0)");
+		gradient.addColorStop(0.0, "rgba(255,255,255,1)");
+		gradient.addColorStop(1.0, "rgba(255,255,255,0)");
 
 		ctx.fillStyle = gradient;
 
