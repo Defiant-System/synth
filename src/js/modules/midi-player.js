@@ -17,7 +17,7 @@ const MidiPlayer = {
 	load(buffer) {
 		this.player_.pause();
 		this.player_.seek(0);
-		this.player_.load(buffer);
+		return this.player_.load(buffer);
 	},
 	async play(opt={}) {
 		this.player_.play(opt);

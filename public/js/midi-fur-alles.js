@@ -233,7 +233,7 @@
 				return this._audioContext.suspend();
 			}
 			if (this._syncCallback) {
-				this._syncCallback(this.currentTime);
+				this._syncCallback();
 				// should be called only once
 				this._syncCallback = false;
 			}

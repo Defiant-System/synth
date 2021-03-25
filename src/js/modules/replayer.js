@@ -90,7 +90,6 @@ const Replayer = {
 	parse(midiFile, timeWarp=1) {
 		let trackStates = [];
 		let beatsPerMinute = 120;
-		// let bpmOverride = midiFile.bpm ? true : false;
 		let ticksPerBeat = midiFile.timeDivision;
 		let nextEventInfo;
 		let samplesToNextEvent = 0;
@@ -147,7 +146,7 @@ const Replayer = {
 		function processEvents() {
 			function processNext() {
 			    if (typeCodes[midiEvent.event.metaType] == "setTempo" ) {
-					// tempo change events can occur anywhere in the middle and affect events that follow
+					// tempo change events can occur mid-song and affect events that follow
 					beatsPerMinute = 60000000 / midiEvent.event.data;
 				}
 				let beatsToGenerate = 0;
@@ -169,14 +168,9 @@ const Replayer = {
 		processEvents();
 
 		let timeline = this.getTimeline(temporal);
-		let firstNoteTime = timeline[0].time;
 		let duration = this.getLength(temporal) / 1000;
-		let timeShift = midiFile.timeShift;
-		let topShift = midiFile.topShift;
+		let timeShift = timeline[0].time - .3;
 
-		// console.log(duration);
-		// console.log(midiFile.timeDivision);
-
-		return { timeline, duration, firstNoteTime, timeShift, topShift };
+		return { timeline, duration, timeShift };
 	}
 };
