@@ -91,7 +91,7 @@ const Conductor = {
 		}
 
 		// console.log("span: ", this.viewIndex, i);
-		console.log("Notes in view: ", i - this.viewIndex);
+		// console.log("Notes in view: ", i - this.viewIndex);
 
 		return timeline.slice(this.viewIndex, i);
 	},
