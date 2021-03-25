@@ -1,6 +1,7 @@
 
 const Conductor = {
 	time: 0,
+	viewIndex: 0,
 	init() {
 
 	},
@@ -69,13 +70,32 @@ const Conductor = {
 	getNotesInViewAt(top, height) {
 		let notes = [],
 			max = top + height,
-			min = top - height;
+			min = top - height,
+			timeline = this.song.timeline,
+			i = this.viewIndex,
+			il = timeline.length;
 		
+		for (; i<il; i++) {
+			let note = timeline[i],
+				nY = -note.clip[1],
+				nH = nY - note.clip[3];
+
+			if (nY < max && nY > min || nH < max && nH > min) {
+				/* note in view */
+				notes.push(note);
+			}
+		}
+
+		console.log("for len: ", notes.length);
+
+		notes = [];
 		this.song.timeline.map(note => {
 			if (note.inView(max, min)) {
 				notes.push(note);
 			}
 		});
+
+		console.log("map len: ", notes.length);
 
 		return notes;
 	},

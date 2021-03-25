@@ -1,5 +1,5 @@
 
-const PPS = 100;
+const PPS = 150;
 const Octaves = 7;
 const OctaveWidth = 161;
 const OctaveMinor = 68.5;

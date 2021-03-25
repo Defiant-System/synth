@@ -55,9 +55,6 @@ const Replayer = {
 			time += obj[1];
 
 			switch (typeCodes[event.type]) {
-				case "setTempo":
-					console.log("Tempo change!");
-					break;
 				case "noteOn":
 				case "noteOff":
 					// TODO: handle channel MUTE
@@ -84,8 +81,8 @@ const Replayer = {
 					break;
 			}
 		});
-
-		return sequence;
+		// return sorted timeline
+		return sequence.sort((a, b) => a.time - b.time);
 	},
 	parse(midiFile, timeWarp=1) {
 		let trackStates = [];
@@ -169,7 +166,7 @@ const Replayer = {
 
 		let timeline = this.getTimeline(temporal);
 		let duration = this.getLength(temporal) / 1000;
-		let timeShift = timeline[0].time - .2;
+		let timeShift = timeline[0].time - .3;
 
 		return { timeline, duration, timeShift };
 	}
