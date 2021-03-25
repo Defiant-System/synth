@@ -57,7 +57,7 @@ const Conductor = {
 		Progress.render(this.time ? time : 0, duration);
 
 		// keyboard
-		// let lightUp = Keyboard.render(downKeys);
+		let lightUp = Keyboard.render(downKeys);
 
 		// Score scroll
 		Score.render(top + scoreHeight, notesInView, lightUp);
