@@ -169,7 +169,7 @@ const Replayer = {
 
 		let timeline = this.getTimeline(temporal);
 		let duration = this.getLength(temporal) / 1000;
-		let timeShift = timeline[0].time - .3;
+		let timeShift = timeline[0].time - .2;
 
 		return { timeline, duration, timeShift };
 	}

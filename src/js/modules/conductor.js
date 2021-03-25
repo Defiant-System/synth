@@ -60,7 +60,7 @@ const Conductor = {
 		let lightUp = Keyboard.render(downKeys);
 
 		// Score scroll
-		Score.render(top + scoreHeight, notesInView, lightUp);
+		Score.render(top + scoreHeight - 5, notesInView, lightUp);
 
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
