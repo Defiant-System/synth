@@ -152,7 +152,7 @@
 
 		_loadSong(midiBuf) {
 			let optsPtr = this._lib._mid_alloc_options(
-				SAMPLE_RATE,
+				this._audioContext.sampleRate || SAMPLE_RATE,
 				AUDIO_FORMAT,
 				NUM_CHANNELS,
 				BUFFER_SIZE

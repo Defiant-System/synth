@@ -22,28 +22,23 @@ const Conductor = {
 
 		switch (file.base) {
 			case "abba.mid":
-				midi.bpm = 120;
-				midi.timeShift = 350;
+				midi.timeShift = 350;	// 0
 				midi.topShift = 35;
 				break;
 			case "albeniz.mid":
-				midi.bpm = 117;
-				midi.timeShift = -600;
+				midi.timeShift = -600;	// 1.71875
 				midi.topShift = -60;
 				break;
 			case "cabeza.mid":
-				midi.bpm = 58;
-				midi.timeShift = 250;
+				midi.timeShift = 250;	// 0
 				midi.topShift = 25;
 				break;
 			case "chopin.mid":
-				midi.bpm = 116;
-				midi.timeShift = -1250;
+				midi.timeShift = -1250;	// 1.5517241379310345
 				midi.topShift = -125;
 				break;
 			case "havana.mid":
-				midi.bpm = 105;
-				midi.timeShift = 350;
+				midi.timeShift = 350;	// 0
 				midi.topShift = 35;
 				break;
 		}
@@ -80,13 +75,13 @@ const Conductor = {
 	update(ignore, startTop) {
 		let time = (Date.now() - this.time) / 1000,
 			downKeys = this.getPressedKeysAt(time),
-			songDuration = this.song.duration,
+			duration = this.song.duration,
 			scoreHeight = Score.dim.height,
-			top = startTop || (time - songDuration) * PPS,
+			top = startTop || (time - duration) * PPS,
 			notesInView = this.getNotesInViewAt(top, scoreHeight);
 
 		// progress bar
-		Progress.render(time / songDuration);
+		Progress.render(this.time ? time : 0, duration);
 
 		// keyboard
 		let lightUp = Keyboard.render(downKeys);

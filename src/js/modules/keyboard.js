@@ -53,6 +53,7 @@ const Keyboard = {
 		});
 	},
 	render(downKeys) {
+		// logic to avoid painting the keyboard aunnecessarily times
 		if (this._downKeys.join() === downKeys.join()) return;
 		this._downKeys = downKeys;
 		

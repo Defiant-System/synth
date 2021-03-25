@@ -35,7 +35,7 @@ const Replayer = {
 		0xff: "meta",
 	},
 	getLength(temporal) {
-		let totalTime = 0.0005;
+		let totalTime = 0;
 		for (let n=0, nl=temporal.length; n<nl; n++) {
 			totalTime += temporal[n][1];
 		}
@@ -45,7 +45,7 @@ const Replayer = {
 		let typeCodes = this.typeCodes;
 		let sequence = [];
 		let record = { "0":{}, "1":{}, "2":{}, "3":{}, "4":{}, "5":{}, "6":{}, "7":{} };
-		let time = 0.0005;
+		let time = 0;
 
 		temporal.map(obj => {
 			let event = obj[0].event;
@@ -89,8 +89,7 @@ const Replayer = {
 	},
 	parse(midiFile, timeWarp=1) {
 		let trackStates = [];
-		let beatsPerMinute = midiFile.bpm;
-		// let beatsPerMinute = (midiFile.timeDivision / 480) * 120 || 120;
+		let beatsPerMinute = 120;
 		// let bpmOverride = midiFile.bpm ? true : false;
 		let ticksPerBeat = midiFile.timeDivision;
 		let nextEventInfo;
@@ -120,7 +119,7 @@ const Replayer = {
 			}
 
 			if (nextEventTrack != null) {
-				/* consume event from that track */
+				// consume event from that track
 				let nextEvent = midiFile.track[nextEventTrack].event[nextEventIndex];
 				let afterEvent = midiFile.track[nextEventTrack].event[nextEventIndex + 1];
 
@@ -132,7 +131,7 @@ const Replayer = {
 
 				trackStates[nextEventTrack].nextEventIndex += 1;
 
-				/* advance timings on all tracks by ticksToNextEvent */
+				// advance timings on all tracks by ticksToNextEvent
 				for (let i=0; i<trackStates.length; i++) {
 					if (trackStates[i].ticksToNextEvent != null) {
 						trackStates[i].ticksToNextEvent -= ticksToNextEvent
@@ -151,8 +150,7 @@ const Replayer = {
 
 		function processEvents() {
 			function processNext() {
-			    // if (!bpmOverride && typeCodes[midiEvent.event.type] == "setTempo" ) {
-			    if (typeCodes[midiEvent.event.type] == "setTempo" ) {
+			    if (typeCodes[midiEvent.event.metaType] == "setTempo" ) {
 					// tempo change events can occur anywhere in the middle and affect events that follow
 					beatsPerMinute = 60000000 / midiEvent.event.data;
 				}
@@ -171,18 +169,22 @@ const Replayer = {
 			};
 			///
 			if (midiEvent = getNextEvent()) {
-				while(midiEvent) processNext(true);
+				while (midiEvent) processNext(true);
 			}
 		}
 
 		processEvents();
 
 		let timeline = this.getTimeline(temporal);
+		let firstNoteTime = timeline[0].time;
 		let duration = this.getLength(temporal) / 1000;
 		let bpm = midiFile.bpm;
 		let timeShift = midiFile.timeShift;
 		let topShift = midiFile.topShift;
 
-		return { timeline, duration, timeShift, topShift, bpm };
+		// console.log(duration);
+		// console.log(midiFile.timeDivision);
+
+		return { timeline, duration, firstNoteTime, timeShift, topShift, bpm };
 	}
 };
