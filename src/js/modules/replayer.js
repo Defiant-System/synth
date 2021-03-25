@@ -117,7 +117,6 @@ const Replayer = {
 					nextEventIndex = trackStates[i].nextEventIndex;
 				}
 			}
-
 			if (nextEventTrack != null) {
 				// consume event from that track
 				let nextEvent = midiFile.track[nextEventTrack].event[nextEventIndex];
@@ -128,7 +127,6 @@ const Replayer = {
 				} else {
 					trackStates[nextEventTrack].ticksToNextEvent = null;
 				}
-
 				trackStates[nextEventTrack].nextEventIndex += 1;
 
 				// advance timings on all tracks by ticksToNextEvent
@@ -137,14 +135,12 @@ const Replayer = {
 						trackStates[i].ticksToNextEvent -= ticksToNextEvent
 					}
 				}
-
 				result = {
 					ticksToEvent: ticksToNextEvent,
 					event: nextEvent,
 					track: nextEventTrack
 				}
 			}
-
 			return result;
 		}
 
@@ -154,7 +150,6 @@ const Replayer = {
 					// tempo change events can occur anywhere in the middle and affect events that follow
 					beatsPerMinute = 60000000 / midiEvent.event.data;
 				}
-				///
 				let beatsToGenerate = 0;
 				let secondsToGenerate = 0;
 
@@ -162,12 +157,10 @@ const Replayer = {
 					beatsToGenerate = midiEvent.ticksToEvent / ticksPerBeat;
 					secondsToGenerate = beatsToGenerate / (beatsPerMinute / 60);
 				}
-				///
 				let time = (secondsToGenerate * 1000 * timeWarp) || 0;
 				temporal.push([ midiEvent, time]);
 				midiEvent = getNextEvent();
-			};
-			///
+			}
 			if (midiEvent = getNextEvent()) {
 				while (midiEvent) processNext(true);
 			}
@@ -178,13 +171,12 @@ const Replayer = {
 		let timeline = this.getTimeline(temporal);
 		let firstNoteTime = timeline[0].time;
 		let duration = this.getLength(temporal) / 1000;
-		let bpm = midiFile.bpm;
 		let timeShift = midiFile.timeShift;
 		let topShift = midiFile.topShift;
 
 		// console.log(duration);
 		// console.log(midiFile.timeDivision);
 
-		return { timeline, duration, firstNoteTime, timeShift, topShift, bpm };
+		return { timeline, duration, firstNoteTime, timeShift, topShift };
 	}
 };

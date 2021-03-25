@@ -172,8 +172,6 @@ const MidiParser = {
 					statusByte = laststatusByte;                                // apply last loop, Status Byte
 					file.movePointer(-1);                                       // move back the pointer (cause readed byte is not status byte)
 				}
-
-
 				//
 				// ** IS META EVENT
 				//
@@ -199,11 +197,6 @@ const MidiParser = {
 						case 0x59:                                              // Key Signature
 						case 0x51:                                              // Set Tempo
 			    			MIDI.track[t-1].event[e-1].data = file.readInt(metaEventLength);
-			    			if (MIDI.track[t-1].event[e-1].metaType == 0x51) {
-			    				// console.log("tempo change:", MIDI.track[t-1].event[e-1].data);
-			    				// console.log("tempo change:", MIDI.track[t-1].event[e-1]);
-			    				// console.log("tempo change:", "track: "+ (t-1), "event: "+ (e-1));
-			    			}
 							break;
 						case 0x54:                                              // SMPTE Offset
 							MIDI.track[t-1].event[e-1].data    = [];
@@ -235,7 +228,6 @@ const MidiParser = {
 							}
 					}
 				}
-
 				//
 				// IS REGULAR EVENT
 				//
@@ -282,7 +274,6 @@ const MidiParser = {
 							if( this.customInterpreter !== null) {
 								MIDI.track[t-1].event[e-1].data = this.customInterpreter( MIDI.track[t-1].event[e-1].metaType, file , false);
 							}
-
 							// if no customInterpretr is provided, or returned
 							// false (=apply default), perform default action
 							if(this.customInterpreter === null || MIDI.track[t-1].event[e-1].data === false) {
@@ -295,7 +286,7 @@ const MidiParser = {
 		}
 		return MIDI;
 	},
-
+	
 	/**
 	 * custom function to handle unimplemented, or custom midi messages.
 	 * If message is a meta-event, the value of metaEventLength will be >0.
