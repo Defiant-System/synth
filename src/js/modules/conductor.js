@@ -68,9 +68,8 @@ const Conductor = {
 		this._rafID = requestAnimationFrame(this.update.bind(this));
 	},
 	getNotesInViewAt(top, height) {
-		let notes = [],
-			max = top + height,
-			min = top - height,
+		let vY = top,
+			vH = top + height,
 			timeline = this.song.timeline,
 			i = this.viewIndex,
 			il = timeline.length;
@@ -80,24 +79,21 @@ const Conductor = {
 				nY = -note.clip[1],
 				nH = nY - note.clip[3];
 
-			if (nY < max && nY > min || nH < max && nH > min) {
+			if (vY < nY && vH > nH) {
 				/* note in view */
-				notes.push(note);
+			} else if (vY > nY && vH > nY) {
+				/* note is velow view - skip them next loop */
+				this.viewIndex = i;
+			} else if (vY < nY && vH < nY) {
+				/* note is above view - exit loop */
+				break;
 			}
 		}
 
-		console.log("for len: ", notes.length);
+		// console.log("span: ", this.viewIndex, i);
+		console.log("Notes in view: ", i - this.viewIndex);
 
-		notes = [];
-		this.song.timeline.map(note => {
-			if (note.inView(max, min)) {
-				notes.push(note);
-			}
-		});
-
-		console.log("map len: ", notes.length);
-
-		return notes;
+		return timeline.slice(this.viewIndex, i);
 	},
 	getPressedKeysAt(time) {
 		let keys = [];
