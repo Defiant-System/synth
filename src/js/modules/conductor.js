@@ -72,7 +72,8 @@ const Conductor = {
 			vH = top + height,
 			timeline = this.song.timeline,
 			i = this.viewIndex,
-			il = timeline.length;
+			il = timeline.length,
+			indeces = [];
 		
 		for (; i<il; i++) {
 			let note = timeline[i],
@@ -81,14 +82,15 @@ const Conductor = {
 
 			if (vY < nY && vH > nH) {
 				/* note in view */
-			} else if (vY > nY && vH > nY) {
-				/* note is velow view - skip them next loop */
-				this.viewIndex = i;
+				indeces.push(i);
 			} else if (vY < nY && vH < nY) {
 				/* note is above view - exit loop */
 				break;
 			}
 		}
+
+		// update view index - less loop next time
+		this.viewIndex = Math.min(...indeces);
 
 		// console.log("span: ", this.viewIndex, i);
 		// console.log("Notes in view: ", i - this.viewIndex);
