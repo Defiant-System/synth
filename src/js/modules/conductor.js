@@ -19,7 +19,8 @@ const Conductor = {
 		// song note visualisation
 		let midi = MidiParser.parse(file.buffer);
 		this.song = Replayer.parse(midi);
-		this.song.height = this.song.duration * PPS;
+		this.song.duration = MidiPlayer.duration;
+		this.song.height = MidiPlayer.duration * PPS;
 		this.song.timeline.map(note => note.flipVerticaly(this.song.height));
 
 		this.update(false, -this.song.height + (this.song.timeShift * PPS));
