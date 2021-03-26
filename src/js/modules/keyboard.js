@@ -60,24 +60,27 @@ const Keyboard = {
 		let ctx = this.ctx,
 			keys = this.keys,
 			sprite = this.sprite,
-			lightUp = [];
+			ignite = [];
 
 		keys.map(key => {
 			let cKey = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)),
 				args = cKey ? cKey.split(":") : undefined,
-				track = cKey ? args[2] : undefined,
-				state = cKey ? "down" : "up";
+				track = cKey ? +args[2] : undefined,
+				state = cKey ? "down" : "up",
+				currentState = key.state;
 
 			key.press(state, track);
 
 			let dim = key.serialize()
 			if (cKey) {
-				lightUp.push({ track, left: dim[4], top: args[4], width: args[5] });
+				ignite.push({ track, state, left: +dim[4], width: +args[5] });
+			} else if (state !== currentState) {
+				ignite.push({ state, left: +dim[4] + 1 });
 			}
 
 			ctx.drawImage(sprite, ...dim);
 		});
 
-		return lightUp;
+		return ignite;
 	}
 };

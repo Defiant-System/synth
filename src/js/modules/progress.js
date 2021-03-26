@@ -10,6 +10,9 @@ const Progress = {
 		// set canvas dimensions
 		this.cvs.prop(this.dim);
 
+		// bind event handlers
+		this.cvs.on("mousedown", this.dispatch);
+
 		this.gradient = this.ctx.createLinearGradient(0, 0, 0, this.dim.height);
 		this.gradient.addColorStop(0.0,   "#646464");
 		this.gradient.addColorStop(0.25,  "#4d4d4d");
@@ -20,6 +23,17 @@ const Progress = {
 
 		// reset progress bar
 		this.render(0);
+	},
+	dispatch(event) {
+		let Self = Progress,
+			Drag = Self.drag,
+			value;
+		switch (event.type) {
+			case "mousedown":
+				value = event.offsetX / Self.dim.width;
+				Conductor.seek(value);
+				break;
+		}
 	},
 	render(time, duration) {
 		let dimWidth = this.dim.width;

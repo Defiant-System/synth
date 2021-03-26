@@ -11,7 +11,7 @@ const Score = {
 		this.cvs.prop(this.dim);
 
 		// defaults
-		this._lightUp = [];
+		this._lights = [];
 
 		// guide lines
 		let guideLines = [];
@@ -30,7 +30,7 @@ const Score = {
 		// save guide lines background - for faster render
 		this.guideLines = this.ctx.getImageData(0, 0, this.dim.width, this.dim.height);
 	},
-	render(top, notesInView=[], lightUp=[]) {
+	render(top, notesInView=[], ignite=[]) {
 		let ctx  = this.ctx;
 		let paletteColors = Palette;
 
@@ -71,23 +71,22 @@ const Score = {
 
 
 		// lights
-		lightUp.map(bulb => {
-			let light = this._lightUp.find(b => b.left === bulb.left),
-				radius = 15;
-			if (light) {
-				if (light.top !== bulb.top) {
-					light.radius = radius;
-				}
-			} else {
-				this._lightUp.push({ ...bulb, radius });
+		ignite.map(turnOn => {
+			let index = this._lights.findIndex(b => b.left === turnOn.left),
+				bulb = index > -1 ? this._lights[index] : false;
+
+			if (turnOn.state === "down") {
+				if (!bulb) this._lights.push({ ...turnOn, radius: 15 });
+			} else if (turnOn.state === "up" && bulb) {
+				this._lights.splice(index, 1);
 			}
 		});
-		
+
 		let bulbTop = this.dim.height - 20;
 		let pi2 = Math.PI * 2;
 
 		ctx.fillStyle = "#fff";
-		this._lightUp.filter(b => b.radius).map(bulb => {
+		this._lights.filter(b => b.radius).map(bulb => {
 			let radius = bulb.radius;
 			let left = bulb.left + (bulb.width >> 1);
 			
@@ -98,5 +97,8 @@ const Score = {
 			// reduce light radius
 			bulb.radius--;
 		});
+
+		// remove all lights off
+		// this._lights = this._lights.filter(b => b.radius > 0);
 	}
 };

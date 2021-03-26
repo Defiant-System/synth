@@ -33,7 +33,6 @@ const Conductor = {
 			syncCallback() {
 				// tilting timer a little bit
 				if (!Conductor.time) Conductor.time = Date.now();
-
 				// start sync'ed
 				Conductor.update();
 			}
@@ -42,10 +41,15 @@ const Conductor = {
 	pause() {
 		// pause midi
 		MidiPlayer.pause();
-		
 		// prevent further updates
 		cancelAnimationFrame(Conductor._rafID);
 		Conductor._rafID = undefined;
+	},
+	seek(percentage) {
+		// adjust time start
+		this.time = Date.now() - (this.song.duration * percentage * 1000);
+		// signal midi player
+		MidiPlayer.seek(percentage);
 	},
 	update(ignore, startTop) {
 		let time = ((Date.now() - this.time) / 1000) + this.song.timeShift,
@@ -59,10 +63,10 @@ const Conductor = {
 		Progress.render(this.time ? time : 0, duration);
 
 		// keyboard
-		let lightUp = Keyboard.render(downKeys);
+		let ignite = Keyboard.render(downKeys);
 
 		// Score scroll
-		Score.render(top + scoreHeight - 5, notesInView, lightUp);
+		Score.render(top + scoreHeight - 5, notesInView, ignite);
 
 		if (!MidiPlayer.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
