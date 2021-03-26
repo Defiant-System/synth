@@ -81,24 +81,30 @@ const Score = {
 			}
 
 			if (turnOn.state === "down") {
-				if (!bulb) this._lights.push({ ...turnOn, radius: 20 });
-				else if (bulb && bulb.top !== turnOn.top) this._lights.push({ ...turnOn, radius: 20 });
+				if (!bulb) this._lights.push({ ...turnOn, radius: 25 });
+				else if (bulb && bulb.top !== turnOn.top) this._lights.push({ ...turnOn, radius: 25 });
 			} else if (turnOn.state === "up" && bulb) {
 				this._lights.splice(index, 1);
 			}
 		});
 
-		let bulbTop = this.dim.height - 10;
+		let bulbTop = this.dim.height - 5;
 		let pi2 = Math.PI * 2;
 
 		ctx.save();
 		// ctx.globalAlpha = .75;
 		ctx.globalCompositeOperation = "lighter";
-		ctx.filter = "blur(7px)";
-		ctx.fillStyle = "#ffffff88";
+		// ctx.filter = "blur(1px)";
 
 		this._lights.filter(b => b.radius).map(bulb => {
 			let left = bulb.left + (bulb.width >> 1);
+			let color = Palette["color-"+ bulb.track];
+			let gradient = ctx.createRadialGradient(left, bulbTop, 0, left, bulbTop, bulb.radius);
+
+			gradient.addColorStop(0.0, "rgba(255,255,255,1)");
+			gradient.addColorStop(0.1, color);
+			gradient.addColorStop(1.0, color +"00");
+			ctx.fillStyle = gradient;
 			
 			ctx.beginPath();
 			ctx.arc(left, bulbTop, bulb.radius--, pi2, 0, false);

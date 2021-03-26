@@ -22,10 +22,10 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "~/ir/cathedral.wav" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/chopin.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/fur-elise.mid" });
 
-		setTimeout(() =>
-			window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
+		// setTimeout(() =>
+		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
 	},
 	async dispatch(event) {
 		let Self = synth,

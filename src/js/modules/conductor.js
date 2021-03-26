@@ -41,6 +41,7 @@ const Conductor = {
 	pause() {
 		// pause midi
 		MidiPlayer.pause();
+
 		// prevent further updates
 		cancelAnimationFrame(Conductor._rafID);
 		Conductor._rafID = undefined;
