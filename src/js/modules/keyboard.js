@@ -64,12 +64,17 @@ const Keyboard = {
 
 		keys.map(key => {
 			let cKey = downKeys.find(keyNote => keyNote.startsWith(`${key.octave}:${key.note}:`)),
-				track = cKey ? cKey.split(":")[2] : undefined,
+				args = cKey ? cKey.split(":") : undefined,
+				track = cKey ? args[2] : undefined,
 				state = cKey ? "down" : "up";
+
 			key.press(state, track);
 
-			let dim = key.serialize();
-			if (cKey) lightUp.push({ left: dim[4], width: dim[6] });
+			let dim = key.serialize()
+			if (cKey) {
+				lightUp.push({ track, left: dim[4], top: args[4], width: args[5] });
+			}
+
 			ctx.drawImage(sprite, ...dim);
 		});
 

@@ -74,7 +74,7 @@ const Conductor = {
 			i = this.viewIndex,
 			il = timeline.length,
 			indeces = [];
-		
+		// check for notes from viewIndex and exit if encounter notes outside view
 		for (; i<il; i++) {
 			let note = timeline[i],
 				nY = -note.clip[1],
@@ -88,10 +88,8 @@ const Conductor = {
 				break;
 			}
 		}
-
 		// update view index - less loop next time
 		this.viewIndex = Math.min(...indeces);
-
 		// console.log("span: ", this.viewIndex, i);
 		// console.log("Notes in view: ", i - this.viewIndex);
 
@@ -102,7 +100,7 @@ const Conductor = {
 
 		this.song.timeline.map(note => {
 			if (note.time < time && note.time + note.duration > time) {
-				keys.push(`${note.octave}:${note.note}:${note.track}`);
+				keys.push(`${note.octave}:${note.note}:${note.track}:${note.clip.join(":")}`);
 			}
 		});
 

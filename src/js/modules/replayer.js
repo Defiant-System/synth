@@ -67,13 +67,10 @@ const Replayer = {
 						let octave = Math.floor(nr / 12) - 2,
 							note = Notes[nr % 12],
 							noteDuration = time - noteOnEvent.time;
-
 						// add entry to notes
 						sequence.push(new Note(octave, note, track, noteOnEvent.time, noteDuration));
-						
 						// delete reference to event
 						record[nr] = false;
-
 					} else {
 						// note on: save to record
 						record[track][nr] = { ...event, time };

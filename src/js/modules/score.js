@@ -69,35 +69,34 @@ const Score = {
 			ctx.fill();
 		});
 
-		return;
-		if (!lightUp.length) lightUp = this._lightUp;
-		this._lightUp = lightUp;
 
-		ctx.save();
-		// ctx.globalAlpha = .75;
-		ctx.globalCompositeOperation = "lighter";
-		ctx.filter = "blur(7px)";
-
-		let bulbTop = this.dim.height - 4;
-		let gradient = ctx.createLinearGradient(0, bulbTop, 0, bulbTop - 80);
-		gradient.addColorStop(0.0, "rgba(255,255,255,1)");
-		gradient.addColorStop(1.0, "rgba(255,255,255,0)");
-
-		ctx.fillStyle = gradient;
-
+		// lights
 		lightUp.map(bulb => {
-			let radius = bulb.width >> 1;
-			let left = bulb.left + radius;
-			let height = radius + 25;
-			let pi = Math.PI;
+			let light = this._lightUp.find(b => b.left === bulb.left),
+				radius = 15;
+			if (light) {
+				if (light.top !== bulb.top) {
+					light.radius = radius;
+				}
+			} else {
+				this._lightUp.push({ ...bulb, radius });
+			}
+		});
+		
+		let bulbTop = this.dim.height - 20;
+		let pi2 = Math.PI * 2;
+
+		ctx.fillStyle = "#fff";
+		this._lightUp.filter(b => b.radius).map(bulb => {
+			let radius = bulb.radius;
+			let left = bulb.left + (bulb.width >> 1);
 			
 			ctx.beginPath();
-			ctx.moveTo(left, bulbTop + 15);
-			ctx.arc(left, bulbTop, 80, pi * 1.4, -pi * .4, false);
-			ctx.lineTo(left, bulbTop + 15);
+			ctx.arc(left, bulbTop, radius, 0, pi2, false);
 			ctx.fill();
-		});
 
-		ctx.restore();
+			// reduce light radius
+			bulb.radius--;
+		});
 	}
 };

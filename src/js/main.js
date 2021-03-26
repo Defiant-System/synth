@@ -23,6 +23,9 @@ const synth = {
 		this.dispatch({ type: "select-reverb", arg: "~/ir/cathedral.wav" });
 		// auto select song
 		this.dispatch({ type: "select-song", arg: "~/midi/abba.mid" });
+
+		setTimeout(() =>
+			window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
 	},
 	async dispatch(event) {
 		let Self = synth,
