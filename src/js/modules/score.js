@@ -81,30 +81,30 @@ const Score = {
 			}
 
 			if (turnOn.state === "down") {
-				if (!bulb) this._lights.push({ ...turnOn, radius: 15 });
-				else if (bulb && bulb.top !== turnOn.top) this._lights.push({ ...turnOn, radius: 15 });
+				if (!bulb) this._lights.push({ ...turnOn, radius: 20 });
+				else if (bulb && bulb.top !== turnOn.top) this._lights.push({ ...turnOn, radius: 20 });
 			} else if (turnOn.state === "up" && bulb) {
 				this._lights.splice(index, 1);
 			}
 		});
 
-		let bulbTop = this.dim.height - 15;
+		let bulbTop = this.dim.height - 10;
 		let pi2 = Math.PI * 2;
 
-		ctx.fillStyle = "#fff";
+		ctx.save();
+		// ctx.globalAlpha = .75;
+		ctx.globalCompositeOperation = "lighter";
+		ctx.filter = "blur(7px)";
+		ctx.fillStyle = "#ffffff88";
+
 		this._lights.filter(b => b.radius).map(bulb => {
-			let radius = bulb.radius;
 			let left = bulb.left + (bulb.width >> 1);
 			
 			ctx.beginPath();
-			ctx.arc(left, bulbTop, radius, 0, pi2, false);
+			ctx.arc(left, bulbTop, bulb.radius--, pi2, 0, false);
 			ctx.fill();
-
-			// reduce light radius
-			bulb.radius--;
 		});
 
-		// remove all lights off
-		// this._lights = this._lights.filter(b => b.radius > 0);
+		ctx.restore();
 	}
 };
