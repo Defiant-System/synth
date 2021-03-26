@@ -73,7 +73,7 @@ const Keyboard = {
 
 			let dim = key.serialize()
 			if (cKey) {
-				ignite.push({ track, state, left: +dim[4], width: +args[5] });
+				ignite.push({ track, state, left: +dim[4], top: +args[4], width: +args[5] });
 			} else if (state !== currentState) {
 				ignite.push({ state, left: +dim[4] + 1 });
 			}

@@ -22,7 +22,7 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "~/ir/cathedral.wav" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/cabeza.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/chopin.mid" });
 
 		setTimeout(() =>
 			window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);

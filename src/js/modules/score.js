@@ -72,17 +72,23 @@ const Score = {
 
 		// lights
 		ignite.map(turnOn => {
-			let index = this._lights.findIndex(b => b.left === turnOn.left),
+			let index = this._lights.findIndex(b => b.left === turnOn.left && b.top === turnOn.top),
 				bulb = index > -1 ? this._lights[index] : false;
+
+			if (index < 0) {
+				index = this._lights.findIndex(b => b.left === turnOn.left);
+				bulb = index > -1 ? this._lights[index] : false;
+			}
 
 			if (turnOn.state === "down") {
 				if (!bulb) this._lights.push({ ...turnOn, radius: 15 });
+				else if (bulb && bulb.top !== turnOn.top) this._lights.push({ ...turnOn, radius: 15 });
 			} else if (turnOn.state === "up" && bulb) {
 				this._lights.splice(index, 1);
 			}
 		});
 
-		let bulbTop = this.dim.height - 20;
+		let bulbTop = this.dim.height - 15;
 		let pi2 = Math.PI * 2;
 
 		ctx.fillStyle = "#fff";
