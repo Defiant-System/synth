@@ -20,7 +20,8 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/swans.mid" });
+		// this.dispatch({ type: "select-song", arg: "Salieri - Welcome March.mid" });
+		this.dispatch({ type: "select-song", arg: "Frederic Chopin - Nocturne 01.mid" });
 
 		// setTimeout(() =>
 		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
@@ -46,7 +47,7 @@ const synth = {
 				break;
 			case "select-song":
 				// load midi file
-				file = await defiant.shell(`fs -ur "${event.arg}"`);
+				file = await defiant.shell(`fs -ur "/cdn/midi/music/${event.arg}"`);
 				Conductor.prepare(file.result);
 				break;
 			case "toggle-song":

@@ -48,6 +48,9 @@
 			<Menu name="Mendelssohn">
 				<Menu name="Wedding March" click="select-song" arg="Mendelssohn - Wedding March.mid" check-group="midi-song"/>
 			</Menu>
+			<Menu name="Salieri">
+				<Menu name="Welcome March" click="select-song" arg="Salieri - Welcome March.mid" check-group="midi-song"/>
+			</Menu>
 			<Menu name="Tchaikovsky">
 				<Menu name="Dance of the Reed Flutes" click="select-song" arg="Tchaikovsky - Dance of the Reed Flutes.mid" check-group="midi-song"/>
 				<Menu name="March" click="select-song" arg="Tchaikovsky - March.mid" check-group="midi-song"/>

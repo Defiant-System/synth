@@ -147,6 +147,7 @@ const Replayer = {
 				let secondsToGenerate = 0;
 
 				if (midiEvent.ticksToEvent > 0) {
+			    	// console.log("setTempo", midiEvent);
 					beatsToGenerate = midiEvent.ticksToEvent / ticksPerBeat;
 					secondsToGenerate = beatsToGenerate / (beatsPerMinute / 60);
 				}
