@@ -12,23 +12,27 @@ const Conductor = {
 		window.title = `Synth <i class="icon-heart"></i> ${name}`;
 
 		// stop any playing song
-		MidiPlayer.pause();
+		window.midi.pause();
+
+		// reset variables
+		Conductor.time = 0;
+		Conductor.viewIndex = 0;
 
 		// load & prepare midi buffer
-		await MidiPlayer.load(file.buffer);
+		await window.midi.load(file.buffer);
 
 		// song note visualisation
 		let midi = MidiParser.parse(file.buffer);
 		this.song = Replayer.parse(midi);
-		this.song.duration = MidiPlayer.duration;
-		this.song.height = MidiPlayer.duration * PPS;
+		this.song.duration = window.midi.duration;
+		this.song.height = window.midi.duration * PPS;
 		this.song.timeline.map(note => note.flipVerticaly(this.song.height));
 
 		this.update(false, -this.song.height + (this.song.timeShift * PPS));
 	},
 	play() {
 		// play midi
-		MidiPlayer.play({
+		window.midi.play({
 			loop: false,
 			syncCallback() {
 				// tilting timer a little bit
@@ -40,7 +44,7 @@ const Conductor = {
 	},
 	pause() {
 		// pause midi
-		MidiPlayer.pause();
+		window.midi.pause();
 
 		// prevent further updates
 		cancelAnimationFrame(Conductor._rafID);
@@ -50,7 +54,7 @@ const Conductor = {
 		// adjust time start
 		this.time = Date.now() - (this.song.duration * percentage * 1000);
 		// signal midi player
-		MidiPlayer.seek(percentage);
+		window.midi.seek(percentage);
 	},
 	update(ignore, startTop) {
 		let time = ((Date.now() - this.time) / 1000) + this.song.timeShift,
@@ -69,7 +73,7 @@ const Conductor = {
 		// Score scroll
 		Score.render(top + scoreHeight - 5, notesInView, ignite);
 
-		if (!MidiPlayer.playing) return;
+		if (!window.midi.playing) return;
 		this._rafID = requestAnimationFrame(this.update.bind(this));
 	},
 	getNotesInViewAt(top, height) {

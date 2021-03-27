@@ -1,6 +1,4 @@
 
-@import "./modules/midi-player.js";
-
 @import "./modules/replayer.js";
 @import "./modules/midi-parser.js";
 @import "./modules/misc.js";
@@ -16,13 +14,13 @@ const synth = {
 		Keyboard.init();
 		Progress.init();
 		Score.init();
-		await MidiPlayer.init();
+		await window.midi.init();
 		await Conductor.init();
 
 		// auto select reverb
-		this.dispatch({ type: "select-reverb", arg: "~/ir/cathedral.wav" });
+		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/fur-elise.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/havana.mid" });
 
 		// setTimeout(() =>
 		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
@@ -38,13 +36,13 @@ const synth = {
 				break;
 			// custom events
 			case "midi-seek":
-				MidiPlayer.seek(event.arg / 100);
+				window.midi.seek(event.arg / 100);
 				break;
 			case "midi-volume":
-				MidiPlayer.volume(event.arg / 100);
+				window.midi.volume(event.arg / 100);
 				break;
 			case "select-reverb":
-				MidiPlayer.reverb(event.arg);
+				window.midi.reverb(event.arg);
 				break;
 			case "select-song":
 				// load midi file
@@ -52,7 +50,7 @@ const synth = {
 				Conductor.prepare(file.result);
 				break;
 			case "toggle-song":
-				isOn = MidiPlayer.playing;
+				isOn = window.midi.playing;
 
 				if (isOn) {
 					Conductor.pause();
