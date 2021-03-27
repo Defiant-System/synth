@@ -20,7 +20,7 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
-		this.dispatch({ type: "select-song", arg: "~/midi/havana.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/swans.mid" });
 
 		// setTimeout(() =>
 		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);

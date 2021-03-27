@@ -12,24 +12,57 @@
 		<Menu name="License"/>
 	</Menu>
 	<Menu for="score-board">
-		<Menu name="Songs">
-			<Menu name="Abba" click="select-song" arg="~/midi/abba.mid" check-group="midi-song"/>
-			<Menu name="Brahms" click="select-song" arg="~/midi/brahms.mid" check-group="midi-song"/>
-			<Menu name="Cabeza" click="select-song" arg="~/midi/cabeza.mid" check-group="midi-song" is-checked="1"/>
-			<Menu name="Havana" click="select-song" arg="~/midi/havana.mid" check-group="midi-song"/>
-			<Menu name="Swans" click="select-song" arg="~/midi/swansmid" check-group="midi-song"/>
-			<Menu name="Trolls" click="select-song" arg="~/midi/trolls.mid" check-group="midi-song"/>
+		<Menu name="Music">
+			<Menu name="Abba">
+				<Menu name="Winner Takes It All" click="select-song" arg="Abba - Winner Takes It All.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Albeniz">
+				<Menu name="Espana Op-165 Tango" click="select-song" arg="Albeniz - Espana Op-165 Tango.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Amadeus Mozart">
+				<Menu name="Alla Turca Rondo" click="select-song" arg="Amadeus Mozart - Alla Turca Rondo.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Bach">
+				<Menu name="Prelude and Fugue C major" click="select-song" arg="Bach - Prelude and Fugue C major.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Camilo Cabello">
+				<Menu name="Havana" click="select-song" arg="Camilo Cabello - Havana.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Carlos Gardel">
+				<Menu name="Por Una Cabeza" click="select-song" arg="Carlos Gardel - Por Una Cabeza.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Frederic Chopin">
+				<Menu name="Nocturne 01" click="select-song" arg="Frederic Chopin - Nocturne 01.mid" check-group="midi-song"/>
+				<Menu name="Op-09 Nocturne No-2 in Eb" click="select-song" arg="Frederic Chopin - Op-09 Nocturne No-2 in Eb.mid" check-group="midi-song"/>
+				<Menu name="Op.64 Waltz In Db No.1" click="select-song" arg="Frederic Chopin - Op.64 Waltz In Db No.1.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Johannes Brahms">
+				<Menu name="Hungarian Dance No5" click="select-song" arg="Johannes Brahms - Hungarian Dance No5.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Joplin">
+				<Menu name="The Entertainer" click="select-song" arg="Joplin - Entertainer.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Ludwig Van Beethoven">
+				<Menu name="Fur Elise" click="select-song" arg="Ludwig Van Beethoven - Fur Elise.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Mendelssohn">
+				<Menu name="Wedding March" click="select-song" arg="Mendelssohn - Wedding March.mid" check-group="midi-song"/>
+			</Menu>
+			<Menu name="Tchaikovsky">
+				<Menu name="Dance of the Reed Flutes" click="select-song" arg="Tchaikovsky - Dance of the Reed Flutes.mid" check-group="midi-song"/>
+				<Menu name="March" click="select-song" arg="Tchaikovsky - March.mid" check-group="midi-song"/>
+			</Menu>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Effect">
-			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb" is-checked="1"/>
+			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb"/>
 			<Menu type="divider"/>
-			<Menu name="Large Hall" click="select-reverb" arg="~/ir/large-hall.ogg" check-group="midi-reverb"/>
-			<Menu name="Cathedral" click="select-reverb" arg="~/ir/cathedral.wav" check-group="midi-reverb"/>
-			<Menu name="Chruch" click="select-reverb" arg="~/ir/church.wav" check-group="midi-reverb"/>
-			<Menu name="Artifical Forest" click="select-reverb" arg="~/ir/artificial-forest.mp3" check-group="midi-reverb"/>
-			<Menu name="Greek Echo Hall" click="select-reverb" arg="~/ir/greek-echo-hall.wav" check-group="midi-reverb"/>
-			<Menu name="Large Echo Hall" click="select-reverb" arg="~/ir/large-echo-hall.wav" check-group="midi-reverb"/>
+			<Menu name="Large Hall" click="select-reverb" arg="large-hall" check-group="midi-reverb"/>
+			<Menu name="Cathedral" click="select-reverb" arg="cathedral" check-group="midi-reverb" is-checked="1"/>
+			<Menu name="Chruch" click="select-reverb" arg="church" check-group="midi-reverb"/>
+			<Menu name="Artifical Forest" click="select-reverb" arg="artificial-forest" check-group="midi-reverb"/>
+			<Menu name="Greek Echo Hall" click="select-reverb" arg="greek-echo-hall" check-group="midi-reverb"/>
+			<Menu name="Large Echo Hall" click="select-reverb" arg="large-echo-hall" check-group="midi-reverb"/>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu type="caption" name="Volume:"/>
