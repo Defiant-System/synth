@@ -142,12 +142,12 @@ const Replayer = {
 			    if (typeCodes[midiEvent.event.metaType] == "setTempo" ) {
 					// tempo change events can occur mid-song and affect events that follow
 					beatsPerMinute = 60000000 / midiEvent.event.data;
+			    	// console.log("setTempo", beatsPerMinute);
 				}
 				let beatsToGenerate = 0;
 				let secondsToGenerate = 0;
 
 				if (midiEvent.ticksToEvent > 0) {
-			    	// console.log("setTempo", midiEvent);
 					beatsToGenerate = midiEvent.ticksToEvent / ticksPerBeat;
 					secondsToGenerate = beatsToGenerate / (beatsPerMinute / 60);
 				}

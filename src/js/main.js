@@ -21,9 +21,8 @@ const synth = {
 		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
 		// this.dispatch({ type: "select-song", arg: "~/midi/Satie - The 3 Gymnopedies.mid" });
-		this.dispatch({ type: "select-song", arg: "~/midi/SW - Cantina Band.mid" });
+		// this.dispatch({ type: "select-song", arg: "~/midi/SW - Cantina Band.mid" });
 		// this.dispatch({ type: "select-song", arg: "~/midi/Game of Thrones.mid" });
-		// this.dispatch({ type: "select-song", arg: "~/midi/Seven Nation Army.mid" });
 		// this.dispatch({ type: "select-song", arg: "~/midi/Salieri - Welcome March.mid" });
 		// this.dispatch({ type: "select-song", arg: "Frederic Chopin - Nocturne 01.mid" });
 

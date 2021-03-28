@@ -4,6 +4,95 @@
 		<Menu type="divider"/>
 		<Menu name="Quit Synth" shell="win -c"/>
 	</Menu>
+	<Menu name="Music" for="music">
+		<Menu name="Abba">
+			<Menu name="Winner Takes It All" click="select-song" arg="Abba - Winner Takes It All.mid" check-group="midi-song"/>
+			<Menu name="Dancing Queen" click="select-song" arg="Abba - Dancing Queen.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="A-ha">
+			<Menu name="Take On Me" click="select-song" arg="A-ha - Take On Me.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Albeniz">
+			<Menu name="Espana Op-165 Tango" click="select-song" arg="Albeniz - Espana Op-165 Tango.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Amadeus Mozart">
+			<Menu name="Alla Turca Rondo" click="select-song" arg="Amadeus Mozart - Alla Turca Rondo.mid" check-group="midi-song"/>
+			<Menu name="Lacrimosa (Requiem)" click="select-song" arg="Amadeus Mozart - Lacrimosa (Requiem).mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Bach">
+			<Menu name="Prelude and Fugue C major" click="select-song" arg="Bach - Prelude and Fugue C major.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Beatles">
+			<Menu name="Let it Be" click="select-song" arg="Beatles - Let it Be.mid" check-group="midi-song"/>
+			<Menu name="Twist and Shout" click="select-song" arg="Beatles - Twist and Shout.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Camilo Cabello">
+			<Menu name="Havana" click="select-song" arg="Camilo Cabello - Havana.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Carlos Gardel">
+			<Menu name="Por Una Cabeza" click="select-song" arg="Carlos Gardel - Por Una Cabeza.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Elton John">
+			<Menu name="I am Still Standing" click="select-song" arg="Elton John - I am Still Standing.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Eurythmics">
+			<Menu name="Sweet Dreams" click="select-song" arg="Eurythmics - Sweet Dreams.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Franz Gruber">
+			<Menu name="Silent Night (Stille Nacht)" click="select-song" arg="Franz Gruber - Silent Night (Stille Nacht).mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Frederic Chopin">
+			<Menu name="Nocturne 01" click="select-song" arg="Frederic Chopin - Nocturne 01.mid" check-group="midi-song"/>
+			<Menu name="Op-09 Nocturne No-2 in Eb" click="select-song" arg="Frederic Chopin - Op-09 Nocturne No-2 in Eb.mid" check-group="midi-song"/>
+			<Menu name="Op.64 Waltz In Db No.1" click="select-song" arg="Frederic Chopin - Op.64 Waltz In Db No.1.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Guns and Roses">
+			<Menu name="Sweet Child Of Mine" click="select-song" arg="GunsNRoses - Sweet Child Of Mine.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Johann Strauss">
+			<Menu name="Blue Danube" click="select-song" arg="Johann Strauss - Blue Danube.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Johannes Brahms">
+			<Menu name="Hungarian Dance No5" click="select-song" arg="Johannes Brahms - Hungarian Dance No5.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Joplin">
+			<Menu name="The Entertainer" click="select-song" arg="Joplin - Entertainer.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Ludwig Van Beethoven">
+			<Menu name="Fur Elise" click="select-song" arg="Ludwig Van Beethoven - Fur Elise.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Mendelssohn">
+			<Menu name="Wedding March" click="select-song" arg="Mendelssohn - Wedding March.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Metallica">
+			<Menu name="Nothing Else Matters" click="select-song" arg="Metallica - Nothing Else Matters.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Satie">
+			<Menu name="The 3 Gymnopedies" click="select-song" arg="Satie - The 3 Gymnopedies.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Scorpions">
+			<Menu name="Still Loving You" click="select-song" arg="Scorpions - Still Loving You.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Sting">
+			<Menu name="Every Breath You Take" click="select-song" arg="Sting - Every Breath You Take.mid" check-group="midi-song"/>
+			<Menu name="Fields of Gold" click="select-song" arg="Sting - Fields of Gold.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Tchaikovsky">
+			<Menu name="Dance of the Reed Flutes" click="select-song" arg="Tchaikovsky - Dance of the Reed Flutes.mid" check-group="midi-song"/>
+			<Menu name="March" click="select-song" arg="Tchaikovsky - March.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="The Cranberries">
+			<Menu name="Zombie" click="select-song" arg="The Cranberries - Zombie.mid" check-group="midi-song"/>
+		</Menu>
+		<Menu name="Theme Music">
+			<Menu name="Game of Thrones" click="select-song" arg="Theme - Game of Thrones.mid" check-group="midi-song"/>
+			<Menu name="Happy Birthday" click="select-song" arg="Theme - Happy Birthday.mid" check-group="midi-song"/>
+			<Menu name="Last Christmas" click="select-song" arg="Theme - Last Christmas.mid" check-group="midi-song"/>
+			<Menu name="Star Wars Cantina Band" click="select-song" arg="Theme - Star Wars Cantina Band.mid" check-group="midi-song"/>
+			<Menu name="The Godfather" click="select-song" arg="Theme - The Godfather.mid" check-group="midi-song"/>
+			<Menu name="We Wish You A Merry Christmas" click="select-song" arg="Theme - We Wish You A Merry Christmas.mid" check-group="midi-song"/>
+		</Menu>
+	</Menu>
 	<Menu name="Help">
 		<Menu name="Send Synth Feedback"/>
 		<Menu type="divider"/>
@@ -12,51 +101,7 @@
 		<Menu name="License"/>
 	</Menu>
 	<Menu for="score-board">
-		<Menu name="Music">
-			<Menu name="Abba">
-				<Menu name="Winner Takes It All" click="select-song" arg="Abba - Winner Takes It All.mid" check-group="midi-song"/>
-				<Menu name="Dancing Queen" click="select-song" arg="Abba - Dancing Queen.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Albeniz">
-				<Menu name="Espana Op-165 Tango" click="select-song" arg="Albeniz - Espana Op-165 Tango.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Amadeus Mozart">
-				<Menu name="Alla Turca Rondo" click="select-song" arg="Amadeus Mozart - Alla Turca Rondo.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Bach">
-				<Menu name="Prelude and Fugue C major" click="select-song" arg="Bach - Prelude and Fugue C major.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Camilo Cabello">
-				<Menu name="Havana" click="select-song" arg="Camilo Cabello - Havana.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Carlos Gardel">
-				<Menu name="Por Una Cabeza" click="select-song" arg="Carlos Gardel - Por Una Cabeza.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Frederic Chopin">
-				<Menu name="Nocturne 01" click="select-song" arg="Frederic Chopin - Nocturne 01.mid" check-group="midi-song"/>
-				<Menu name="Op-09 Nocturne No-2 in Eb" click="select-song" arg="Frederic Chopin - Op-09 Nocturne No-2 in Eb.mid" check-group="midi-song"/>
-				<Menu name="Op.64 Waltz In Db No.1" click="select-song" arg="Frederic Chopin - Op.64 Waltz In Db No.1.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Johannes Brahms">
-				<Menu name="Hungarian Dance No5" click="select-song" arg="Johannes Brahms - Hungarian Dance No5.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Joplin">
-				<Menu name="The Entertainer" click="select-song" arg="Joplin - Entertainer.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Ludwig Van Beethoven">
-				<Menu name="Fur Elise" click="select-song" arg="Ludwig Van Beethoven - Fur Elise.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Mendelssohn">
-				<Menu name="Wedding March" click="select-song" arg="Mendelssohn - Wedding March.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Salieri">
-				<Menu name="Welcome March" click="select-song" arg="Salieri - Welcome March.mid" check-group="midi-song"/>
-			</Menu>
-			<Menu name="Tchaikovsky">
-				<Menu name="Dance of the Reed Flutes" click="select-song" arg="Tchaikovsky - Dance of the Reed Flutes.mid" check-group="midi-song"/>
-				<Menu name="March" click="select-song" arg="Tchaikovsky - March.mid" check-group="midi-song"/>
-			</Menu>
-		</Menu>
+		<Menu name="Music&#8230;" invoke="music"/>
 		<Menu type="divider"/>
 		<Menu name="Effect">
 			<Menu name="Off" click="select-reverb" arg="" check-group="midi-reverb"/>
