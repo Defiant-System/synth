@@ -20,8 +20,12 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
-		// this.dispatch({ type: "select-song", arg: "Salieri - Welcome March.mid" });
-		this.dispatch({ type: "select-song", arg: "Frederic Chopin - Nocturne 01.mid" });
+		// this.dispatch({ type: "select-song", arg: "~/midi/Satie - The 3 Gymnopedies.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/SW - Cantina Band.mid" });
+		// this.dispatch({ type: "select-song", arg: "~/midi/Game of Thrones.mid" });
+		// this.dispatch({ type: "select-song", arg: "~/midi/Seven Nation Army.mid" });
+		// this.dispatch({ type: "select-song", arg: "~/midi/Salieri - Welcome March.mid" });
+		// this.dispatch({ type: "select-song", arg: "Frederic Chopin - Nocturne 01.mid" });
 
 		// setTimeout(() =>
 		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
@@ -29,6 +33,7 @@ const synth = {
 	async dispatch(event) {
 		let Self = synth,
 			file,
+			path,
 			isOn,
 			el;
 		switch (event.type) {
@@ -47,7 +52,8 @@ const synth = {
 				break;
 			case "select-song":
 				// load midi file
-				file = await defiant.shell(`fs -ur "/cdn/midi/music/${event.arg}"`);
+				path = event.arg.startsWith("~/midi/") ? event.arg : `/cdn/midi/music/${event.arg}`;
+				file = await defiant.shell(`fs -ur "${path}"`);
 				Conductor.prepare(file.result);
 				break;
 			case "toggle-song":
