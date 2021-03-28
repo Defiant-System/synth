@@ -17,7 +17,7 @@
 		</Menu>
 		<Menu name="Amadeus Mozart">
 			<Menu name="Alla Turca Rondo" click="select-song" arg="Amadeus Mozart - Alla Turca Rondo.mid" check-group="midi-song"/>
-			<Menu name="Lacrimosa (Requiem)" click="select-song" arg="Amadeus Mozart - Lacrimosa (Requiem).mid" check-group="midi-song"/>
+			<!-- <Menu name="Lacrimosa (Requiem)" click="select-song" arg="Amadeus Mozart - Lacrimosa (Requiem).mid" check-group="midi-song"/> -->
 		</Menu>
 		<Menu name="Bach">
 			<Menu name="Prelude and Fugue C major" click="select-song" arg="Bach - Prelude and Fugue C major.mid" check-group="midi-song"/>
