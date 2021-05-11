@@ -20,11 +20,8 @@ const synth = {
 		// auto select reverb
 		this.dispatch({ type: "select-reverb", arg: "cathedral" });
 		// auto select song
-		// this.dispatch({ type: "select-song", arg: "~/midi/Satie - The 3 Gymnopedies.mid" });
-		// this.dispatch({ type: "select-song", arg: "~/midi/SW - Cantina Band.mid" });
-		// this.dispatch({ type: "select-song", arg: "~/midi/Game of Thrones.mid" });
+		this.dispatch({ type: "select-song", arg: "~/midi/Korobeiniki.mid" });
 		// this.dispatch({ type: "select-song", arg: "~/midi/Salieri - Welcome March.mid" });
-		// this.dispatch({ type: "select-song", arg: "Frederic Chopin - Nocturne 01.mid" });
 
 		// setTimeout(() =>
 		// 	window.find(".toolbar-tool_[data-click='toggle-song']").trigger("click"), 400);
