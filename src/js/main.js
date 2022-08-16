@@ -49,7 +49,7 @@ const synth = {
 			case "select-song":
 				// load midi file
 				path = event.arg.startsWith("~/midi/") ? event.arg : `/cdn/midi/music/${event.arg}`;
-				file = await defiant.shell(`fs -ur "${path}"`);
+				file = await karaqu.shell(`fs -ur "${path}"`);
 				Conductor.prepare(file.result);
 				break;
 			case "toggle-song":
