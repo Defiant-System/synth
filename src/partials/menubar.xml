@@ -98,7 +98,7 @@
 		<Menu type="divider"/>
 		<Menu name="Synth Help"/>
 		<Menu type="divider"/>
-		<Menu name="License"/>
+		<Menu name="License" shell="win -al"/>
 	</Menu>
 	<Menu for="score-board">
 		<Menu name="Music&#8230;" invoke="music"/>
