@@ -94,9 +94,7 @@
 		</Menu>
 	</Menu>
 	<Menu name="Help">
-		<Menu name="Send Synth Feedback"/>
-		<Menu type="divider"/>
-		<Menu name="Synth Help"/>
+		<Menu name="Help" click="open-help"/>
 		<Menu type="divider"/>
 		<Menu name="License" shell="win -al"/>
 	</Menu>
