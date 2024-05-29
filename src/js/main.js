@@ -47,10 +47,16 @@ const synth = {
 				window.midi.reverb(event.arg);
 				break;
 			case "select-song":
+				isOn = window.midi.playing;
+				if (isOn) Conductor.pause();
+
 				// load midi file
 				path = event.arg.startsWith("~/midi/") ? event.arg : `/cdn/midi/music/${event.arg}`;
 				file = await karaqu.shell(`fs -ur "${path}"`);
 				Conductor.prepare(file.result);
+
+				// if it was playing before, auto play
+				if (isOn) setTimeout(() => Conductor.play(), 1000);
 				break;
 			case "toggle-song":
 				isOn = window.midi.playing;
